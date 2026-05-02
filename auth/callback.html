@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>[NEW_SITE_NAME] Secure Sign In</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Fraunces:wght@600;700&family=Inter:wght@400;500;600;700&display=swap">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:wght@600;700&family=Inter:wght@400;500;600;700&display=swap" media="print" onload="this.media='all'">
+    <noscript>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:wght@600;700&family=Inter:wght@400;500;600;700&display=swap">
+    </noscript>
+    <style>
+        :root {
+            color-scheme: light;
+        }
+
+        body {
+            margin: 0;
+            min-height: 100vh;
+            display: grid;
+            place-items: center;
+            font-family: "Inter", sans-serif;
+            background:
+                radial-gradient(circle at top, rgba(190, 140, 34, 0.18), transparent 42%),
+                linear-gradient(180deg, #fff8ef 0%, #ffffff 100%);
+            color: #2f2416;
+        }
+
+        .card {
+            width: min(92vw, 31rem);
+            background: rgba(255, 255, 255, 0.97);
+            border: 1px solid rgba(190, 140, 34, 0.18);
+            border-radius: 1.5rem;
+            box-shadow: 0 24px 60px -24px rgba(15, 23, 42, 0.28);
+            padding: 2rem;
+            text-align: center;
+        }
+
+        .badge {
+            width: 4.25rem;
+            height: 4.25rem;
+            margin: 0 auto 1rem;
+            border-radius: 999px;
+            display: grid;
+            place-items: center;
+            background: linear-gradient(135deg, #8a5a10 0%, #d7a137 100%);
+            color: white;
+            font-size: 1.75rem;
+        }
+
+        h1 {
+            margin: 0 0 0.5rem;
+            font-family: "Fraunces", serif;
+            font-size: clamp(1.9rem, 4vw, 2.35rem);
+        }
+
+        p {
+            margin: 0;
+            line-height: 1.65;
+            color: #6c5b42;
+        }
+
+        .status {
+            margin-top: 1.25rem;
+            padding: 0.875rem 1rem;
+            border-radius: 1rem;
+            background: #fff4dd;
+            color: #8a5a10;
+            font-size: 0.95rem;
+        }
+
+        .status.error {
+            background: #fef2f2;
+            color: #991b1b;
+        }
+
+        .link {
+            display: inline-block;
+            margin-top: 1.25rem;
+            color: #8a5a10;
+            font-weight: 700;
+            text-decoration: none;
+        }
+    </style>
+</head>
+<body>
+    <main class="card" aria-live="polite">
+        <div class="badge">✓</div>
+        <h1 id="callback-title">Completing secure sign-in</h1>
+        <p id="callback-copy">Please wait while we finish your session and hand access back to the main site.</p>
+        <p id="callback-status" class="status">Exchanging your secure sign-in code.</p>
+        <a id="callback-link" class="link" href="/" hidden>Return to [NEW_SITE_NAME]</a>
+    </main>
+
+    <script src="/config/site-config.js" defer></script>
+    <script src="/auth/auth.js" defer></script>
+    <script defer>
+        document.addEventListener("DOMContentLoaded", async () => {
+            const title = document.getElementById("callback-title");
+            const copy = document.getElementById("callback-copy");
+            const status = document.getElementById("callback-status");
+            const link = document.getElementById("callback-link");
+            const auth = window.PrivateGalleryAuth;
+            const config = window.__PRIVATE_GALLERY_CONFIG__ || {};
+            const popupType = `${config.projectSlug || "private-gallery"}:auth:popupResult`;
+
+            if (!auth) {
+              status.textContent = "The sign-in helper could not load.";
+              status.classList.add("error");
+              link.hidden = false;
+              return;
+            }
+
+            try {
+                const result = await auth.handleCallback();
+                if (window.opener && !window.opener.closed) {
+                    status.textContent = "Secure sign-in finished. Closing this window now.";
+                    window.opener.postMessage({
+                        type: popupType,
+                        session: result.session,
+                        remember: result.remember,
+                        returnTo: result.returnTo
+                    }, window.location.origin);
+                    window.setTimeout(() => {
+                        window.close();
+                    }, 250);
+                    return;
+                }
+
+                status.textContent = "Secure sign-in finished. Redirecting you back now.";
+                const destination = auth.getGalleryDestination(result.session);
+                window.setTimeout(() => {
+                    window.location.replace(destination);
+                }, 450);
+            } catch (error) {
+                console.error(error);
+
+                if (window.opener && !window.opener.closed) {
+                    window.opener.postMessage({
+                        type: popupType,
+                        error: error.message || "Something went wrong while completing sign-in."
+                    }, window.location.origin);
+                    window.setTimeout(() => {
+                        window.close();
+                    }, 250);
+                    return;
+                }
+
+                title.textContent = "We could not finish sign-in";
+                copy.textContent = "The secure sign-in flow returned an error. You can head back and try again.";
+                status.textContent = error.message || "Something went wrong while completing sign-in.";
+                status.classList.add("error");
+                link.hidden = false;
+            }
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,43 @@
+site_name             = "[NEW_SITE_NAME]"
+project_slug          = "[NEW_PROJECT_SLUG]"
+environment           = "prod"
+aws_region            = "[AWS_REGION]"
+website_base_url      = "[https://YOURDOMAIN.com]"
+local_callback_url    = "[http://localhost:8000/auth/callback.html]"
+cognito_domain_prefix = "[UNIQUE_COGNITO_PREFIX]"
+
+auth_callback_urls = [
+  "[https://YOURDOMAIN.com]/auth/callback.html",
+  "[http://localhost:8000/auth/callback.html]"
+]
+
+auth_logout_urls = [
+  "[https://YOURDOMAIN.com]/",
+  "http://localhost:8000/"
+]
+
+archive_transition_days   = 7
+gallery_month_prefix      = "[months or another folder]"
+gallery_test_prefix       = "[test or another folder]"
+enable_test_user_routing  = false
+
+# First apply with a placeholder, then replace it with the real CloudFront domain output and apply again.
+gallery_public_base_url = "https://replace-after-first-apply.cloudfront.net"
+gallery_cache_version   = "v1"
+gallery_signed_url_ttl_seconds = 31536000
+
+gallery_api_allowed_origins = [
+  "[https://YOURDOMAIN.com]",
+  "http://localhost:8000"
+]
+
+cognito_login_captcha_rate_limit            = 10
+cognito_login_captcha_evaluation_window_sec = 60
+cognito_login_captcha_immunity_time_sec     = 900
+cognito_login_timeout_rate_limit            = 25
+cognito_login_timeout_evaluation_window_sec = 300
+price_class                                 = "PriceClass_100"
+
+tags = {
+  Owner = "your-name"
+}

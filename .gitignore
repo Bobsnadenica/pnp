@@ -1,0 +1,23 @@
+.DS_Store
+
+# Terraform working data
+.terraform/
+.terraform.lock.hcl
+*.tfstate
+*.tfstate.*
+crash.log
+override.tf
+override.tf.json
+*_override.tf
+*_override.tf.json
+
+# Terraform inputs and plans
+terraform.tfvars
+*.tfvars
+*.tfvars.json
+*.tfplan
+plan.out
+
+# Local environment files
+.env
+.env.*
