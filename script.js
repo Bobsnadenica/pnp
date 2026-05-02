@@ -170,18 +170,20 @@ document.addEventListener("DOMContentLoaded", async () => {
       <button class="public-viewer-close" type="button" aria-label="Close viewer" data-viewer-close>&times;</button>
       <button class="public-viewer-nav public-viewer-nav-prev" type="button" aria-label="Previous item" data-viewer-nav="-1">&#10094;</button>
       <button class="public-viewer-nav public-viewer-nav-next" type="button" aria-label="Next item" data-viewer-nav="1">&#10095;</button>
-      <div class="public-viewer-stage" id="public-viewer-stage">
-        <div class="public-viewer-media">
-          <img id="public-viewer-image" alt="" hidden>
-          <video id="public-viewer-video" playsinline controls preload="metadata" hidden></video>
+      <div class="public-viewer-shell">
+        <div class="public-viewer-stage" id="public-viewer-stage">
+          <div class="public-viewer-media">
+            <img id="public-viewer-image" alt="" hidden>
+            <video id="public-viewer-video" playsinline controls preload="metadata" hidden></video>
+          </div>
         </div>
-      </div>
-      <div class="public-viewer-meta">
-        <div>
-          <p id="public-viewer-title" class="public-viewer-title"></p>
-          <p id="public-viewer-key" class="public-viewer-key"></p>
+        <div class="public-viewer-meta">
+          <div>
+            <p id="public-viewer-title" class="public-viewer-title"></p>
+            <p id="public-viewer-key" class="public-viewer-key"></p>
+          </div>
+          <a id="public-viewer-link" class="ghost-button public-viewer-link" target="_blank" rel="noopener noreferrer">Open original</a>
         </div>
-        <a id="public-viewer-link" class="ghost-button public-viewer-link" target="_blank" rel="noopener noreferrer">Open original</a>
       </div>
     `;
 

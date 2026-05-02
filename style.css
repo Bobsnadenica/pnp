@@ -195,6 +195,9 @@ a {
     position: fixed;
     inset: 0;
     z-index: 700;
+    display: grid;
+    place-items: center;
+    padding: 1.25rem;
 }
 
 .public-viewer-backdrop {
@@ -204,45 +207,39 @@ a {
     backdrop-filter: blur(24px) saturate(1.08);
 }
 
-.public-viewer-stage {
-    position: absolute;
-    inset: 0;
-    --viewer-backdrop-image: none;
+.public-viewer-shell {
+    position: relative;
+    z-index: 2;
+    width: min(92vw, 1200px);
+    max-height: min(88vh, 980px);
+    display: grid;
+    gap: 0.85rem;
 }
 
-.public-viewer-stage::before {
-    content: "";
-    position: absolute;
-    inset: -8%;
-    background-image: var(--viewer-backdrop-image);
-    background-position: center;
-    background-size: cover;
-    filter: blur(42px) saturate(1.08);
-    opacity: 0.38;
-    transform: scale(1.08);
+.public-viewer-stage {
+    position: relative;
+    min-height: 0;
 }
 
 .public-viewer-media {
     position: relative;
-    z-index: 1;
     width: 100%;
-    height: 100%;
+    max-height: min(78vh, 860px);
     display: grid;
     place-items: center;
-    padding:
-        max(1rem, env(safe-area-inset-top, 0px))
-        max(1rem, env(safe-area-inset-right, 0px))
-        calc(max(6rem, env(safe-area-inset-bottom, 0px) + 4.8rem))
-        max(1rem, env(safe-area-inset-left, 0px));
 }
 
 .public-viewer-media img,
 .public-viewer-media video {
     display: block;
-    width: 100%;
-    height: 100%;
+    max-width: 100%;
+    max-height: min(78vh, 860px);
+    width: auto;
+    height: auto;
     object-fit: contain;
     background: transparent;
+    border-radius: 0;
+    box-shadow: 0 36px 80px -36px rgba(0, 0, 0, 0.45);
 }
 
 .public-viewer-close,
@@ -289,21 +286,12 @@ a {
 }
 
 .public-viewer-meta {
-    position: absolute;
-    left: 0;
-    right: 0;
-    bottom: 0;
     z-index: 2;
     display: flex;
     justify-content: space-between;
     align-items: end;
     gap: 1rem;
-    padding:
-        1.1rem
-        max(1.2rem, env(safe-area-inset-right, 0px))
-        calc(1.2rem + env(safe-area-inset-bottom, 0px))
-        max(1.2rem, env(safe-area-inset-left, 0px));
-    background: linear-gradient(180deg, rgba(9, 10, 12, 0) 0%, rgba(9, 10, 12, 0.7) 100%);
+    padding: 0 0.2rem;
 }
 
 .public-viewer-title,
@@ -469,6 +457,10 @@ a {
     .public-viewer-meta {
         flex-direction: column;
         align-items: stretch;
+    }
+
+    .public-viewer-shell {
+        width: min(94vw, 1200px);
     }
 }
 
