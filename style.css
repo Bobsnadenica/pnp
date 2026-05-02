@@ -828,10 +828,16 @@ body[data-gallery-theme="night"] .public-carousel-slide {
         width: min(100%, calc(100% - 1rem));
     }
 
-    .site-header,
+    .site-header {
+        align-items: flex-start;
+        gap: 0.8rem;
+    }
+
     .site-actions {
-        flex-direction: column;
-        align-items: stretch;
+        width: 100%;
+        flex-wrap: wrap;
+        justify-content: flex-start;
+        gap: 0.55rem;
     }
 
     .public-gallery-grid {
@@ -866,6 +872,13 @@ body[data-gallery-theme="night"] .public-carousel-slide {
         text-align: center;
     }
 
+    .site-actions .ghost-button,
+    .site-actions .primary-button,
+    .site-actions .secondary-button {
+        width: auto;
+        flex: 0 0 auto;
+    }
+
     .public-card,
     .public-card-square,
     .public-card-tall,
@@ -877,18 +890,21 @@ body[data-gallery-theme="night"] .public-carousel-slide {
         border-radius: 0;
         margin-bottom: 0;
         margin-top: 0;
-        --card-min-height: min(80svh, 48rem);
+        --card-min-height: 0;
     }
 
     .public-media {
-        min-height: var(--card-min-height);
+        min-height: 0;
+        display: block;
     }
 
     .public-media img,
     .public-media video {
+        display: block;
         width: 100%;
-        max-height: min(80svh, 48rem);
-        background: rgba(255, 255, 255, 0.92);
+        height: auto;
+        max-height: none;
+        background: transparent;
     }
 
     .public-trigger:hover .public-media img,
@@ -928,18 +944,19 @@ body[data-gallery-theme="night"] .public-carousel-slide {
     .public-card-wide,
     .public-card-landscape,
     .public-card-cinema {
-        --card-min-height: min(82svh, 52rem);
+        --card-min-height: 0;
     }
 
     .public-media {
-        min-height: var(--card-min-height);
+        min-height: 0;
         max-height: none;
     }
 
     .public-media img,
     .public-media video {
         width: 100%;
-        max-height: min(82svh, 52rem);
+        height: auto;
+        max-height: none;
     }
 
     .contact-panel,
