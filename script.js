@@ -178,7 +178,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     viewer.hidden = true;
     viewer.setAttribute("role", "dialog");
     viewer.setAttribute("aria-modal", "true");
-    viewer.setAttribute("aria-labelledby", "public-viewer-title");
+    viewer.setAttribute("aria-label", "Gallery viewer");
     viewer.innerHTML = `
       <div class="public-viewer-backdrop" data-viewer-close></div>
       <button class="public-viewer-close" type="button" aria-label="Close viewer" data-viewer-close>&times;</button>
@@ -190,13 +190,6 @@ document.addEventListener("DOMContentLoaded", async () => {
             <img id="public-viewer-image" alt="" hidden>
             <video id="public-viewer-video" playsinline controls preload="metadata" hidden></video>
           </div>
-        </div>
-        <div class="public-viewer-meta">
-          <div>
-            <p id="public-viewer-title" class="public-viewer-title"></p>
-            <p id="public-viewer-key" class="public-viewer-key"></p>
-          </div>
-          <a id="public-viewer-link" class="ghost-button public-viewer-link" target="_blank" rel="noopener noreferrer">Open original</a>
         </div>
       </div>
     `;
@@ -242,16 +235,17 @@ document.addEventListener("DOMContentLoaded", async () => {
     container.dataset.viewerEnabled = "true";
 
     const viewer = ensureViewer();
+    const viewerShell = viewer.querySelector(".public-viewer-shell");
     const viewerStage = viewer.querySelector("#public-viewer-stage");
     const viewerImage = viewer.querySelector("#public-viewer-image");
     const viewerVideo = viewer.querySelector("#public-viewer-video");
-    const viewerTitle = viewer.querySelector("#public-viewer-title");
-    const viewerKey = viewer.querySelector("#public-viewer-key");
-    const viewerLink = viewer.querySelector("#public-viewer-link");
     const viewerPrev = viewer.querySelector(".public-viewer-nav-prev");
     const viewerNext = viewer.querySelector(".public-viewer-nav-next");
     let currentIndex = -1;
     let lastTrigger = null;
+    let touchStartX = 0;
+    let touchStartY = 0;
+    let lastWheelAt = 0;
 
     function getTriggers() {
       return [...container.querySelectorAll("[data-public-trigger]")];
@@ -290,22 +284,8 @@ document.addEventListener("DOMContentLoaded", async () => {
       const kind = trigger.dataset.photoKind || "picture";
       const src = trigger.dataset.photoSrc || trigger.href;
       const label = trigger.dataset.photoLabel || "Gallery item";
-      const key = trigger.dataset.photoKey || "";
       const backdrop = trigger.dataset.photoBackdrop || src;
       lastTrigger = trigger;
-
-      if (viewerTitle) {
-        viewerTitle.textContent = label;
-      }
-
-      if (viewerKey) {
-        viewerKey.textContent = key;
-      }
-
-      if (viewerLink) {
-        viewerLink.href = src;
-        viewerLink.textContent = kind === "movie" ? "Open movie" : "Open original";
-      }
 
       if (kind === "movie") {
         if (viewerImage) {
@@ -391,6 +371,57 @@ document.addEventListener("DOMContentLoaded", async () => {
         moveViewer(Number.parseInt(navButton.dataset.viewerNav || "0", 10));
       }
     });
+
+    viewerShell?.addEventListener("touchstart", (event) => {
+      const touch = event.changedTouches?.[0];
+      if (!touch) {
+        return;
+      }
+
+      touchStartX = touch.clientX;
+      touchStartY = touch.clientY;
+    }, { passive: true });
+
+    viewerShell?.addEventListener("touchend", (event) => {
+      const touch = event.changedTouches?.[0];
+      if (!touch) {
+        return;
+      }
+
+      const deltaX = touch.clientX - touchStartX;
+      const deltaY = touch.clientY - touchStartY;
+
+      if (Math.max(Math.abs(deltaX), Math.abs(deltaY)) < 42) {
+        return;
+      }
+
+      if (Math.abs(deltaY) > Math.abs(deltaX)) {
+        moveViewer(deltaY < 0 ? 1 : -1);
+        return;
+      }
+
+      moveViewer(deltaX < 0 ? 1 : -1);
+    }, { passive: true });
+
+    viewerShell?.addEventListener("wheel", (event) => {
+      if (viewer.hidden) {
+        return;
+      }
+
+      if (Math.abs(event.deltaY) < 30) {
+        return;
+      }
+
+      const now = Date.now();
+      if (now - lastWheelAt < 260) {
+        event.preventDefault();
+        return;
+      }
+
+      lastWheelAt = now;
+      event.preventDefault();
+      moveViewer(event.deltaY > 0 ? 1 : -1);
+    }, { passive: false });
 
     document.addEventListener("keydown", (event) => {
       if (viewer.hidden) {

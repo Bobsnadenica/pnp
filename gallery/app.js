@@ -133,7 +133,7 @@
     viewer.hidden = true;
     viewer.setAttribute("role", "dialog");
     viewer.setAttribute("aria-modal", "true");
-    viewer.setAttribute("aria-labelledby", "viewer-title");
+    viewer.setAttribute("aria-label", "Gallery viewer");
     viewer.innerHTML = `
       <div class="viewer-backdrop" data-viewer-close></div>
       <div class="viewer-card">
@@ -145,16 +145,6 @@
             <div class="viewer-media">
               <img id="viewer-image" alt="" hidden>
               <video id="viewer-video" playsinline controls preload="metadata" hidden></video>
-            </div>
-          </div>
-          <div class="viewer-meta">
-            <div>
-              <p id="viewer-title" class="viewer-title"></p>
-              <p id="viewer-key" class="viewer-key"></p>
-            </div>
-            <div class="viewer-actions">
-              <a id="viewer-open-link" class="btn btn-secondary" target="_blank" rel="noopener noreferrer">Open original</a>
-              <button class="btn btn-primary" type="button" data-viewer-close>Back</button>
             </div>
           </div>
         </div>
@@ -205,9 +195,6 @@
     const viewerStage = viewer.querySelector("#viewer-stage");
     const viewerImage = viewer.querySelector("#viewer-image");
     const viewerVideo = viewer.querySelector("#viewer-video");
-    const viewerTitle = viewer.querySelector("#viewer-title");
-    const viewerKey = viewer.querySelector("#viewer-key");
-    const viewerOpenLink = viewer.querySelector("#viewer-open-link");
     const viewerFrame = viewer.querySelector(".viewer-frame");
     const viewerPrev = viewer.querySelector(".viewer-nav-prev");
     const viewerNext = viewer.querySelector(".viewer-nav-next");
@@ -215,6 +202,7 @@
     let currentIndex = -1;
     let touchStartX = 0;
     let touchStartY = 0;
+    let lastWheelAt = 0;
 
     function getTriggers() {
       return [...content.querySelectorAll("[data-photo-trigger]")];
@@ -253,22 +241,8 @@
       const kind = trigger.dataset.photoKind || "picture";
       const src = trigger.dataset.photoSrc || trigger.href;
       const label = trigger.dataset.photoLabel || "Gallery item";
-      const key = trigger.dataset.photoKey || "";
       const backdrop = trigger.dataset.photoBackdrop || src;
       lastTrigger = trigger;
-
-      if (viewerTitle) {
-        viewerTitle.textContent = label;
-      }
-
-      if (viewerKey) {
-        viewerKey.textContent = key;
-      }
-
-      if (viewerOpenLink) {
-        viewerOpenLink.href = src;
-        viewerOpenLink.textContent = kind === "movie" ? "Open movie" : "Open original";
-      }
 
       if (kind === "movie") {
         if (viewerImage) {
@@ -375,11 +349,36 @@
       const deltaY = touch.clientY - touchStartY;
 
       if (Math.abs(deltaX) < 40 || Math.abs(deltaX) <= Math.abs(deltaY) * 1.2) {
+        if (Math.abs(deltaY) < 40) {
+          return;
+        }
+
+        moveViewer(deltaY < 0 ? 1 : -1);
         return;
       }
 
       moveViewer(deltaX < 0 ? 1 : -1);
     }, { passive: true });
+
+    viewerFrame?.addEventListener("wheel", (event) => {
+      if (viewer.hidden) {
+        return;
+      }
+
+      if (Math.abs(event.deltaY) < 30) {
+        return;
+      }
+
+      const now = Date.now();
+      if (now - lastWheelAt < 260) {
+        event.preventDefault();
+        return;
+      }
+
+      lastWheelAt = now;
+      event.preventDefault();
+      moveViewer(event.deltaY > 0 ? 1 : -1);
+    }, { passive: false });
 
     document.addEventListener("keydown", (event) => {
       if (viewer.hidden) {
