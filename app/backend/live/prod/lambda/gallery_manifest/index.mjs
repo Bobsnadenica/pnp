@@ -7,6 +7,7 @@ const s3 = new S3Client({});
 const bucketName = process.env.GALLERY_BUCKET;
 const publicPrefix = normalizePrefix(process.env.GALLERY_PUBLIC_PREFIX || "public");
 const extraPrefix = normalizePrefix(process.env.GALLERY_EXTRA_PREFIX || "extra");
+const publicHeroPrefix = `${publicPrefix}/hero/`;
 const publicBaseUrl = (process.env.GALLERY_PUBLIC_BASE_URL || "").replace(/\/+$/, "");
 const signerKeyPairId = process.env.GALLERY_SIGNER_KEY_PAIR_ID || "";
 const signerKmsKeyId = process.env.GALLERY_SIGNER_KMS_KEY_ID || "";
@@ -17,6 +18,8 @@ const signedUrlTtlSeconds = Number.isFinite(configuredSignedUrlTtlSeconds)
   ? Math.max(configuredSignedUrlTtlSeconds, minimumSignedUrlTtlSeconds)
   : minimumSignedUrlTtlSeconds;
 const mediaExtensionPattern = /\.(avif|gif|jpe?g|m4v|mov|mp4|png|webm|webp)$/i;
+const defaultManifestLimit = 72;
+const maximumManifestLimit = 100;
 
 function normalizePrefix(prefix) {
   return String(prefix || "")
@@ -40,6 +43,26 @@ function sanitizeOptionalCacheVersion(value) {
     .slice(0, 64);
 
   return normalized || "";
+}
+
+function parseManifestLimit(value) {
+  const parsed = Number.parseInt(String(value || ""), 10);
+
+  if (!Number.isFinite(parsed)) {
+    return defaultManifestLimit;
+  }
+
+  return Math.min(Math.max(parsed, 1), maximumManifestLimit);
+}
+
+function parseCursorOffset(value) {
+  const parsed = Number.parseInt(String(value || ""), 10);
+
+  if (!Number.isFinite(parsed) || parsed < 0) {
+    return 0;
+  }
+
+  return parsed;
 }
 
 function json(statusCode, body) {
@@ -157,6 +180,10 @@ function buildLabel(key) {
   return filename.replace(/\.[^.]+$/, "");
 }
 
+function isHeroKey(key) {
+  return key.startsWith(publicHeroPrefix);
+}
+
 async function buildSignedMedia(key, expiresAtEpochSeconds, cacheVersion) {
   const signedUrl = new URL(`${publicBaseUrl}/${encodePathSegments(key)}`);
 
@@ -196,6 +223,8 @@ export const handler = async (event) => {
     const path = event?.requestContext?.http?.path || event?.rawPath || "";
     const isPublicManifest = path.endsWith("/public-manifest");
     const claims = event?.requestContext?.authorizer?.jwt?.claims || {};
+    const requestedLimit = parseManifestLimit(event?.queryStringParameters?.limit);
+    const cursorOffset = parseCursorOffset(event?.queryStringParameters?.cursor);
     const refreshToken = sanitizeOptionalCacheVersion(event?.queryStringParameters?.refresh || "");
     const cacheVersion = refreshToken
       ? `${defaultCacheVersion}.${refreshToken}`
@@ -209,16 +238,33 @@ export const handler = async (event) => {
 
     const prefix = isPublicManifest ? publicPrefix : extraPrefix;
     const keys = await listGalleryKeys(prefix);
+    const regularKeys = isPublicManifest ? keys.filter((key) => !isHeroKey(key)) : keys;
+    const heroKeys = isPublicManifest ? keys.filter((key) => isHeroKey(key)) : [];
+    const pageKeys = regularKeys.slice(cursorOffset, cursorOffset + requestedLimit);
+    const nextCursor = cursorOffset + pageKeys.length < regularKeys.length
+      ? String(cursorOffset + pageKeys.length)
+      : null;
     const expiresAtEpochSeconds = getStableExpiryEpochSeconds();
     const photos = [];
+    const heroPhotos = [];
 
-    for (const key of keys) {
+    for (const key of pageKeys) {
       photos.push(await buildSignedMedia(key, expiresAtEpochSeconds, cacheVersion));
+    }
+
+    for (const key of heroKeys) {
+      heroPhotos.push(await buildSignedMedia(key, expiresAtEpochSeconds, cacheVersion));
     }
 
     return json(200, {
       collection: isPublicManifest ? "public" : "extra",
       prefix,
+      total: regularKeys.length,
+      count: photos.length,
+      limit: requestedLimit,
+      cursor: cursorOffset ? String(cursorOffset) : null,
+      nextCursor,
+      heroCount: heroPhotos.length,
       expiresAt: expiresAtEpochSeconds,
       cacheTtlSeconds: signedUrlTtlSeconds,
       cacheVersion,
@@ -226,6 +272,7 @@ export const handler = async (event) => {
         email: isPublicManifest ? null : claims.email || null,
       },
       photos,
+      heroPhotos,
     });
   } catch (error) {
     console.error("Unable to build gallery manifest.", error);

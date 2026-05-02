@@ -200,6 +200,12 @@ a {
     font-size: 0.9rem;
 }
 
+.public-gallery-actions {
+    display: flex;
+    justify-content: center;
+    padding: 1rem 0 1.4rem;
+}
+
 .public-gallery-grid {
     column-count: 4;
     column-gap: 0;

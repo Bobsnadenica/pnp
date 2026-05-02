@@ -6,7 +6,11 @@
   const popupPendingKey = `${siteLabel}:auth:pendingPopup`;
   const popupMessageType = `${siteLabel}:auth:popupResult`;
   const popupName = `${siteLabel}:authPopup`;
+  const loginAttemptKey = `${siteLabel}:auth:lastLoginStart`;
   const expirySkewMs = 60 * 1000;
+  const popupTimeoutMs = 2 * 60 * 1000;
+  const loginCooldownMs = 15 * 1000;
+  const pendingStateMaxAgeMs = 10 * 60 * 1000;
   const pkceCharset = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789-._~";
 
   function getBodyConfig() {
@@ -59,6 +63,33 @@
 
   function setStoragePayload(storage, key, value) {
     storage.setItem(key, JSON.stringify(value));
+  }
+
+  function readLastLoginAttemptAt() {
+    try {
+      return Number.parseInt(localStorage.getItem(loginAttemptKey) || "0", 10) || 0;
+    } catch (error) {
+      console.warn("Unable to read login attempt state.", error);
+      return 0;
+    }
+  }
+
+  function writeLastLoginAttemptAt(value) {
+    try {
+      localStorage.setItem(loginAttemptKey, String(value));
+    } catch (error) {
+      console.warn("Unable to persist login attempt state.", error);
+    }
+  }
+
+  function enforceLoginCooldown() {
+    const lastAttemptAt = readLastLoginAttemptAt();
+    const remainingMs = loginCooldownMs - (Date.now() - lastAttemptAt);
+
+    if (remainingMs > 0) {
+      const remainingSeconds = Math.max(1, Math.ceil(remainingMs / 1000));
+      throw new Error(`Please wait ${remainingSeconds} seconds before trying to sign in again.`);
+    }
   }
 
   function clearPendingState() {
@@ -289,6 +320,8 @@
   }
 
   async function startLogin(options = {}) {
+    enforceLoginCooldown();
+
     const config = getConfig(options);
     const usePopup = Boolean(options.popup);
     const popupWindow = usePopup ? openAuthPopup() : null;
@@ -337,16 +370,22 @@
       url.searchParams.set("login_hint", options.loginHint);
     }
 
+    writeLastLoginAttemptAt(Date.now());
+
     if (usePopup) {
       return await new Promise((resolve, reject) => {
         let finished = false;
         let closePoll = null;
+        let timeoutId = null;
 
         function cleanup() {
           finished = true;
           window.removeEventListener("message", onMessage);
           if (closePoll) {
             window.clearInterval(closePoll);
+          }
+          if (timeoutId) {
+            window.clearTimeout(timeoutId);
           }
         }
 
@@ -381,6 +420,19 @@
             reject(new Error("Secure sign-in was closed before it finished."));
           }
         }, 350);
+
+        timeoutId = window.setTimeout(() => {
+          if (finished) {
+            return;
+          }
+
+          cleanup();
+          localStorage.removeItem(popupPendingKey);
+          if (popupWindow && !popupWindow.closed) {
+            popupWindow.close();
+          }
+          reject(new Error("Secure sign-in timed out. Please try again."));
+        }, popupTimeoutMs);
 
         popupWindow.location.assign(url.toString());
       });
@@ -435,6 +487,11 @@
     if (pending.state !== state) {
       clearStoredPending(kind);
       throw new Error("State mismatch during secure sign-in.");
+    }
+
+    if ((pending.createdAt || 0) + pendingStateMaxAgeMs < Date.now()) {
+      clearStoredPending(kind);
+      throw new Error("Secure sign-in expired before it finished. Please try again.");
     }
 
     const tokenResponse = await requestTokens({

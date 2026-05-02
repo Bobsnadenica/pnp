@@ -13,11 +13,27 @@ document.addEventListener("DOMContentLoaded", async () => {
   const modalCloseTriggers = [...document.querySelectorAll("[data-modal-close]")];
   const status = document.getElementById("public-gallery-status");
   const grid = document.getElementById("public-gallery-grid");
+  const publicGalleryActions = document.getElementById("public-gallery-actions");
+  const publicGalleryLoadMore = document.getElementById("public-gallery-load-more");
   const loginSubmitIdleLabel = loginSubmit?.dataset.idleText || loginSubmit?.textContent?.trim() || "Continue";
   const loginSubmitLoadingLabel = loginSubmit?.dataset.loadingText || "Redirecting...";
+  const loadMoreIdleLabel = publicGalleryLoadMore?.dataset.idleText || publicGalleryLoadMore?.textContent?.trim() || "Load more";
+  const loadMoreLoadingLabel = publicGalleryLoadMore?.dataset.loadingText || "Loading...";
+  const publicGalleryPageSize = 72;
+  const publicGalleryCacheKey = `${config.projectSlug || "malkokote-gallery"}:public-gallery-cache`;
 
   let currentSession = null;
   let lastFocus = null;
+  let publicGalleryLoading = false;
+  const publicGalleryState = {
+    photos: [],
+    heroPhotos: [],
+    nextCursor: null,
+    expiresAt: 0,
+    selectedHeroKey: null,
+    selectedHeroIndex: -1,
+  };
+  const publicAspectRatioCache = new Map();
 
   const DRIFT_CLASSES = [
     "drift-none",
@@ -129,9 +145,17 @@ document.addEventListener("DOMContentLoaded", async () => {
   }
 
   function measureImageAspectRatio(url) {
+    if (publicAspectRatioCache.has(url)) {
+      return Promise.resolve(publicAspectRatioCache.get(url));
+    }
+
     return new Promise((resolve) => {
       const image = new Image();
-      const finish = (ratio) => resolve(Number.isFinite(ratio) && ratio > 0 ? ratio : 1);
+      const finish = (ratio) => {
+        const normalized = Number.isFinite(ratio) && ratio > 0 ? ratio : 1;
+        publicAspectRatioCache.set(url, normalized);
+        resolve(normalized);
+      };
 
       image.decoding = "async";
       image.onload = () => finish(image.naturalWidth / image.naturalHeight);
@@ -141,6 +165,10 @@ document.addEventListener("DOMContentLoaded", async () => {
   }
 
   function measureVideoAspectRatio(url) {
+    if (publicAspectRatioCache.has(url)) {
+      return Promise.resolve(publicAspectRatioCache.get(url));
+    }
+
     return new Promise((resolve) => {
       const video = document.createElement("video");
       let settled = false;
@@ -153,7 +181,9 @@ document.addEventListener("DOMContentLoaded", async () => {
         settled = true;
         video.removeAttribute("src");
         video.load();
-        resolve(Number.isFinite(ratio) && ratio > 0 ? ratio : 1.65);
+        const normalized = Number.isFinite(ratio) && ratio > 0 ? ratio : 1.65;
+        publicAspectRatioCache.set(url, normalized);
+        resolve(normalized);
       };
 
       const timer = window.setTimeout(() => finish(1.65), 2600);
@@ -175,6 +205,13 @@ document.addEventListener("DOMContentLoaded", async () => {
 
   async function enrichPhoto(photo) {
     const kind = getMediaKind(photo);
+    if (Number.isFinite(photo?.aspectRatio) && photo?.wallClass) {
+      return {
+        ...photo,
+        kind,
+      };
+    }
+
     const aspectRatio = kind === "movie"
       ? await measureVideoAspectRatio(photo.url)
       : await measureImageAspectRatio(photo.url);
@@ -255,6 +292,164 @@ document.addEventListener("DOMContentLoaded", async () => {
     const randomized = shufflePhotos(photos);
     const enriched = await Promise.all(randomized.map((photo) => enrichPhoto(photo)));
     return weaveWallPhotos(enriched);
+  }
+
+  function getPublicGalleryCache() {
+    try {
+      const raw = localStorage.getItem(publicGalleryCacheKey);
+      const parsed = raw ? JSON.parse(raw) : null;
+
+      if (!parsed || !Array.isArray(parsed.photos)) {
+        return null;
+      }
+
+      if ((parsed.expiresAt || 0) * 1000 <= Date.now()) {
+        localStorage.removeItem(publicGalleryCacheKey);
+        return null;
+      }
+
+      return parsed;
+    } catch (error) {
+      console.warn("Unable to read public gallery cache.", error);
+      return null;
+    }
+  }
+
+  function savePublicGalleryCache() {
+    try {
+      localStorage.setItem(publicGalleryCacheKey, JSON.stringify({
+        photos: publicGalleryState.photos,
+        heroPhotos: publicGalleryState.heroPhotos,
+        nextCursor: publicGalleryState.nextCursor,
+        expiresAt: publicGalleryState.expiresAt,
+        selectedHeroKey: publicGalleryState.selectedHeroKey,
+        selectedHeroIndex: publicGalleryState.selectedHeroIndex,
+      }));
+    } catch (error) {
+      console.warn("Unable to persist public gallery cache.", error);
+    }
+  }
+
+  function chooseHeroSlot(length) {
+    if (length <= 1) {
+      return 0;
+    }
+
+    if (length <= 4) {
+      return Math.floor(Math.random() * length);
+    }
+
+    const min = 1;
+    const max = length - 2;
+    return min + Math.floor(Math.random() * (max - min + 1));
+  }
+
+  function buildDisplayPhotos() {
+    const basePhotos = [...publicGalleryState.photos];
+
+    if (!basePhotos.length || !publicGalleryState.heroPhotos.length) {
+      return basePhotos;
+    }
+
+    const selectedHero = publicGalleryState.heroPhotos.find((photo) => photo.key === publicGalleryState.selectedHeroKey)
+      || publicGalleryState.heroPhotos[Math.floor(Math.random() * publicGalleryState.heroPhotos.length)];
+
+    if (!selectedHero) {
+      return basePhotos;
+    }
+
+    if (!publicGalleryState.selectedHeroKey || !publicGalleryState.heroPhotos.some((photo) => photo.key === publicGalleryState.selectedHeroKey)) {
+      publicGalleryState.selectedHeroKey = selectedHero.key;
+    }
+
+    if (publicGalleryState.selectedHeroIndex < 0 || publicGalleryState.selectedHeroIndex >= basePhotos.length) {
+      publicGalleryState.selectedHeroIndex = chooseHeroSlot(basePhotos.length);
+    }
+
+    const targetIndex = Math.max(0, Math.min(publicGalleryState.selectedHeroIndex, basePhotos.length - 1));
+    const replacedPhoto = basePhotos[targetIndex];
+
+    basePhotos[targetIndex] = {
+      ...selectedHero,
+      wallClass: replacedPhoto?.wallClass || selectedHero.wallClass,
+      driftClass: replacedPhoto?.driftClass || selectedHero.driftClass,
+      isHeroAd: true,
+    };
+
+    return basePhotos;
+  }
+
+  function updateLoadMoreButton() {
+    if (!publicGalleryActions || !publicGalleryLoadMore) {
+      return;
+    }
+
+    const hasMore = Boolean(publicGalleryState.nextCursor);
+    publicGalleryActions.hidden = !hasMore;
+    publicGalleryLoadMore.disabled = publicGalleryLoading;
+    publicGalleryLoadMore.textContent = publicGalleryLoading ? loadMoreLoadingLabel : loadMoreIdleLabel;
+  }
+
+  async function renderPublicGallery() {
+    if (!grid) {
+      return;
+    }
+
+    const displayPhotos = buildDisplayPhotos();
+    grid.innerHTML = displayPhotos.map((photo, index) => buildCard(photo, index)).join("");
+    enableViewer(grid);
+
+    if (status) {
+      status.hidden = true;
+      status.textContent = "";
+    }
+
+    updateLoadMoreButton();
+  }
+
+  async function fetchPublicManifestPage(cursor = null) {
+    const manifestUrl = new URL(`${String(config.galleryBaseUrl || "").replace(/\/+$/, "")}/api/gallery/public-manifest`);
+    manifestUrl.searchParams.set("limit", String(publicGalleryPageSize));
+
+    if (cursor) {
+      manifestUrl.searchParams.set("cursor", String(cursor));
+    }
+
+    const response = await fetch(manifestUrl.toString(), { cache: "no-store" });
+    const manifest = await response.json().catch(() => null);
+
+    if (!response.ok) {
+      throw new Error(manifest?.error || "Unable to load gallery.");
+    }
+
+    return manifest;
+  }
+
+  async function loadPublicManifestPage(cursor = null) {
+    publicGalleryLoading = true;
+    updateLoadMoreButton();
+
+    try {
+      const manifest = await fetchPublicManifestPage(cursor);
+      const mergedPhotos = cursor
+        ? [...publicGalleryState.photos, ...(manifest.photos || [])]
+        : [...(manifest.photos || [])];
+      publicGalleryState.photos = await prepareWallPhotos(mergedPhotos);
+      publicGalleryState.heroPhotos = await Promise.all((manifest.heroPhotos || []).map((photo) => enrichPhoto(photo)));
+      publicGalleryState.nextCursor = manifest.nextCursor || null;
+      publicGalleryState.expiresAt = manifest.expiresAt || 0;
+
+      if (!publicGalleryState.heroPhotos.some((photo) => photo.key === publicGalleryState.selectedHeroKey)) {
+        publicGalleryState.selectedHeroKey = null;
+        publicGalleryState.selectedHeroIndex = -1;
+      }
+
+      savePublicGalleryCache();
+      await renderPublicGallery();
+    } finally {
+      publicGalleryLoading = false;
+      updateLoadMoreButton();
+    }
   }
 
   function buildCard(photo, index) {
@@ -596,20 +791,20 @@ document.addEventListener("DOMContentLoaded", async () => {
     }
 
     try {
-      const manifestUrl = `${String(config.galleryBaseUrl || "").replace(/\/+$/, "")}/api/gallery/public-manifest`;
-      const response = await fetch(manifestUrl, { cache: "no-store" });
-      const manifest = await response.json().catch(() => null);
+      const cachedManifest = getPublicGalleryCache();
 
-      if (!response.ok) {
-        throw new Error(manifest?.error || "Unable to load gallery.");
+      if (cachedManifest) {
+        publicGalleryState.photos = cachedManifest.photos;
+        publicGalleryState.heroPhotos = Array.isArray(cachedManifest.heroPhotos) ? cachedManifest.heroPhotos : [];
+        publicGalleryState.nextCursor = cachedManifest.nextCursor || null;
+        publicGalleryState.expiresAt = cachedManifest.expiresAt || 0;
+        publicGalleryState.selectedHeroKey = cachedManifest.selectedHeroKey || null;
+        publicGalleryState.selectedHeroIndex = Number.isInteger(cachedManifest.selectedHeroIndex) ? cachedManifest.selectedHeroIndex : -1;
+        await renderPublicGallery();
+        return;
       }
 
-      const photos = await prepareWallPhotos(manifest.photos || []);
-      grid.innerHTML = photos.map((photo, index) => buildCard(photo, index)).join("");
-      enableViewer(grid);
-      if (status) {
-        status.hidden = true;
-      }
+      await loadPublicManifestPage();
     } catch (error) {
       console.error(error);
       if (status) {
@@ -703,6 +898,22 @@ document.addEventListener("DOMContentLoaded", async () => {
 
   modalCloseTriggers.forEach((trigger) => {
     trigger.addEventListener("click", closeModal);
+  });
+
+  publicGalleryLoadMore?.addEventListener("click", async () => {
+    if (!publicGalleryState.nextCursor || publicGalleryLoading) {
+      return;
+    }
+
+    try {
+      await loadPublicManifestPage(publicGalleryState.nextCursor);
+    } catch (error) {
+      console.error(error);
+      if (status) {
+        status.hidden = false;
+        status.textContent = error.message || "Unable to load more.";
+      }
+    }
   });
 
   document.addEventListener("keydown", (event) => {
