@@ -20,14 +20,27 @@ document.addEventListener("DOMContentLoaded", async () => {
   let lastFocus = null;
 
   const LAYOUTS = [
-    "tall",
-    "wide",
+    "hero-portrait",
     "square",
-    "portrait",
-    "wide",
-    "square",
-    "tall",
     "landscape",
+    "tall",
+    "wide",
+    "portrait",
+    "square",
+    "cinema",
+    "tall",
+    "wide",
+    "square",
+    "landscape",
+  ];
+
+  const DRIFT_CLASSES = [
+    "drift-none",
+    "drift-up",
+    "drift-down",
+    "drift-none",
+    "drift-down",
+    "drift-up",
   ];
 
   function escapeHtml(value) {
@@ -103,10 +116,11 @@ document.addEventListener("DOMContentLoaded", async () => {
     const kind = getMediaKind(photo);
     const label = photo.label || photo.key || "Gallery item";
     const layoutClass = getLayoutClass(index);
+    const driftClass = DRIFT_CLASSES[index % DRIFT_CLASSES.length];
 
     if (kind === "movie") {
       return `
-        <article class="public-card public-card-${escapeHtml(layoutClass)}">
+        <article class="public-card public-card-${escapeHtml(layoutClass)} ${escapeHtml(driftClass)}">
           <a
             class="public-trigger"
             href="${escapeHtml(photo.url)}"
@@ -130,7 +144,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     const badge = kind === "gif" ? '<span class="media-badge" aria-hidden="true">GIF</span>' : "";
 
     return `
-      <article class="public-card public-card-${escapeHtml(layoutClass)}">
+      <article class="public-card public-card-${escapeHtml(layoutClass)} ${escapeHtml(driftClass)}">
         <a
           class="public-trigger"
           href="${escapeHtml(photo.url)}"

@@ -192,17 +192,18 @@ a {
     display: grid;
     grid-template-columns: repeat(12, minmax(0, 1fr));
     grid-auto-flow: dense;
-    grid-auto-rows: 4vw;
-    gap: 0.8rem;
+    grid-auto-rows: minmax(1.6rem, 4vw);
+    gap: 0.95rem;
+    padding-bottom: 1.5rem;
 }
 
 .public-card {
     position: relative;
     margin: 0;
-    border-radius: 1.6rem;
+    border-radius: 0;
     overflow: hidden;
     background: transparent;
-    box-shadow: 0 24px 42px -28px rgba(17, 24, 39, 0.24);
+    box-shadow: 0 28px 56px -34px rgba(17, 24, 39, 0.2);
     grid-column: span 3;
     grid-row: span 18;
 }
@@ -222,6 +223,11 @@ a {
     grid-row: span 22;
 }
 
+.public-card-hero-portrait {
+    grid-column: span 4;
+    grid-row: span 24;
+}
+
 .public-card-wide {
     grid-column: span 6;
     grid-row: span 16;
@@ -230,6 +236,19 @@ a {
 .public-card-landscape {
     grid-column: span 6;
     grid-row: span 18;
+}
+
+.public-card-cinema {
+    grid-column: span 5;
+    grid-row: span 15;
+}
+
+.public-card.drift-up {
+    transform: translateY(-1.15rem);
+}
+
+.public-card.drift-down {
+    transform: translateY(1.15rem);
 }
 
 .public-trigger {
@@ -245,7 +264,19 @@ a {
     height: 100%;
     position: relative;
     overflow: hidden;
-    background: #efede8;
+    background:
+        radial-gradient(circle at top, rgba(255, 255, 255, 0.5), transparent 48%),
+        linear-gradient(180deg, #f3efe9 0%, #ebe5dc 100%);
+}
+
+.public-media::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(180deg, rgba(255, 255, 255, 0.02) 0%, rgba(17, 24, 39, 0.08) 100%);
+    opacity: 0;
+    transition: opacity 0.35s ease;
+    pointer-events: none;
 }
 
 .public-media img,
@@ -262,6 +293,10 @@ a {
 .public-trigger:hover .public-media video {
     transform: scale(1.03);
     filter: saturate(1.03);
+}
+
+.public-trigger:hover .public-media::after {
+    opacity: 1;
 }
 
 .media-badge {
@@ -518,13 +553,20 @@ a {
     .public-card,
     .public-card-square,
     .public-card-tall,
-    .public-card-portrait {
+    .public-card-portrait,
+    .public-card-hero-portrait {
         grid-column: span 2;
     }
 
     .public-card-wide,
-    .public-card-landscape {
+    .public-card-landscape,
+    .public-card-cinema {
         grid-column: span 4;
+    }
+
+    .public-card.drift-up,
+    .public-card.drift-down {
+        transform: none;
     }
 }
 
@@ -561,15 +603,18 @@ a {
     .public-card-square,
     .public-card-tall,
     .public-card-portrait,
+    .public-card-hero-portrait,
     .public-card-wide,
-    .public-card-landscape {
+    .public-card-landscape,
+    .public-card-cinema {
         grid-column: span 1;
         grid-row: auto;
-        border-radius: 1.15rem;
+        border-radius: 0;
     }
 
     .public-card-wide,
-    .public-card-landscape {
+    .public-card-landscape,
+    .public-card-cinema {
         grid-column: span 2;
     }
 
@@ -631,14 +676,17 @@ a {
     .public-card-square,
     .public-card-tall,
     .public-card-portrait,
+    .public-card-hero-portrait,
     .public-card-wide,
-    .public-card-landscape {
+    .public-card-landscape,
+    .public-card-cinema {
         grid-column: span 1;
         grid-row: auto;
     }
 
     .public-card-wide,
-    .public-card-landscape {
+    .public-card-landscape,
+    .public-card-cinema {
         grid-column: span 1;
     }
 
