@@ -403,6 +403,80 @@ body[data-gallery-theme="night"] .buy-copy {
     min-height: calc(100vh - 4rem);
 }
 
+.public-carousel[hidden] {
+    display: none;
+}
+
+.public-carousel {
+    padding: 0.1rem 0 1rem;
+}
+
+.public-carousel-viewport {
+    position: relative;
+    overflow: hidden;
+    -webkit-mask-image: linear-gradient(90deg, transparent 0%, black 6%, black 94%, transparent 100%);
+    mask-image: linear-gradient(90deg, transparent 0%, black 6%, black 94%, transparent 100%);
+}
+
+.public-carousel-track {
+    display: flex;
+    width: max-content;
+    animation: public-carousel-scroll 40s linear infinite;
+    will-change: transform;
+}
+
+.public-carousel:hover .public-carousel-track {
+    animation-play-state: paused;
+}
+
+.public-carousel-group {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding-right: 0.5rem;
+    flex: 0 0 auto;
+}
+
+.public-carousel-slide {
+    position: relative;
+    flex: 0 0 auto;
+    width: clamp(4.8rem, calc(var(--slide-ratio, 1.2) * 5.1rem), 11rem);
+    height: 5.2rem;
+    overflow: hidden;
+    border-radius: 1rem;
+    background: rgba(255, 255, 255, 0.22);
+}
+
+body[data-gallery-theme="night"] .public-carousel-slide {
+    background: rgba(255, 255, 255, 0.08);
+}
+
+.public-carousel-slide::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(180deg, rgba(255, 255, 255, 0.02) 0%, rgba(17, 24, 39, 0.14) 100%);
+    pointer-events: none;
+}
+
+.public-carousel-slide img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+}
+
+@keyframes public-carousel-scroll {
+    from {
+        transform: translate3d(0, 0, 0);
+    }
+
+    to {
+        transform: translate3d(-50%, 0, 0);
+    }
+}
+
 .gallery-status {
     margin: 0;
     padding: 0.35rem 0 0.85rem;
@@ -763,6 +837,21 @@ body[data-gallery-theme="night"] .buy-copy {
     .public-gallery-grid {
         column-count: 1;
         column-gap: 0;
+    }
+
+    .public-carousel {
+        padding-bottom: 0.85rem;
+    }
+
+    .public-carousel-group {
+        gap: 0.4rem;
+        padding-right: 0.4rem;
+    }
+
+    .public-carousel-slide {
+        width: clamp(4.1rem, calc(var(--slide-ratio, 1.15) * 4.45rem), 8.4rem);
+        height: 4.55rem;
+        border-radius: 0.85rem;
     }
 
     .modal-actions {

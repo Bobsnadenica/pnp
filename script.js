@@ -11,6 +11,8 @@ document.addEventListener("DOMContentLoaded", async () => {
   const modalCloseTriggers = [...document.querySelectorAll("[data-modal-close]")];
   const status = document.getElementById("public-gallery-status");
   const grid = document.getElementById("public-gallery-grid");
+  const publicCarousel = document.getElementById("public-carousel");
+  const publicCarouselTrack = document.getElementById("public-carousel-track");
   const publicGallerySentinel = document.getElementById("public-gallery-sentinel");
   const publicGalleryActions = document.getElementById("public-gallery-actions");
   const publicGalleryLoadMore = document.getElementById("public-gallery-load-more");
@@ -19,6 +21,7 @@ document.addEventListener("DOMContentLoaded", async () => {
   const loadMoreIdleLabel = publicGalleryLoadMore?.dataset.idleText || publicGalleryLoadMore?.textContent?.trim() || "Load more";
   const loadMoreLoadingLabel = publicGalleryLoadMore?.dataset.loadingText || "Loading...";
   const publicGalleryPageSize = 72;
+  const publicCarouselPhotoCount = 14;
   const siteLabel = config.projectSlug || "malkokote-gallery";
   const publicGalleryThemeStorageKey = `${siteLabel}:gallery-theme`;
   const publicGalleryManifestCacheTtlMs = 5 * 60 * 1000;
@@ -469,6 +472,14 @@ document.addEventListener("DOMContentLoaded", async () => {
     publicGalleryState.renderedCount = 0;
     publicGalleryState.fetchedAt = 0;
     publicGalleryState.nextCursor = null;
+
+    if (publicCarousel) {
+      publicCarousel.hidden = true;
+    }
+
+    if (publicCarouselTrack) {
+      publicCarouselTrack.innerHTML = "";
+    }
   }
 
   function setPublicGalleryManifest(manifest, fetchedAt = Date.now()) {
@@ -501,6 +512,56 @@ document.addEventListener("DOMContentLoaded", async () => {
     };
 
     return basePhotos;
+  }
+
+  function buildCarouselPhotos() {
+    return shufflePhotos(
+      uniquePhotosByKey([...publicGalleryState.heroPhotos, ...publicGalleryState.allPhotos])
+        .filter((photo) => getMediaKind(photo) !== "movie")
+    ).slice(0, publicCarouselPhotoCount);
+  }
+
+  function buildCarouselGroupMarkup(photos, duplicate = false) {
+    const slides = photos.map((photo, index) => {
+      const ratio = Number.isFinite(photo.aspectRatio) && photo.aspectRatio > 0
+        ? Math.min(Math.max(photo.aspectRatio, 0.62), 2.3)
+        : 1.18;
+      const loading = duplicate ? "lazy" : index < 6 ? "eager" : "lazy";
+      const fetchPriority = duplicate ? "low" : index < 4 ? "high" : "low";
+
+      return `
+        <div class="public-carousel-slide" style="--slide-ratio:${ratio.toFixed(3)}">
+          <img src="${escapeHtml(photo.url)}" alt="" loading="${loading}" fetchpriority="${escapeHtml(fetchPriority)}" decoding="async">
+        </div>
+      `;
+    }).join("");
+
+    return `<div class="public-carousel-group"${duplicate ? ' aria-hidden="true"' : ""}>${slides}</div>`;
+  }
+
+  async function renderPublicCarousel() {
+    if (!publicCarousel || !publicCarouselTrack) {
+      return;
+    }
+
+    const selectedPhotos = buildCarouselPhotos();
+
+    if (selectedPhotos.length < 5) {
+      publicCarousel.hidden = true;
+      publicCarouselTrack.innerHTML = "";
+      return;
+    }
+
+    const enrichedPhotos = await Promise.all(selectedPhotos.map(async (photo) => ({
+      ...photo,
+      aspectRatio: await measureImageAspectRatio(photo.url),
+    })));
+
+    publicCarouselTrack.innerHTML = [
+      buildCarouselGroupMarkup(enrichedPhotos, false),
+      buildCarouselGroupMarkup(enrichedPhotos, true),
+    ].join("");
+    publicCarousel.hidden = false;
   }
 
   function updateLoadMoreButton() {
@@ -963,6 +1024,7 @@ document.addEventListener("DOMContentLoaded", async () => {
           return;
         }
         setPublicGalleryManifest(cachedManifest, Number(cachedManifest.fetchedAt) || Date.now());
+        await renderPublicCarousel();
         await loadNextPublicGalleryPage();
         maybeAutoloadPublicGallery();
         return;
@@ -976,6 +1038,7 @@ document.addEventListener("DOMContentLoaded", async () => {
 
       setPublicGalleryManifest(manifest, Date.now());
       savePublicGalleryCache();
+      await renderPublicCarousel();
       await loadNextPublicGalleryPage();
     } catch (error) {
       console.error(error);
