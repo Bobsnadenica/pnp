@@ -1,6 +1,7 @@
 (function () {
-  const STORAGE_KEY = "malkokote.age-gate.accepted";
+  const STORAGE_KEY = "malkokote.age-gate.acceptedAt";
   const LEAVE_URL = "https://www.google.com";
+  const ACCEPTANCE_TTL_MS = 12 * 60 * 60 * 1000;
 
   let resolver = null;
   let accessPromise = null;
@@ -28,7 +29,7 @@
 
   function markAccepted() {
     try {
-      localStorage.setItem(STORAGE_KEY, "yes");
+      localStorage.setItem(STORAGE_KEY, String(Date.now()));
     } catch (error) {
       console.warn("Unable to persist age gate preference.", error);
     }
@@ -36,7 +37,20 @@
 
   function hasAccepted() {
     try {
-      return localStorage.getItem(STORAGE_KEY) === "yes";
+      const rawValue = localStorage.getItem(STORAGE_KEY);
+      const acceptedAt = Number.parseInt(rawValue || "", 10);
+
+      if (!Number.isFinite(acceptedAt)) {
+        localStorage.removeItem(STORAGE_KEY);
+        return false;
+      }
+
+      if (acceptedAt + ACCEPTANCE_TTL_MS <= Date.now()) {
+        localStorage.removeItem(STORAGE_KEY);
+        return false;
+      }
+
+      return true;
     } catch (error) {
       console.warn("Unable to read age gate preference.", error);
       return false;
@@ -61,6 +75,59 @@
     window.location.replace(LEAVE_URL);
   }
 
+  function createChallenge() {
+    const left = Math.floor(Math.random() * 7) + 2;
+    const right = Math.floor(Math.random() * 7) + 2;
+
+    return {
+      prompt: `${left} + ${right}`,
+      answer: String(left + right),
+    };
+  }
+
+  function setupHumanCheck(gate, enterButton) {
+    const card = gate.querySelector(".age-gate-card");
+    const actions = gate.querySelector(".age-gate-actions");
+
+    if (!card || !actions || !enterButton) {
+      return;
+    }
+
+    gate.querySelector("[data-age-human-check]")?.remove();
+
+    const challenge = createChallenge();
+    const challengeBlock = document.createElement("div");
+    challengeBlock.className = "age-gate-human-check";
+    challengeBlock.dataset.ageHumanCheck = "true";
+    challengeBlock.innerHTML = `
+      <label class="age-gate-human-check-label" for="age-gate-human-answer">Human check: ${challenge.prompt} = ?</label>
+      <input id="age-gate-human-answer" class="age-gate-human-check-input" type="text" inputmode="numeric" autocomplete="off" aria-describedby="age-gate-human-feedback">
+      <p id="age-gate-human-feedback" class="age-gate-human-check-feedback" aria-live="polite">Solve the check to continue.</p>
+    `;
+
+    card.insertBefore(challengeBlock, actions);
+
+    const input = challengeBlock.querySelector(".age-gate-human-check-input");
+    const feedback = challengeBlock.querySelector(".age-gate-human-check-feedback");
+    enterButton.disabled = true;
+
+    function updateState() {
+      const solved = input?.value?.trim() === challenge.answer;
+
+      enterButton.disabled = !solved;
+
+      if (!feedback) {
+        return;
+      }
+
+      feedback.textContent = solved ? "Human check complete." : "Solve the check to continue.";
+      feedback.classList.toggle("is-valid", solved);
+    }
+
+    input?.addEventListener("input", updateState);
+    updateState();
+  }
+
   function bindGate() {
     const gate = getGate();
 
@@ -79,6 +146,7 @@
 
     gate.hidden = false;
     gate.removeAttribute("aria-hidden");
+    setupHumanCheck(gate, enterButton);
 
     enterButton?.addEventListener("click", () => {
       markAccepted();

@@ -1,11 +1,11 @@
 document.addEventListener("DOMContentLoaded", () => {
-  const root = document.querySelector("[data-contact-language-root]");
+  const root = document.querySelector("[data-language-root]");
 
   if (!root) {
     return;
   }
 
-  const storageKey = "malkokote:contact-language";
+  const storageKey = root.dataset.languageStorageKey || "malkokote:language";
   const buttons = [...root.querySelectorAll("[data-language-option]")];
   const panels = [...root.querySelectorAll("[data-language-panel]")];
 
