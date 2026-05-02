@@ -30,8 +30,6 @@ document.addEventListener("DOMContentLoaded", async () => {
     heroPhotos: [],
     nextCursor: null,
     expiresAt: 0,
-    selectedHeroKey: null,
-    selectedHeroIndex: -1,
   };
   const publicAspectRatioCache = new Map();
 
@@ -113,6 +111,24 @@ document.addEventListener("DOMContentLoaded", async () => {
     for (let index = next.length - 1; index > 0; index -= 1) {
       const swapIndex = Math.floor(Math.random() * (index + 1));
       [next[index], next[swapIndex]] = [next[swapIndex], next[index]];
+    }
+
+    return next;
+  }
+
+  function uniquePhotosByKey(photos) {
+    const seen = new Set();
+    const next = [];
+
+    for (const photo of photos || []) {
+      const key = String(photo?.key || "").trim();
+
+      if (!key || seen.has(key)) {
+        continue;
+      }
+
+      seen.add(key);
+      next.push(photo);
     }
 
     return next;
@@ -289,7 +305,7 @@ document.addEventListener("DOMContentLoaded", async () => {
   }
 
   async function prepareWallPhotos(photos) {
-    const randomized = shufflePhotos(photos);
+    const randomized = shufflePhotos(uniquePhotosByKey(photos));
     const enriched = await Promise.all(randomized.map((photo) => enrichPhoto(photo)));
     return weaveWallPhotos(enriched);
   }
@@ -322,57 +338,29 @@ document.addEventListener("DOMContentLoaded", async () => {
         heroPhotos: publicGalleryState.heroPhotos,
         nextCursor: publicGalleryState.nextCursor,
         expiresAt: publicGalleryState.expiresAt,
-        selectedHeroKey: publicGalleryState.selectedHeroKey,
-        selectedHeroIndex: publicGalleryState.selectedHeroIndex,
       }));
     } catch (error) {
       console.warn("Unable to persist public gallery cache.", error);
     }
   }
 
-  function chooseHeroSlot(length) {
-    if (length <= 1) {
-      return 0;
-    }
-
-    if (length <= 4) {
-      return Math.floor(Math.random() * length);
-    }
-
-    const min = 1;
-    const max = length - 2;
-    return min + Math.floor(Math.random() * (max - min + 1));
-  }
-
   function buildDisplayPhotos() {
-    const basePhotos = [...publicGalleryState.photos];
+    const basePhotos = uniquePhotosByKey(publicGalleryState.photos);
+    const heroPhotos = shufflePhotos(uniquePhotosByKey(publicGalleryState.heroPhotos));
 
-    if (!basePhotos.length || !publicGalleryState.heroPhotos.length) {
+    if (!heroPhotos.length) {
       return basePhotos;
     }
 
-    const selectedHero = publicGalleryState.heroPhotos.find((photo) => photo.key === publicGalleryState.selectedHeroKey)
-      || publicGalleryState.heroPhotos[Math.floor(Math.random() * publicGalleryState.heroPhotos.length)];
-
-    if (!selectedHero) {
-      return basePhotos;
+    if (!basePhotos.length) {
+      return [heroPhotos[0]];
     }
 
-    if (!publicGalleryState.selectedHeroKey || !publicGalleryState.heroPhotos.some((photo) => photo.key === publicGalleryState.selectedHeroKey)) {
-      publicGalleryState.selectedHeroKey = selectedHero.key;
-    }
-
-    if (publicGalleryState.selectedHeroIndex < 0 || publicGalleryState.selectedHeroIndex >= basePhotos.length) {
-      publicGalleryState.selectedHeroIndex = chooseHeroSlot(basePhotos.length);
-    }
-
-    const targetIndex = Math.max(0, Math.min(publicGalleryState.selectedHeroIndex, basePhotos.length - 1));
-    const replacedPhoto = basePhotos[targetIndex];
-
-    basePhotos[targetIndex] = {
-      ...selectedHero,
-      wallClass: replacedPhoto?.wallClass || selectedHero.wallClass,
-      driftClass: replacedPhoto?.driftClass || selectedHero.driftClass,
+    const replacedPhoto = basePhotos[0];
+    basePhotos[0] = {
+      ...heroPhotos[0],
+      wallClass: replacedPhoto?.wallClass || heroPhotos[0].wallClass,
+      driftClass: replacedPhoto?.driftClass || heroPhotos[0].driftClass,
       isHeroAd: true,
     };
 
@@ -431,18 +419,13 @@ document.addEventListener("DOMContentLoaded", async () => {
 
     try {
       const manifest = await fetchPublicManifestPage(cursor);
-      const mergedPhotos = cursor
+      const mergedPhotos = uniquePhotosByKey(cursor
         ? [...publicGalleryState.photos, ...(manifest.photos || [])]
-        : [...(manifest.photos || [])];
+        : [...(manifest.photos || [])]);
       publicGalleryState.photos = await prepareWallPhotos(mergedPhotos);
-      publicGalleryState.heroPhotos = await Promise.all((manifest.heroPhotos || []).map((photo) => enrichPhoto(photo)));
+      publicGalleryState.heroPhotos = await Promise.all(uniquePhotosByKey(manifest.heroPhotos || []).map((photo) => enrichPhoto(photo)));
       publicGalleryState.nextCursor = manifest.nextCursor || null;
       publicGalleryState.expiresAt = manifest.expiresAt || 0;
-
-      if (!publicGalleryState.heroPhotos.some((photo) => photo.key === publicGalleryState.selectedHeroKey)) {
-        publicGalleryState.selectedHeroKey = null;
-        publicGalleryState.selectedHeroIndex = -1;
-      }
 
       savePublicGalleryCache();
       await renderPublicGallery();
@@ -794,12 +777,10 @@ document.addEventListener("DOMContentLoaded", async () => {
       const cachedManifest = getPublicGalleryCache();
 
       if (cachedManifest) {
-        publicGalleryState.photos = cachedManifest.photos;
-        publicGalleryState.heroPhotos = Array.isArray(cachedManifest.heroPhotos) ? cachedManifest.heroPhotos : [];
+        publicGalleryState.photos = await prepareWallPhotos(cachedManifest.photos);
+        publicGalleryState.heroPhotos = await Promise.all(uniquePhotosByKey(Array.isArray(cachedManifest.heroPhotos) ? cachedManifest.heroPhotos : []).map((photo) => enrichPhoto(photo)));
         publicGalleryState.nextCursor = cachedManifest.nextCursor || null;
         publicGalleryState.expiresAt = cachedManifest.expiresAt || 0;
-        publicGalleryState.selectedHeroKey = cachedManifest.selectedHeroKey || null;
-        publicGalleryState.selectedHeroIndex = Number.isInteger(cachedManifest.selectedHeroIndex) ? cachedManifest.selectedHeroIndex : -1;
         await renderPublicGallery();
         return;
       }
