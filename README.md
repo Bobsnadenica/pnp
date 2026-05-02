@@ -31,7 +31,9 @@ Production gallery site for `www.malkokote.com` with:
 │           └── prod/
 │               ├── gallery_api.tf
 │               ├── lambda/
-│               │   └── gallery_manifest/
+│               │   ├── gallery_manifest/
+│               │   │   └── index.mjs
+│               │   └── gallery_manifest_builder/
 │               │       └── index.mjs
 │               ├── locals.tf
 │               ├── main.tf
@@ -53,9 +55,10 @@ Production gallery site for `www.malkokote.com` with:
 3. Cognito redirects to `/auth/callback.html`.
 4. The callback exchanges the code for tokens, posts the session back to the opener, and closes itself.
 5. The main site restores the session and routes the user to `/gallery/`.
-6. The homepage loads the public manifest from `/api/gallery/public-manifest`.
-7. The private gallery loads the extra manifest from `/api/gallery/extra-manifest` with the Cognito ID token.
-8. The backend lists objects under the correct prefix and returns signed CloudFront URLs.
+6. The homepage loads a static public manifest from `/_manifests/public/day.json` or `/_manifests/public/night.json`.
+7. S3 upload and delete events rebuild those public manifests automatically.
+8. The private gallery loads the extra manifest from `/api/gallery/extra-manifest` with the Cognito ID token.
+9. The backend reads the prebuilt extra manifest metadata and returns signed CloudFront URLs for the paid gallery.
 
 ## Configure The Site
 

@@ -14,8 +14,13 @@ output "gallery_manifest_url" {
 }
 
 output "gallery_public_manifest_url" {
-  description = "Public gallery manifest endpoint exposed through CloudFront."
-  value       = "${var.gallery_public_base_url}${local.gallery_public_manifest_path}"
+  description = "Default public day manifest JSON exposed directly through CloudFront."
+  value       = "${var.gallery_public_base_url}${local.gallery_public_day_manifest_path}"
+}
+
+output "gallery_public_night_manifest_url" {
+  description = "Public night manifest JSON exposed directly through CloudFront."
+  value       = "${var.gallery_public_base_url}${local.gallery_public_night_manifest_path}"
 }
 
 output "gallery_manifest_api_direct_url" {

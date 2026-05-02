@@ -100,6 +100,31 @@ resource "aws_cloudfront_cache_policy" "gallery_media" {
   }
 }
 
+resource "aws_cloudfront_cache_policy" "gallery_public_manifests" {
+  name        = "${local.prefix}-gallery-public-manifests"
+  comment     = "Short-lived cache for public gallery manifest JSON files."
+  default_ttl = var.gallery_public_manifest_cache_ttl_seconds
+  max_ttl     = var.gallery_public_manifest_cache_ttl_seconds
+  min_ttl     = 0
+
+  parameters_in_cache_key_and_forwarded_to_origin {
+    enable_accept_encoding_brotli = true
+    enable_accept_encoding_gzip   = true
+
+    cookies_config {
+      cookie_behavior = "none"
+    }
+
+    headers_config {
+      header_behavior = "none"
+    }
+
+    query_strings_config {
+      query_string_behavior = "none"
+    }
+  }
+}
+
 resource "aws_cloudfront_distribution" "gallery" {
   enabled             = true
   is_ipv6_enabled     = true
@@ -161,6 +186,27 @@ resource "aws_cloudfront_distribution" "gallery" {
     compress                 = true
     cache_policy_id          = data.aws_cloudfront_cache_policy.caching_disabled.id
     origin_request_policy_id = aws_cloudfront_origin_request_policy.gallery_api.id
+  }
+
+  ordered_cache_behavior {
+    path_pattern           = "/_manifests/public/*"
+    target_origin_id       = local.gallery_origin_id
+    viewer_protocol_policy = "redirect-to-https"
+    allowed_methods        = ["GET", "HEAD"]
+    cached_methods         = ["GET", "HEAD"]
+    compress               = true
+    cache_policy_id        = aws_cloudfront_cache_policy.gallery_public_manifests.id
+  }
+
+  ordered_cache_behavior {
+    path_pattern               = "/public/*"
+    target_origin_id           = local.gallery_origin_id
+    viewer_protocol_policy     = "redirect-to-https"
+    allowed_methods            = ["GET", "HEAD", "OPTIONS"]
+    cached_methods             = ["GET", "HEAD"]
+    compress                   = true
+    cache_policy_id            = aws_cloudfront_cache_policy.gallery_media.id
+    response_headers_policy_id = aws_cloudfront_response_headers_policy.gallery_images.id
   }
 
   restrictions {

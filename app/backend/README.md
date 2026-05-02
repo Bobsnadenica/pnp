@@ -7,19 +7,21 @@ Terraform for the Malkokote production gallery backend lives here.
 - private gallery S3 bucket
 - CloudFront distribution in front of the gallery bucket
 - Cognito user pool, app client, and Hosted UI domain
-- JWT-protected gallery manifest API through API Gateway
-- Lambda that lists allowed objects and mints signed CloudFront URLs
+- public static manifest JSON files rebuilt on S3 upload and delete
+- JWT-protected gallery manifest API through API Gateway for the extra gallery
+- Lambda that reads prebuilt manifest metadata and mints signed CloudFront URLs
 - WAF rules attached to Cognito for burst protection and hidden CAPTCHA
 
 ## Access Model
 
 1. The browser signs in with Cognito Hosted UI in a popup.
 2. The callback page exchanges the code for tokens and closes the popup.
-3. The homepage calls `GET /api/gallery/public-manifest` through CloudFront.
-4. The private gallery calls `GET /api/gallery/extra-manifest` through CloudFront with the Cognito ID token.
-5. API Gateway validates the JWT for the private route.
-6. Lambda lists media under the correct prefix and returns signed CloudFront URLs.
-7. CloudFront serves objects only when the signature is valid.
+3. The homepage downloads `/_manifests/public/day.json` or `/_manifests/public/night.json` through CloudFront.
+4. S3 upload and delete events rebuild the public and extra manifest files automatically.
+5. The private gallery calls `GET /api/gallery/extra-manifest` through CloudFront with the Cognito ID token.
+6. API Gateway validates the JWT for the private route.
+7. Lambda reads the prebuilt extra manifest metadata and returns signed CloudFront URLs.
+8. CloudFront serves `/public/*` without signing and `/extra/*` only when the signature is valid.
 
 ## Gallery Layout
 
@@ -59,6 +61,7 @@ gallery_api_allowed_origins = [
 ]
 
 gallery_cache_version                    = "v1"
+gallery_public_manifest_cache_ttl_seconds = 60
 gallery_signed_url_ttl_seconds           = 31536000
 cognito_login_captcha_rate_limit         = 10
 cognito_login_captcha_evaluation_window_sec = 60
@@ -109,6 +112,13 @@ public/
   11.jpg
   clip.mp4
   animation.gif
+  hero/
+    ad-1.mp4
+  day/
+    0.jpg
+    1.jpg
+    hero/
+      promo.jpg
 ```
 
 Paid gallery:
@@ -132,6 +142,13 @@ The Lambda automatically supports:
 - `.mov`
 - `.m4v`
 - `.webm`
+
+## Static Manifest Paths
+
+- `/_manifests/public/day.json`
+- `/_manifests/public/night.json`
+
+Those files are generated automatically by the S3-triggered manifest builder and are cached briefly at CloudFront. Public media under `/public/*` is served directly from CloudFront with long-lived immutable caching.
 
 ## Cleanup
 

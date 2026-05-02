@@ -71,6 +71,12 @@ variable "gallery_signed_url_ttl_seconds" {
   default     = 31536000
 }
 
+variable "gallery_public_manifest_cache_ttl_seconds" {
+  description = "CloudFront and browser cache lifetime in seconds for the public static manifest JSON files."
+  type        = number
+  default     = 60
+}
+
 variable "gallery_api_allowed_origins" {
   description = "Browser origins allowed to call the private gallery manifest API through CloudFront."
   type        = list(string)

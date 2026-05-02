@@ -21,6 +21,7 @@ document.addEventListener("DOMContentLoaded", async () => {
   const publicGalleryPageSize = 72;
   const siteLabel = config.projectSlug || "malkokote-gallery";
   const publicGalleryThemeStorageKey = `${siteLabel}:gallery-theme`;
+  const publicGalleryManifestCacheTtlMs = 5 * 60 * 1000;
   const publicGalleryAutoloadMarginPx = 1200;
 
   let currentSession = null;
@@ -29,10 +30,12 @@ document.addEventListener("DOMContentLoaded", async () => {
   let publicGalleryObserver = null;
   const publicGalleryState = {
     theme: "day",
+    allPhotos: [],
     photos: [],
     heroPhotos: [],
+    renderedCount: 0,
+    fetchedAt: 0,
     nextCursor: null,
-    expiresAt: 0,
   };
   const publicAspectRatioCache = new Map();
 
@@ -380,9 +383,12 @@ document.addEventListener("DOMContentLoaded", async () => {
     }));
   }
 
-  async function prepareWallPhotos(photos) {
-    const randomized = shufflePhotos(uniquePhotosByKey(photos));
-    const enriched = await Promise.all(randomized.map((photo) => enrichPhoto(photo)));
+  async function prepareWallPhotos(photos, options = {}) {
+    const uniquePhotos = uniquePhotosByKey(photos);
+    const orderedPhotos = options.shuffle === false
+      ? uniquePhotos
+      : shufflePhotos(uniquePhotos);
+    const enriched = await Promise.all(orderedPhotos.map((photo) => enrichPhoto(photo)));
     return weaveWallPhotos(enriched);
   }
 
@@ -395,7 +401,7 @@ document.addEventListener("DOMContentLoaded", async () => {
         return null;
       }
 
-      if ((parsed.expiresAt || 0) * 1000 <= Date.now()) {
+      if (!Number.isFinite(Number(parsed.fetchedAt)) || Number(parsed.fetchedAt) + publicGalleryManifestCacheTtlMs <= Date.now()) {
         localStorage.removeItem(getPublicGalleryCacheKey());
         return null;
       }
@@ -411,14 +417,67 @@ document.addEventListener("DOMContentLoaded", async () => {
     try {
       localStorage.setItem(getPublicGalleryCacheKey(), JSON.stringify({
         theme: publicGalleryState.theme,
-        photos: publicGalleryState.photos,
+        photos: publicGalleryState.allPhotos,
         heroPhotos: publicGalleryState.heroPhotos,
-        nextCursor: publicGalleryState.nextCursor,
-        expiresAt: publicGalleryState.expiresAt,
+        fetchedAt: publicGalleryState.fetchedAt,
       }));
     } catch (error) {
       console.warn("Unable to persist public gallery cache.", error);
     }
+  }
+
+  function buildPublicManifestStaticUrl(theme) {
+    const normalizedTheme = normalizePublicTheme(theme);
+    const baseUrl = String(config.galleryBaseUrl || "").replace(/\/+$/, "");
+    return `${baseUrl}/_manifests/public/${normalizedTheme}.json`;
+  }
+
+  function buildPublicManifestFallbackUrl(theme) {
+    const requestUrl = new URL(`${String(config.galleryBaseUrl || "").replace(/\/+$/, "")}/api/gallery/public-manifest`);
+    requestUrl.searchParams.set("theme", normalizePublicTheme(theme));
+    requestUrl.searchParams.set("full", "1");
+    return requestUrl.toString();
+  }
+
+  async function fetchPublicManifest(theme) {
+    const staticResponse = await fetch(buildPublicManifestStaticUrl(theme), { cache: "default" });
+
+    if (staticResponse.ok) {
+      const manifest = await staticResponse.json().catch(() => null);
+
+      if (!manifest) {
+        throw new Error("Unable to parse gallery manifest.");
+      }
+
+      return manifest;
+    }
+
+    const fallbackResponse = await fetch(buildPublicManifestFallbackUrl(theme), { cache: "no-store" });
+    const fallbackManifest = await fallbackResponse.json().catch(() => null);
+
+    if (!fallbackResponse.ok) {
+      throw new Error(fallbackManifest?.error || "Unable to load gallery.");
+    }
+
+    return fallbackManifest;
+  }
+
+  function resetPublicGalleryState() {
+    publicGalleryState.allPhotos = [];
+    publicGalleryState.photos = [];
+    publicGalleryState.heroPhotos = [];
+    publicGalleryState.renderedCount = 0;
+    publicGalleryState.fetchedAt = 0;
+    publicGalleryState.nextCursor = null;
+  }
+
+  function setPublicGalleryManifest(manifest, fetchedAt = Date.now()) {
+    publicGalleryState.allPhotos = shufflePhotos(uniquePhotosByKey(manifest?.photos || []));
+    publicGalleryState.photos = [];
+    publicGalleryState.heroPhotos = uniquePhotosByKey(manifest?.heroPhotos || []);
+    publicGalleryState.renderedCount = 0;
+    publicGalleryState.fetchedAt = fetchedAt;
+    publicGalleryState.nextCursor = publicGalleryState.allPhotos.length ? "0" : null;
   }
 
   function buildDisplayPhotos() {
@@ -471,66 +530,8 @@ document.addEventListener("DOMContentLoaded", async () => {
     updateLoadMoreButton();
   }
 
-  async function fetchPublicManifestPage(cursor = null) {
-    const manifestUrl = new URL(`${String(config.galleryBaseUrl || "").replace(/\/+$/, "")}/api/gallery/public-manifest`);
-    manifestUrl.searchParams.set("limit", String(publicGalleryPageSize));
-    manifestUrl.searchParams.set("theme", publicGalleryState.theme);
-
-    if (cursor) {
-      manifestUrl.searchParams.set("cursor", String(cursor));
-    }
-
-    const response = await fetch(manifestUrl.toString(), { cache: "no-store" });
-    const manifest = await response.json().catch(() => null);
-
-    if (!response.ok) {
-      throw new Error(manifest?.error || "Unable to load gallery.");
-    }
-
-    return manifest;
-  }
-
-  async function loadPublicManifestPage(cursor = null) {
-    const activeTheme = publicGalleryState.theme;
-    publicGalleryLoading = true;
-    updateLoadMoreButton();
-
-    try {
-      const manifest = await fetchPublicManifestPage(cursor);
-      if (publicGalleryState.theme !== activeTheme) {
-        return;
-      }
-
-      const nextPhotos = uniquePhotosByKey(manifest.photos || []);
-
-      if (cursor) {
-        const existingKeys = new Set(
-          publicGalleryState.photos
-            .map((photo) => String(photo?.key || "").trim())
-            .filter(Boolean)
-        );
-        const appendedPhotos = nextPhotos.filter((photo) => !existingKeys.has(String(photo?.key || "").trim()));
-        const preparedPhotos = await prepareWallPhotos(appendedPhotos);
-        publicGalleryState.photos = applyDriftClasses([...publicGalleryState.photos, ...preparedPhotos]);
-      } else {
-        publicGalleryState.photos = await prepareWallPhotos(nextPhotos);
-      }
-
-      publicGalleryState.heroPhotos = await Promise.all(uniquePhotosByKey(manifest.heroPhotos || []).map((photo) => enrichPhoto(photo)));
-      publicGalleryState.nextCursor = manifest.nextCursor || null;
-      publicGalleryState.expiresAt = manifest.expiresAt || 0;
-
-      savePublicGalleryCache();
-      await renderPublicGallery();
-    } finally {
-      publicGalleryLoading = false;
-      updateLoadMoreButton();
-      maybeAutoloadPublicGallery();
-    }
-  }
-
   function canAutoloadPublicGallery() {
-    return Boolean(publicGalleryState.nextCursor) && !publicGalleryLoading;
+    return publicGalleryState.renderedCount < publicGalleryState.allPhotos.length && !publicGalleryLoading;
   }
 
   async function loadNextPublicGalleryPage() {
@@ -538,14 +539,34 @@ document.addEventListener("DOMContentLoaded", async () => {
       return;
     }
 
+    publicGalleryLoading = true;
+    updateLoadMoreButton();
+
     try {
-      await loadPublicManifestPage(publicGalleryState.nextCursor);
+      const activeTheme = publicGalleryState.theme;
+      const start = publicGalleryState.renderedCount;
+      const end = Math.min(start + publicGalleryPageSize, publicGalleryState.allPhotos.length);
+      const slice = publicGalleryState.allPhotos.slice(start, end);
+      const preparedPhotos = await prepareWallPhotos(slice, { shuffle: false });
+
+      if (publicGalleryState.theme !== activeTheme) {
+        return;
+      }
+
+      publicGalleryState.photos = applyDriftClasses([...publicGalleryState.photos, ...preparedPhotos]);
+      publicGalleryState.renderedCount = end;
+      publicGalleryState.nextCursor = end < publicGalleryState.allPhotos.length ? String(end) : null;
+      await renderPublicGallery();
     } catch (error) {
       console.error(error);
       if (status) {
         status.hidden = false;
         status.textContent = error.message || "Unable to load more.";
       }
+    } finally {
+      publicGalleryLoading = false;
+      updateLoadMoreButton();
+      maybeAutoloadPublicGallery();
     }
   }
 
@@ -938,19 +959,24 @@ document.addEventListener("DOMContentLoaded", async () => {
       const cachedManifest = getPublicGalleryCache();
 
       if (cachedManifest) {
-        publicGalleryState.photos = await prepareWallPhotos(cachedManifest.photos);
-        publicGalleryState.heroPhotos = await Promise.all(uniquePhotosByKey(Array.isArray(cachedManifest.heroPhotos) ? cachedManifest.heroPhotos : []).map((photo) => enrichPhoto(photo)));
         if (publicGalleryState.theme !== activeTheme) {
           return;
         }
-        publicGalleryState.nextCursor = cachedManifest.nextCursor || null;
-        publicGalleryState.expiresAt = cachedManifest.expiresAt || 0;
-        await renderPublicGallery();
+        setPublicGalleryManifest(cachedManifest, Number(cachedManifest.fetchedAt) || Date.now());
+        await loadNextPublicGalleryPage();
         maybeAutoloadPublicGallery();
         return;
       }
 
-      await loadPublicManifestPage();
+      const manifest = await fetchPublicManifest(activeTheme);
+
+      if (publicGalleryState.theme !== activeTheme) {
+        return;
+      }
+
+      setPublicGalleryManifest(manifest, Date.now());
+      savePublicGalleryCache();
+      await loadNextPublicGalleryPage();
     } catch (error) {
       console.error(error);
       if (status) {
@@ -1057,10 +1083,7 @@ document.addEventListener("DOMContentLoaded", async () => {
       }
 
       dismissViewer();
-      publicGalleryState.photos = [];
-      publicGalleryState.heroPhotos = [];
-      publicGalleryState.nextCursor = null;
-      publicGalleryState.expiresAt = 0;
+      resetPublicGalleryState();
 
       if (status) {
         status.hidden = false;

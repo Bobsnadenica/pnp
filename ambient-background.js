@@ -4,6 +4,7 @@ document.addEventListener("DOMContentLoaded", async () => {
   const config = window.__PRIVATE_GALLERY_CONFIG__ || {};
   const siteLabel = config.projectSlug || "malkokote-gallery";
   const publicGalleryThemeStorageKey = `${siteLabel}:gallery-theme`;
+  const publicGalleryManifestCacheTtlMs = 5 * 60 * 1000;
 
   if (!shell || !target) {
     return;
@@ -71,38 +72,54 @@ document.addEventListener("DOMContentLoaded", async () => {
   }
 
   function isCacheFresh(cache) {
-    const expiresAt = Number.parseInt(String(cache?.expiresAt || "0"), 10);
-    return Array.isArray(cache?.photos) && expiresAt * 1000 > Date.now();
+    return Array.isArray(cache?.photos)
+      && Number.isFinite(Number(cache?.fetchedAt))
+      && Number(cache.fetchedAt) + publicGalleryManifestCacheTtlMs > Date.now();
   }
 
-  function saveCache(theme, manifest) {
+  function saveCache(theme, manifest, fetchedAt = Date.now()) {
     try {
       localStorage.setItem(getAmbientBackgroundCacheKey(theme), JSON.stringify({
         theme: normalizePublicTheme(theme),
         photos: manifest?.photos || [],
         heroPhotos: manifest?.heroPhotos || [],
-        expiresAt: manifest?.expiresAt || 0,
+        fetchedAt,
       }));
     } catch {}
   }
 
-  async function fetchManifestPage(limit, theme, cursor = null) {
+  function buildPublicManifestStaticUrl(theme) {
+    return `${galleryBaseUrl}/_manifests/public/${normalizePublicTheme(theme)}.json`;
+  }
+
+  function buildPublicManifestFallbackUrl(theme) {
     const requestUrl = new URL(`${galleryBaseUrl}/api/gallery/public-manifest`);
-    requestUrl.searchParams.set("limit", String(limit));
     requestUrl.searchParams.set("theme", normalizePublicTheme(theme));
+    requestUrl.searchParams.set("full", "1");
+    return requestUrl.toString();
+  }
 
-    if (cursor !== null) {
-      requestUrl.searchParams.set("cursor", String(cursor));
+  async function fetchManifest(theme) {
+    const staticResponse = await fetch(buildPublicManifestStaticUrl(theme), { cache: "default" });
+
+    if (staticResponse.ok) {
+      const manifest = await staticResponse.json().catch(() => null);
+
+      if (!manifest) {
+        throw new Error("Unable to parse background media.");
+      }
+
+      return manifest;
     }
 
-    const response = await fetch(requestUrl.toString(), { cache: "no-store" });
-    const manifest = await response.json().catch(() => null);
+    const fallbackResponse = await fetch(buildPublicManifestFallbackUrl(theme), { cache: "no-store" });
+    const fallbackManifest = await fallbackResponse.json().catch(() => null);
 
-    if (!response.ok) {
-      throw new Error(manifest?.error || "Unable to load background media.");
+    if (!fallbackResponse.ok) {
+      throw new Error(fallbackManifest?.error || "Unable to load background media.");
     }
 
-    return manifest;
+    return fallbackManifest;
   }
 
   function selectImageCandidate(manifest) {
@@ -140,8 +157,9 @@ document.addEventListener("DOMContentLoaded", async () => {
       return;
     }
 
-    const manifest = await fetchManifestPage(18, normalizedTheme);
-    saveCache(normalizedTheme, manifest);
+    const fetchedAt = Date.now();
+    const manifest = await fetchManifest(normalizedTheme);
+    saveCache(normalizedTheme, manifest, fetchedAt);
     applyBackground(selectImageCandidate(manifest));
   }
 
