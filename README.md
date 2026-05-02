@@ -72,7 +72,8 @@ The gallery supports:
 - filter chips by media type
 - a manual refresh button for cache busting
 - long-lived immutable caching otherwise
-- optional `test/` routing for test users
+- public showcase media from `public/`
+- paid member media from `extra/`
 
 ## Configure The Site
 
@@ -88,9 +89,8 @@ After `terraform apply`, update [config/site-config.js](/Users/privileged/Projec
 - `authBaseUrl`: Terraform output `cognito_hosted_ui_base_url`
 - `authClientId`: Terraform output `cognito_app_client_id`
 - `galleryBaseUrl`: `https://` + Terraform output `gallery_cloudfront_domain_name`
-- `testUserRoutingEnabled`: `true` if the input was `yes`, otherwise `false`
-- `galleryMonthPrefix`: `[months or another folder]`
-- `galleryTestPrefix`: `[test or another folder]`
+- `galleryPublicPrefix`: `public`
+- `galleryExtraPrefix`: `extra`
 
 If this repo will own the production domain, also update [CNAME](/Users/privileged/Projects/malkokote/pnp/CNAME) to match your real host.
 
@@ -105,9 +105,8 @@ Create [app/backend/live/prod/terraform.tfvars](/Users/privileged/Projects/malko
 - `website_base_url = "[https://YOURDOMAIN.com]"`
 - `local_callback_url = "[http://localhost:8000/auth/callback.html]"`
 - `cognito_domain_prefix = "[UNIQUE_COGNITO_PREFIX]"`
-- `gallery_month_prefix = "[months or another folder]"`
-- `gallery_test_prefix = "[test or another folder]"`
-- `enable_test_user_routing = true` when the input is `yes`, else `false`
+- `gallery_public_prefix = "public"`
+- `gallery_extra_prefix = "extra"`
 
 You will also set the callback and logout lists exactly as shown in the backend README.
 

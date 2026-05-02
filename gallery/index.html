@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>[NEW_SITE_NAME] Private Gallery</title>
+    <title>[NEW_SITE_NAME]</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Fraunces:wght@600;700&family=Inter:wght@400;500;600;700&display=swap">
@@ -13,49 +13,24 @@
     </noscript>
     <link rel="stylesheet" href="/gallery/styles.css">
 </head>
-<body data-gallery-mode="router">
-    <main class="router-card" aria-live="polite">
-        <div class="router-badge">✓</div>
-        <h1 class="router-title">Opening your gallery</h1>
-        <p class="router-copy">We are checking your secure session and sending you to the right private collection.</p>
-        <p id="router-status" class="router-status">Please wait while we route your signed-in account.</p>
-        <a id="router-link" class="router-link" href="/" hidden>Return to [NEW_SITE_NAME]</a>
-    </main>
+<body data-gallery-mode="extra">
+    <div class="shell">
+        <header class="topbar">
+            <a class="brand" href="/">[NEW_SITE_NAME]</a>
+            <div class="top-actions">
+                <button id="gallery-refresh" class="btn btn-secondary" type="button">Refresh</button>
+                <button id="gallery-signout" class="btn btn-primary" type="button">Sign Out</button>
+            </div>
+        </header>
+
+        <section class="gallery-card">
+            <p id="gallery-status" class="gallery-status">Loading.</p>
+            <div id="gallery-content" class="loading-state"></div>
+        </section>
+    </div>
 
     <script src="/config/site-config.js" defer></script>
     <script src="/auth/auth.js" defer></script>
-    <script defer>
-        document.addEventListener("DOMContentLoaded", async () => {
-            const status = document.getElementById("router-status");
-            const link = document.getElementById("router-link");
-            const auth = window.PrivateGalleryAuth;
-
-            if (!auth) {
-                status.textContent = "The secure sign-in helper could not load.";
-                status.classList.add("error");
-                link.hidden = false;
-                return;
-            }
-
-            try {
-                const session = await auth.getSession();
-
-                if (!session) {
-                    window.location.replace("/");
-                    return;
-                }
-
-                status.textContent = "Secure session found. Redirecting you now.";
-                window.setTimeout(() => {
-                    window.location.replace(auth.getGalleryDestination(session));
-                }, 320);
-            } catch (error) {
-                console.error(error);
-                status.textContent = error.message || "We could not route this gallery session.";
-                status.classList.add("error");
-                link.hidden = false;
-            }
-        });
-    </script>
+    <script src="/gallery/app.js" defer></script>
 </body>
 </html>

@@ -14,13 +14,18 @@ output "gallery_cloudfront_domain_name" {
 }
 
 output "gallery_manifest_url" {
-  description = "JWT-protected gallery manifest endpoint exposed through CloudFront."
-  value       = "${var.gallery_public_base_url}${local.gallery_manifest_path}"
+  description = "JWT-protected extra gallery manifest endpoint exposed through CloudFront."
+  value       = "${var.gallery_public_base_url}${local.gallery_extra_manifest_path}"
+}
+
+output "gallery_public_manifest_url" {
+  description = "Public gallery manifest endpoint exposed through CloudFront."
+  value       = "${var.gallery_public_base_url}${local.gallery_public_manifest_path}"
 }
 
 output "gallery_manifest_api_direct_url" {
-  description = "Direct API Gateway URL for the gallery manifest endpoint."
-  value       = "${aws_apigatewayv2_stage.gallery.invoke_url}${local.gallery_manifest_path}"
+  description = "Direct API Gateway URL prefix for the gallery manifest endpoints."
+  value       = aws_apigatewayv2_stage.gallery.invoke_url
 }
 
 output "gallery_cache_version" {
@@ -28,29 +33,24 @@ output "gallery_cache_version" {
   value       = var.gallery_cache_version
 }
 
-output "gallery_month_prefix" {
-  description = "Prefix used for the standard gallery collection."
-  value       = var.gallery_month_prefix
+output "gallery_public_prefix" {
+  description = "Prefix used for the public showcase collection."
+  value       = var.gallery_public_prefix
 }
 
-output "gallery_test_prefix" {
-  description = "Prefix used for the test gallery collection."
-  value       = var.gallery_test_prefix
+output "gallery_extra_prefix" {
+  description = "Prefix used for the paid member collection."
+  value       = var.gallery_extra_prefix
 }
 
-output "gallery_month_example_object_key" {
-  description = "Example gallery object key under the standard flat naming convention."
-  value       = "${var.gallery_month_prefix}/0.jpg"
+output "gallery_public_example_object_key" {
+  description = "Example public gallery object key."
+  value       = "${var.gallery_public_prefix}/cover.jpg"
 }
 
-output "gallery_month_extra_example_object_key" {
-  description = "Example extra gallery object key for the same custom month grouping."
-  value       = "${var.gallery_month_prefix}/11.jpg"
-}
-
-output "test_user_routing_enabled" {
-  description = "Whether test-user routing is enabled in the backend."
-  value       = var.enable_test_user_routing
+output "gallery_extra_example_object_key" {
+  description = "Example extra gallery object key."
+  value       = "${var.gallery_extra_prefix}/behind-the-scenes.mp4"
 }
 
 output "cognito_waf_web_acl_arn" {

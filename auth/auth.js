@@ -9,15 +9,6 @@
   const expirySkewMs = 60 * 1000;
   const pkceCharset = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789-._~";
 
-  function normalizeBoolean(value) {
-    if (typeof value === "boolean") {
-      return value;
-    }
-
-    const normalized = String(value || "").trim().toLowerCase();
-    return normalized === "true" || normalized === "yes" || normalized === "1" || normalized === "on";
-  }
-
   function getBodyConfig() {
     return document.body?.dataset ?? {};
   }
@@ -53,12 +44,6 @@
         bodyConfig.authScope ||
         globalConfig.authScope ||
         "openid email profile aws.cognito.signin.user.admin",
-      testUserRoutingEnabled:
-        normalizeBoolean(
-          overrides.testUserRoutingEnabled ??
-          bodyConfig.testUserRoutingEnabled ??
-          globalConfig.testUserRoutingEnabled
-        ),
     };
   }
 
@@ -254,19 +239,12 @@
     });
   }
 
-  function getGalleryCollection(input, options = {}) {
-    const config = getConfig(options);
-
-    if (!config.testUserRoutingEnabled) {
-      return "months";
-    }
-
-    return isTestAccount(input) ? "test" : "months";
+  function getGalleryCollection() {
+    return "extra";
   }
 
-  function getGalleryDestination(input, options = {}) {
-    const collection = getGalleryCollection(input, options);
-    return collection === "test" ? "/gallery/test/" : "/gallery/months/";
+  function getGalleryDestination() {
+    return "/gallery/";
   }
 
   function getPopupFeatures() {

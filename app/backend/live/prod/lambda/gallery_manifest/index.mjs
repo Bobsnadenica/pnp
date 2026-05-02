@@ -5,24 +5,18 @@ const kms = new KMSClient({});
 const s3 = new S3Client({});
 
 const bucketName = process.env.GALLERY_BUCKET;
-const defaultPrefix = normalizePrefix(process.env.GALLERY_DEFAULT_PREFIX || "months");
-const testPrefix = normalizePrefix(process.env.GALLERY_TEST_PREFIX || "test");
+const publicPrefix = normalizePrefix(process.env.GALLERY_PUBLIC_PREFIX || "public");
+const extraPrefix = normalizePrefix(process.env.GALLERY_EXTRA_PREFIX || "extra");
 const publicBaseUrl = (process.env.GALLERY_PUBLIC_BASE_URL || "").replace(/\/+$/, "");
 const signerKeyPairId = process.env.GALLERY_SIGNER_KEY_PAIR_ID || "";
 const signerKmsKeyId = process.env.GALLERY_SIGNER_KMS_KEY_ID || "";
 const defaultCacheVersion = normalizeCacheVersion(process.env.GALLERY_CACHE_VERSION || "v1");
-const enableTestUserRouting = normalizeBoolean(process.env.ENABLE_TEST_USER_ROUTING);
 const minimumSignedUrlTtlSeconds = 365 * 24 * 60 * 60;
 const configuredSignedUrlTtlSeconds = Number.parseInt(process.env.GALLERY_SIGNED_URL_TTL || "31536000", 10);
 const signedUrlTtlSeconds = Number.isFinite(configuredSignedUrlTtlSeconds)
   ? Math.max(configuredSignedUrlTtlSeconds, minimumSignedUrlTtlSeconds)
   : minimumSignedUrlTtlSeconds;
 const mediaExtensionPattern = /\.(avif|gif|jpe?g|m4v|mov|mp4|png|webm|webp)$/i;
-
-function normalizeBoolean(value) {
-  const normalized = String(value || "").trim().toLowerCase();
-  return normalized === "true" || normalized === "yes" || normalized === "1" || normalized === "on";
-}
 
 function normalizePrefix(prefix) {
   return String(prefix || "")
@@ -59,41 +53,6 @@ function json(statusCode, body) {
   };
 }
 
-function normalizeClaimValues(value) {
-  if (Array.isArray(value)) {
-    return value
-      .map((entry) => String(entry).trim().toLowerCase())
-      .filter(Boolean);
-  }
-
-  if (typeof value === "string") {
-    const trimmed = value.trim();
-
-    if (
-      (trimmed.startsWith("[") && trimmed.endsWith("]")) ||
-      (trimmed.startsWith("{") && trimmed.endsWith("}")) ||
-      (trimmed.startsWith("\"") && trimmed.endsWith("\""))
-    ) {
-      try {
-        return normalizeClaimValues(JSON.parse(trimmed));
-      } catch (error) {
-        console.warn("Unable to parse structured claim string.", error);
-      }
-    }
-
-    return value
-      .split(/[\s,;|]+/)
-      .map((entry) => entry.trim().toLowerCase().replace(/^[\[\]"']+|[\[\]"']+$/g, ""))
-      .filter(Boolean);
-  }
-
-  if (typeof value === "number" || typeof value === "boolean") {
-    return [String(value).trim().toLowerCase()];
-  }
-
-  return [];
-}
-
 function getMediaKind(key) {
   if (/\.gif$/i.test(key)) {
     return "gif";
@@ -104,31 +63,6 @@ function getMediaKind(key) {
   }
 
   return "picture";
-}
-
-function isTestAccount(claims) {
-  if (!enableTestUserRouting) {
-    return false;
-  }
-
-  const target = "test";
-  const groups = normalizeClaimValues(claims?.["cognito:groups"]);
-
-  if (groups.includes(target)) {
-    return true;
-  }
-
-  const tagKeys = ["custom:tag", "custom:tags", "tag", "tags"];
-  const tags = tagKeys.flatMap((key) => normalizeClaimValues(claims?.[key]));
-
-  if (tags.includes(target)) {
-    return true;
-  }
-
-  return ["custom:test", "test"].some((key) => {
-    const values = normalizeClaimValues(claims?.[key]);
-    return values.includes("true") || values.includes(target);
-  });
 }
 
 function toCloudFrontSafeBase64(buffer) {
@@ -259,20 +193,21 @@ export const handler = async (event) => {
       });
     }
 
+    const path = event?.requestContext?.http?.path || event?.rawPath || "";
+    const isPublicManifest = path.endsWith("/public-manifest");
     const claims = event?.requestContext?.authorizer?.jwt?.claims || {};
     const refreshToken = sanitizeOptionalCacheVersion(event?.queryStringParameters?.refresh || "");
     const cacheVersion = refreshToken
       ? `${defaultCacheVersion}.${refreshToken}`
       : defaultCacheVersion;
 
-    if (claims.token_use !== "id") {
+    if (!isPublicManifest && claims.token_use !== "id") {
       return json(403, {
         error: "Gallery manifest requests must use a Cognito ID token.",
       });
     }
 
-    const testAccount = isTestAccount(claims);
-    const prefix = testAccount ? testPrefix : defaultPrefix;
+    const prefix = isPublicManifest ? publicPrefix : extraPrefix;
     const keys = await listGalleryKeys(prefix);
     const expiresAtEpochSeconds = getStableExpiryEpochSeconds();
     const photos = [];
@@ -282,20 +217,20 @@ export const handler = async (event) => {
     }
 
     return json(200, {
-      collection: testAccount ? "test" : "months",
+      collection: isPublicManifest ? "public" : "extra",
       prefix,
       expiresAt: expiresAtEpochSeconds,
       cacheTtlSeconds: signedUrlTtlSeconds,
       cacheVersion,
       user: {
-        email: claims.email || null,
+        email: isPublicManifest ? null : claims.email || null,
       },
       photos,
     });
   } catch (error) {
     console.error("Unable to build gallery manifest.", error);
     return json(500, {
-      error: "Unable to load the private gallery right now.",
+      error: "Unable to load the gallery right now.",
     });
   }
 };

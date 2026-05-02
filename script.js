@@ -1,8 +1,7 @@
 document.addEventListener("DOMContentLoaded", async () => {
   const auth = window.PrivateGalleryAuth;
+  const config = window.__PRIVATE_GALLERY_CONFIG__ || {};
   const profileButtons = [...document.querySelectorAll("[data-profile-trigger]")];
-  const openLoginButton = document.getElementById("open-login");
-  const heroLoginButton = document.getElementById("hero-login");
   const loginModal = document.getElementById("login-modal");
   const loginForm = document.getElementById("login-form");
   const loginEmailInput = document.getElementById("login-email");
@@ -12,13 +11,31 @@ document.addEventListener("DOMContentLoaded", async () => {
   const accountSummary = document.getElementById("account-summary");
   const accountSignout = document.getElementById("account-signout");
   const modalCloseTriggers = [...document.querySelectorAll("[data-modal-close]")];
-  const loginSubmitIdleLabel =
-    loginSubmit?.dataset.idleText || loginSubmit?.textContent?.trim() || "Continue to Secure Sign In";
-  const loginSubmitLoadingLabel =
-    loginSubmit?.dataset.loadingText || "Redirecting...";
+  const status = document.getElementById("public-gallery-status");
+  const grid = document.getElementById("public-gallery-grid");
+  const loginSubmitIdleLabel = loginSubmit?.dataset.idleText || loginSubmit?.textContent?.trim() || "Continue";
+  const loginSubmitLoadingLabel = loginSubmit?.dataset.loadingText || "Redirecting...";
 
   let currentSession = null;
   let lastFocus = null;
+
+  function escapeHtml(value) {
+    return String(value ?? "")
+      .replace(/&/g, "&amp;")
+      .replace(/</g, "&lt;")
+      .replace(/>/g, "&gt;")
+      .replace(/"/g, "&quot;")
+      .replace(/'/g, "&#39;");
+  }
+
+  function setFeedback(message) {
+    if (!loginFeedback) {
+      return;
+    }
+
+    loginFeedback.hidden = !message;
+    loginFeedback.textContent = message || "";
+  }
 
   function updateProfileButtons() {
     profileButtons.forEach((button) => {
@@ -28,24 +45,84 @@ document.addEventListener("DOMContentLoaded", async () => {
       }
 
       label.textContent = currentSession
-        ? button.dataset.signedInText || "Open Vault"
-        : button.dataset.signedOutText || "Member Login";
+        ? button.dataset.signedInText || "Extra"
+        : button.dataset.signedOutText || "Login";
     });
   }
 
-  function setFeedback(message) {
-    if (!loginFeedback) {
+  function getMediaKind(photo) {
+    const explicit = String(photo?.kind || "").trim().toLowerCase();
+    if (explicit === "picture" || explicit === "gif" || explicit === "movie") {
+      return explicit;
+    }
+
+    if (/\.gif$/i.test(photo?.key || "")) {
+      return "gif";
+    }
+
+    if (/\.(m4v|mov|mp4|webm)$/i.test(photo?.key || "")) {
+      return "movie";
+    }
+
+    return "picture";
+  }
+
+  function buildCard(photo) {
+    const kind = getMediaKind(photo);
+    const label = photo.label || photo.key || "Gallery item";
+
+    if (kind === "movie") {
+      return `
+        <article class="public-card">
+          <a class="public-trigger" href="${escapeHtml(photo.url)}" target="_blank" rel="noopener noreferrer" aria-label="${escapeHtml(label)}">
+            <div class="public-media">
+              <video src="${escapeHtml(photo.url)}" muted loop autoplay playsinline preload="metadata"></video>
+              <span class="media-badge" aria-hidden="true">&#9654;</span>
+            </div>
+          </a>
+        </article>
+      `;
+    }
+
+    const badge = kind === "gif" ? '<span class="media-badge" aria-hidden="true">GIF</span>' : "";
+
+    return `
+      <article class="public-card">
+        <a class="public-trigger" href="${escapeHtml(photo.url)}" target="_blank" rel="noopener noreferrer" aria-label="${escapeHtml(label)}">
+          <div class="public-media">
+            <img src="${escapeHtml(photo.url)}" alt="${escapeHtml(label)}" loading="lazy" decoding="async">
+            ${badge}
+          </div>
+        </a>
+      </article>
+    `;
+  }
+
+  async function loadPublicGallery() {
+    if (!grid) {
       return;
     }
 
-    if (!message) {
-      loginFeedback.hidden = true;
-      loginFeedback.textContent = "";
-      return;
-    }
+    try {
+      const manifestUrl = `${String(config.galleryBaseUrl || "").replace(/\/+$/, "")}/api/gallery/public-manifest`;
+      const response = await fetch(manifestUrl, { cache: "no-store" });
+      const manifest = await response.json().catch(() => null);
 
-    loginFeedback.hidden = false;
-    loginFeedback.textContent = message;
+      if (!response.ok) {
+        throw new Error(manifest?.error || "Unable to load gallery.");
+      }
+
+      grid.innerHTML = (manifest.photos || []).map(buildCard).join("");
+      if (status) {
+        status.hidden = true;
+      }
+    } catch (error) {
+      console.error(error);
+      if (status) {
+        status.hidden = false;
+        status.textContent = error.message || "Unable to load gallery.";
+      }
+    }
   }
 
   function openModal() {
@@ -60,7 +137,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     if (currentSession) {
       loginForm.hidden = true;
       accountPanel.hidden = false;
-      accountSummary.textContent = `Signed in as ${currentSession.claims?.email || "your account"}.`;
+      accountSummary.textContent = currentSession.claims?.email || "Signed in";
     } else {
       loginForm.hidden = false;
       accountPanel.hidden = true;
@@ -109,10 +186,10 @@ document.addEventListener("DOMContentLoaded", async () => {
       currentSession = auth.completePopupLogin(result);
       updateProfileButtons();
       closeModal();
-      window.location.assign(auth.getGalleryDestination(currentSession));
+      window.location.assign("/gallery/");
     } catch (error) {
       console.error(error);
-      setFeedback(error.message || "We could not start secure sign-in.");
+      setFeedback(error.message || "Unable to sign in.");
     } finally {
       loginSubmit.disabled = false;
       loginSubmit.textContent = loginSubmitIdleLabel;
@@ -121,8 +198,8 @@ document.addEventListener("DOMContentLoaded", async () => {
 
   profileButtons.forEach((button) => {
     button.addEventListener("click", () => {
-      if (currentSession && auth) {
-        window.location.assign(auth.getGalleryDestination(currentSession));
+      if (currentSession) {
+        window.location.assign("/gallery/");
         return;
       }
 
@@ -130,17 +207,8 @@ document.addEventListener("DOMContentLoaded", async () => {
     });
   });
 
-  openLoginButton?.addEventListener("click", openModal);
-  heroLoginButton?.addEventListener("click", openModal);
-
   modalCloseTriggers.forEach((trigger) => {
     trigger.addEventListener("click", closeModal);
-  });
-
-  loginModal?.addEventListener("click", (event) => {
-    if (event.target === loginModal) {
-      closeModal();
-    }
   });
 
   document.addEventListener("keydown", (event) => {
@@ -158,5 +226,5 @@ document.addEventListener("DOMContentLoaded", async () => {
     auth?.signOut({ logoutUri: `${window.location.origin}/` });
   });
 
-  await refreshSession();
+  await Promise.all([refreshSession(), loadPublicGallery()]);
 });

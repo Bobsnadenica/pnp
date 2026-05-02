@@ -6,97 +6,25 @@
     <title>[NEW_SITE_NAME]</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Fraunces:wght@600;700&family=Inter:wght@400;500;600;700&display=swap">
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:wght@600;700&family=Inter:wght@400;500;600;700&display=swap" media="print" onload="this.media='all'">
+    <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" media="print" onload="this.media='all'">
     <noscript>
-        <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:wght@600;700&family=Inter:wght@400;500;600;700&display=swap">
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap">
     </noscript>
     <link rel="stylesheet" href="/style.css">
 </head>
 <body>
-    <div class="page-shell">
-        <header class="masthead">
-            <nav class="site-nav">
-                <a class="site-mark" href="/">[NEW_SITE_NAME]</a>
-                <div class="nav-actions">
-                    <a class="ghost-link" href="#showcase">Showcase</a>
-                    <a class="ghost-link" href="#membership">Membership</a>
-                    <button id="open-login" class="pill-button" type="button" data-profile-trigger data-signed-out-text="Member Login" data-signed-in-text="Open Vault">
-                        <span data-profile-label>Member Login</span>
-                    </button>
-                </div>
-            </nav>
-
-            <section class="hero-card">
-                <div class="hero-copy">
-                    <span class="eyebrow">Private gallery blueprint</span>
-                    <h1>[NEW_SITE_NAME] public showcase and members-only gallery.</h1>
-                    <p>
-                        Show the public preview on the main site, invite people to create an account, and send paid or approved members into a Cognito-protected private gallery with backend-minted CloudFront URLs.
-                    </p>
-                    <div class="hero-actions">
-                        <button id="hero-login" class="primary-button" type="button">Open Secure Sign In</button>
-                        <a class="secondary-button" href="#membership">How premium access works</a>
-                    </div>
-                    <ul class="hero-points">
-                        <li>Hosted UI popup login with PKCE</li>
-                        <li>Private media served only through signed backend responses</li>
-                        <li>Pictures, GIFs, and movies in one gallery flow</li>
-                    </ul>
-                </div>
-                <div class="hero-aside">
-                    <div class="preview-card">
-                        <p class="preview-kicker">Member promise</p>
-                        <h2>Want access beyond the showcase?</h2>
-                        <p>Create an account, upgrade your membership in your payment flow, and route approved users into the private collection.</p>
-                        <div class="preview-badges">
-                            <span>Public preview</span>
-                            <span>Private vault</span>
-                            <span>Signed delivery</span>
-                        </div>
-                    </div>
-                </div>
-            </section>
+    <div class="site-frame">
+        <header class="site-header">
+            <a class="site-mark" href="/">[NEW_SITE_NAME]</a>
+            <button class="ghost-button" type="button" data-profile-trigger data-signed-out-text="Login" data-signed-in-text="Extra">
+                <span data-profile-label>Login</span>
+            </button>
         </header>
 
-        <main>
-            <section id="showcase" class="content-block">
-                <div>
-                    <span class="section-label">Showcase</span>
-                    <h2>Public pages stay simple. Protected media stays off-limits.</h2>
-                </div>
-                <div class="feature-grid">
-                    <article class="feature-card">
-                        <h3>Preview the brand</h3>
-                        <p>Use the public homepage for marketing, sample images, FAQs, and account invitations without exposing the private gallery bucket.</p>
-                    </article>
-                    <article class="feature-card">
-                        <h3>Sign in in a popup</h3>
-                        <p>The modal launches Cognito Hosted UI in a dedicated popup, then the callback closes the popup and restores the session in the opener.</p>
-                    </article>
-                    <article class="feature-card">
-                        <h3>Let the backend decide access</h3>
-                        <p>The browser requests a manifest, but Lambda decides whether the user gets the standard collection or the optional test collection.</p>
-                    </article>
-                </div>
-            </section>
-
-            <section id="membership" class="content-block content-block-contrast">
-                <div>
-                    <span class="section-label">Membership</span>
-                    <h2>Create accounts for approved or paid access.</h2>
-                </div>
-                <div class="membership-layout">
-                    <div class="membership-card">
-                        <h3>What this repo provisions now</h3>
-                        <p>Cognito auth, WAF protection, a private S3 gallery, signed CloudFront URLs, route enforcement, and a static site flow that feels like the reference implementation.</p>
-                    </div>
-                    <div class="membership-card">
-                        <h3>Where payment fits</h3>
-                        <p>Keep your payment provider outside this stack, then add members to the right Cognito group or set custom claims after purchase so the existing gallery rules unlock their access.</p>
-                    </div>
-                </div>
-            </section>
+        <main class="public-gallery-shell">
+            <p id="public-gallery-status" class="gallery-status" hidden></p>
+            <div id="public-gallery-grid" class="public-gallery-grid" aria-live="polite"></div>
         </main>
     </div>
 
@@ -104,21 +32,17 @@
         <div class="modal-backdrop" data-modal-close></div>
         <div class="modal-card">
             <button class="modal-close" type="button" aria-label="Close sign-in dialog" data-modal-close>&times;</button>
-            <p class="modal-kicker">Secure members area</p>
-            <h2 id="login-modal-title">Open your private gallery</h2>
-            <p class="modal-copy">We use a Cognito Hosted UI popup so the password flow stays on the Cognito domain while your site restores the session afterward.</p>
+            <h2 id="login-modal-title">Login</h2>
             <form id="login-form" class="login-form">
-                <label for="login-email">Email address</label>
-                <input id="login-email" type="email" placeholder="you@example.com" autocomplete="email">
+                <input id="login-email" type="email" placeholder="Email" autocomplete="email" aria-label="Email address">
                 <div class="modal-actions">
-                    <button id="login-submit" class="primary-button" type="submit" data-idle-text="Continue to Secure Sign In" data-loading-text="Redirecting...">Continue to Secure Sign In</button>
-                    <button id="login-cancel" class="secondary-button button-link" type="button" data-modal-close>Cancel</button>
+                    <button id="login-submit" class="primary-button" type="submit" data-idle-text="Continue" data-loading-text="Redirecting...">Continue</button>
                 </div>
             </form>
             <div id="account-panel" class="account-panel" hidden>
                 <p id="account-summary">Signed in.</p>
                 <div class="modal-actions">
-                    <a class="primary-button button-link" href="/gallery/">Open private gallery</a>
+                    <a class="primary-button button-link" href="/gallery/">Open Extra</a>
                     <button id="account-signout" class="secondary-button button-link" type="button">Sign Out</button>
                 </div>
             </div>

@@ -50,20 +50,14 @@ variable "archive_transition_days" {
   default     = 7
 }
 
-variable "gallery_month_prefix" {
-  description = "Prefix inside the gallery bucket for the standard gallery files."
+variable "gallery_public_prefix" {
+  description = "Prefix inside the gallery bucket for the public showcase files."
   type        = string
 }
 
-variable "gallery_test_prefix" {
-  description = "Prefix inside the gallery bucket for the test-only gallery files."
+variable "gallery_extra_prefix" {
+  description = "Prefix inside the gallery bucket for the paid member gallery files."
   type        = string
-}
-
-variable "enable_test_user_routing" {
-  description = "When true, users with test claims or group membership get the test prefix."
-  type        = bool
-  default     = false
 }
 
 variable "gallery_public_base_url" {

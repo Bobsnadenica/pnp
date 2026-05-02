@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>[NEW_SITE_NAME] Secure Sign In</title>
+    <title>[NEW_SITE_NAME]</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Fraunces:wght@600;700&family=Inter:wght@400;500;600;700&display=swap">
@@ -88,8 +88,8 @@
 <body>
     <main class="card" aria-live="polite">
         <div class="badge">✓</div>
-        <h1 id="callback-title">Completing secure sign-in</h1>
-        <p id="callback-copy">Please wait while we finish your session and hand access back to the main site.</p>
+        <h1 id="callback-title">Signing In</h1>
+        <p id="callback-copy">Please wait.</p>
         <p id="callback-status" class="status">Exchanging your secure sign-in code.</p>
         <a id="callback-link" class="link" href="/" hidden>Return to [NEW_SITE_NAME]</a>
     </main>
@@ -129,7 +129,7 @@
                     return;
                 }
 
-                status.textContent = "Secure sign-in finished. Redirecting you back now.";
+                status.textContent = "Signed in. Redirecting.";
                 const destination = auth.getGalleryDestination(result.session);
                 window.setTimeout(() => {
                     window.location.replace(destination);

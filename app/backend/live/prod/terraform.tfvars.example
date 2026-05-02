@@ -17,9 +17,8 @@ auth_logout_urls = [
 ]
 
 archive_transition_days   = 7
-gallery_month_prefix      = "[months or another folder]"
-gallery_test_prefix       = "[test or another folder]"
-enable_test_user_routing  = false
+gallery_public_prefix     = "public"
+gallery_extra_prefix      = "extra"
 
 # First apply with a placeholder, then replace it with the real CloudFront domain output and apply again.
 gallery_public_base_url = "https://replace-after-first-apply.cloudfront.net"

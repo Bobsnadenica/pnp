@@ -24,20 +24,12 @@ This stack is intentionally separate from Everyday Lilly. It reuses the same arc
 6. Lambda lists media under that prefix and returns signed CloudFront URLs.
 7. CloudFront serves objects only when the signature is valid.
 
-## Test User Routing
+## Gallery Layout
 
-Set `enable_test_user_routing = true` to enable the separate `test/` route.
+This stack is built around two prefixes in the same private gallery bucket:
 
-When enabled:
-
-- standard users receive the normal collection
-- users in the Cognito group `test` receive the test collection
-- users with claims like `custom:tag = test`, `tags = test`, or `custom:test = true` also receive the test collection
-
-When disabled:
-
-- everyone receives the normal collection
-- the backend stays authoritative even if someone opens `/gallery/test/` directly
+- `public/` for the public showcase shown on the main website
+- `extra/` for the paid member gallery behind Cognito
 
 ## Required tfvars Values
 
@@ -51,9 +43,8 @@ aws_region             = "[AWS_REGION]"
 website_base_url       = "[https://YOURDOMAIN.com]"
 local_callback_url     = "[http://localhost:8000/auth/callback.html]"
 cognito_domain_prefix  = "[UNIQUE_COGNITO_PREFIX]"
-gallery_month_prefix   = "[months or another folder]"
-gallery_test_prefix    = "[test or another folder]"
-enable_test_user_routing = true # use false when the input is no
+gallery_public_prefix  = "public"
+gallery_extra_prefix   = "extra"
 
 auth_callback_urls = [
   "[https://YOURDOMAIN.com]/auth/callback.html",
@@ -116,16 +107,15 @@ Also set:
 - `siteName = "[NEW_SITE_NAME]"`
 - `projectSlug = "[NEW_PROJECT_SLUG]"`
 - `websiteBaseUrl = "[https://YOURDOMAIN.com]"`
-- `testUserRoutingEnabled = true` or `false`
-- `galleryMonthPrefix = "[months or another folder]"`
-- `galleryTestPrefix = "[test or another folder]"`
+- `galleryPublicPrefix = "public"`
+- `galleryExtraPrefix = "extra"`
 
 ## Media Layout
 
-Normal users:
+Public gallery:
 
 ```text
-[months or another folder]/
+public/
   0.jpg
   1.jpg
   11.jpg
@@ -133,10 +123,10 @@ Normal users:
   animation.gif
 ```
 
-Test users:
+Paid gallery:
 
 ```text
-[test or another folder]/
+extra/
   0.jpg
   1.webm
   2.gif

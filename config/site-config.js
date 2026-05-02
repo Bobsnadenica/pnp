@@ -8,7 +8,6 @@ window.__PRIVATE_GALLERY_CONFIG__ = {
   authClientId: "[COGNITO_APP_CLIENT_ID]",
   authScope: "openid email profile aws.cognito.signin.user.admin",
   galleryBaseUrl: "[GALLERY_CLOUDFRONT_BASE_URL]",
-  galleryMonthPrefix: "[months or another folder]",
-  galleryTestPrefix: "[test or another folder]",
-  testUserRoutingEnabled: false,
+  galleryPublicPrefix: "public",
+  galleryExtraPrefix: "extra",
 };

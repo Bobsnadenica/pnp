@@ -121,10 +121,9 @@ resource "aws_lambda_function" "gallery_manifest" {
 
   environment {
     variables = {
-      ENABLE_TEST_USER_ROUTING   = tostring(var.enable_test_user_routing)
       GALLERY_BUCKET             = aws_s3_bucket.gallery.bucket
-      GALLERY_DEFAULT_PREFIX     = var.gallery_month_prefix
-      GALLERY_TEST_PREFIX        = var.gallery_test_prefix
+      GALLERY_PUBLIC_PREFIX      = var.gallery_public_prefix
+      GALLERY_EXTRA_PREFIX       = var.gallery_extra_prefix
       GALLERY_PUBLIC_BASE_URL    = trimsuffix(var.gallery_public_base_url, "/")
       GALLERY_CACHE_VERSION      = var.gallery_cache_version
       GALLERY_SIGNED_URL_TTL     = tostring(var.gallery_signed_url_ttl_seconds)
@@ -176,9 +175,15 @@ resource "aws_apigatewayv2_authorizer" "gallery_jwt" {
   }
 }
 
-resource "aws_apigatewayv2_route" "gallery_manifest" {
+resource "aws_apigatewayv2_route" "gallery_public_manifest" {
+  api_id    = aws_apigatewayv2_api.gallery.id
+  route_key = "GET ${local.gallery_public_manifest_path}"
+  target    = "integrations/${aws_apigatewayv2_integration.gallery_manifest.id}"
+}
+
+resource "aws_apigatewayv2_route" "gallery_extra_manifest" {
   api_id             = aws_apigatewayv2_api.gallery.id
-  route_key          = "GET ${local.gallery_manifest_path}"
+  route_key          = "GET ${local.gallery_extra_manifest_path}"
   target             = "integrations/${aws_apigatewayv2_integration.gallery_manifest.id}"
   authorizer_id      = aws_apigatewayv2_authorizer.gallery_jwt.id
   authorization_type = "JWT"
