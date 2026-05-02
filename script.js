@@ -19,21 +19,6 @@ document.addEventListener("DOMContentLoaded", async () => {
   let currentSession = null;
   let lastFocus = null;
 
-  const LAYOUTS = [
-    "hero-portrait",
-    "square",
-    "landscape",
-    "tall",
-    "wide",
-    "portrait",
-    "square",
-    "cinema",
-    "tall",
-    "wide",
-    "square",
-    "landscape",
-  ];
-
   const DRIFT_CLASSES = [
     "drift-none",
     "drift-up",
@@ -41,6 +26,15 @@ document.addEventListener("DOMContentLoaded", async () => {
     "drift-none",
     "drift-down",
     "drift-up",
+  ];
+
+  const WALL_PATTERN = [
+    ["hero-portrait", "portrait", "square"],
+    ["landscape", "cinema", "square"],
+    ["portrait", "square", "landscape"],
+    ["cinema", "landscape", "square"],
+    ["portrait", "hero-portrait", "square"],
+    ["square", "portrait", "landscape"],
   ];
 
   function escapeHtml(value) {
@@ -108,15 +102,167 @@ document.addEventListener("DOMContentLoaded", async () => {
     return next;
   }
 
-  function getLayoutClass(index) {
-    return LAYOUTS[index % LAYOUTS.length];
+  function classifyWallClass(kind, aspectRatio) {
+    const ratio = Number.isFinite(aspectRatio) && aspectRatio > 0 ? aspectRatio : 1;
+
+    if (kind === "movie") {
+      return ratio >= 1.7 ? "cinema" : "landscape";
+    }
+
+    if (ratio < 0.72) {
+      return "hero-portrait";
+    }
+
+    if (ratio < 0.92) {
+      return "portrait";
+    }
+
+    if (ratio < 1.12) {
+      return "square";
+    }
+
+    if (ratio < 1.55) {
+      return "landscape";
+    }
+
+    return "cinema";
+  }
+
+  function measureImageAspectRatio(url) {
+    return new Promise((resolve) => {
+      const image = new Image();
+      const finish = (ratio) => resolve(Number.isFinite(ratio) && ratio > 0 ? ratio : 1);
+
+      image.decoding = "async";
+      image.onload = () => finish(image.naturalWidth / image.naturalHeight);
+      image.onerror = () => finish(1);
+      image.src = url;
+    });
+  }
+
+  function measureVideoAspectRatio(url) {
+    return new Promise((resolve) => {
+      const video = document.createElement("video");
+      let settled = false;
+
+      const finish = (ratio) => {
+        if (settled) {
+          return;
+        }
+
+        settled = true;
+        video.removeAttribute("src");
+        video.load();
+        resolve(Number.isFinite(ratio) && ratio > 0 ? ratio : 1.65);
+      };
+
+      const timer = window.setTimeout(() => finish(1.65), 2600);
+
+      video.preload = "metadata";
+      video.muted = true;
+      video.playsInline = true;
+      video.onloadedmetadata = () => {
+        window.clearTimeout(timer);
+        finish(video.videoWidth / video.videoHeight);
+      };
+      video.onerror = () => {
+        window.clearTimeout(timer);
+        finish(1.65);
+      };
+      video.src = url;
+    });
+  }
+
+  async function enrichPhoto(photo) {
+    const kind = getMediaKind(photo);
+    const aspectRatio = kind === "movie"
+      ? await measureVideoAspectRatio(photo.url)
+      : await measureImageAspectRatio(photo.url);
+
+    return {
+      ...photo,
+      kind,
+      aspectRatio,
+      wallClass: classifyWallClass(kind, aspectRatio),
+    };
+  }
+
+  function pickFromBuckets(buckets, preferences) {
+    for (const bucketName of preferences) {
+      const bucket = buckets[bucketName];
+      if (bucket?.length) {
+        return bucket.shift();
+      }
+    }
+
+    return null;
+  }
+
+  function pickRemainingPhoto(buckets) {
+    const bucketNames = Object.keys(buckets)
+      .filter((bucketName) => buckets[bucketName].length)
+      .sort((left, right) => buckets[right].length - buckets[left].length);
+
+    if (!bucketNames.length) {
+      return null;
+    }
+
+    return buckets[bucketNames[0]].shift();
+  }
+
+  function weaveWallPhotos(photos) {
+    const buckets = {
+      "hero-portrait": [],
+      portrait: [],
+      square: [],
+      landscape: [],
+      cinema: [],
+    };
+
+    photos.forEach((photo) => {
+      const bucketName = buckets[photo.wallClass] ? photo.wallClass : "square";
+      buckets[bucketName].push(photo);
+    });
+
+    const ordered = [];
+
+    while (ordered.length < photos.length) {
+      let inserted = false;
+
+      for (const preferences of WALL_PATTERN) {
+        const selected = pickFromBuckets(buckets, preferences) || pickRemainingPhoto(buckets);
+
+        if (!selected) {
+          continue;
+        }
+
+        ordered.push(selected);
+        inserted = true;
+      }
+
+      if (!inserted) {
+        break;
+      }
+    }
+
+    return ordered.map((photo, index) => ({
+      ...photo,
+      driftClass: DRIFT_CLASSES[index % DRIFT_CLASSES.length],
+    }));
+  }
+
+  async function prepareWallPhotos(photos) {
+    const randomized = shufflePhotos(photos);
+    const enriched = await Promise.all(randomized.map((photo) => enrichPhoto(photo)));
+    return weaveWallPhotos(enriched);
   }
 
   function buildCard(photo, index) {
-    const kind = getMediaKind(photo);
+    const kind = photo.kind || getMediaKind(photo);
     const label = photo.label || photo.key || "Gallery item";
-    const layoutClass = getLayoutClass(index);
-    const driftClass = DRIFT_CLASSES[index % DRIFT_CLASSES.length];
+    const layoutClass = photo.wallClass || "square";
+    const driftClass = photo.driftClass || DRIFT_CLASSES[index % DRIFT_CLASSES.length];
+    const fetchPriority = index < 4 ? "high" : "low";
 
     if (kind === "movie") {
       return `
@@ -157,7 +303,7 @@ document.addEventListener("DOMContentLoaded", async () => {
           aria-label="${escapeHtml(label)}"
         >
           <div class="public-media">
-            <img src="${escapeHtml(photo.url)}" alt="${escapeHtml(label)}" loading="lazy" decoding="async">
+            <img src="${escapeHtml(photo.url)}" alt="${escapeHtml(label)}" loading="${fetchPriority === "high" ? "eager" : "lazy"}" fetchpriority="${escapeHtml(fetchPriority)}" decoding="async">
             ${badge}
           </div>
         </a>
@@ -458,7 +604,7 @@ document.addEventListener("DOMContentLoaded", async () => {
         throw new Error(manifest?.error || "Unable to load gallery.");
       }
 
-      const photos = shufflePhotos(manifest.photos || []);
+      const photos = await prepareWallPhotos(manifest.photos || []);
       grid.innerHTML = photos.map((photo, index) => buildCard(photo, index)).join("");
       enableViewer(grid);
       if (status) {
