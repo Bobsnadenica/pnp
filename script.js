@@ -27,7 +27,6 @@ document.addEventListener("DOMContentLoaded", async () => {
   let lastFocus = null;
   let publicGalleryLoading = false;
   let publicGalleryObserver = null;
-  let themeTransitionTimer = 0;
   const publicGalleryState = {
     theme: "day",
     photos: [],
@@ -104,18 +103,16 @@ document.addEventListener("DOMContentLoaded", async () => {
 
     galleryThemeButtons.forEach((button) => {
       const label = button.querySelector("[data-gallery-theme-label]");
-      const nextLabel = nextTheme === "night"
-        ? button.dataset.nightLabel || "Switch to night theme"
-        : button.dataset.dayLabel || "Switch to day theme";
 
-      if (label) {
-        label.textContent = nextLabel;
+      if (!label) {
+        return;
       }
 
+      label.textContent = nextTheme === "night"
+        ? button.dataset.nightLabel || "Night"
+        : button.dataset.dayLabel || "Day";
       button.dataset.targetTheme = nextTheme;
       button.setAttribute("aria-pressed", String(publicGalleryState.theme === "night"));
-      button.setAttribute("aria-label", nextLabel);
-      button.setAttribute("title", nextLabel);
     });
   }
 
@@ -125,11 +122,6 @@ document.addEventListener("DOMContentLoaded", async () => {
 
     publicGalleryState.theme = normalizedTheme;
     document.body.dataset.galleryTheme = normalizedTheme;
-    document.body.classList.add("theme-transitioning");
-    window.clearTimeout(themeTransitionTimer);
-    themeTransitionTimer = window.setTimeout(() => {
-      document.body.classList.remove("theme-transitioning");
-    }, 240);
     updateThemeButtons();
 
     if (options.persist !== false) {
