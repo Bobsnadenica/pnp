@@ -161,11 +161,18 @@ body[data-gallery-mode="router"] {
 }
 
 .brand {
-    color: var(--text);
+    display: inline-flex;
+    align-items: center;
     text-decoration: none;
-    font-family: "Fraunces", serif;
-    font-size: clamp(1.8rem, 3.4vw, 2.5rem);
-    letter-spacing: -0.02em;
+    min-height: 2.9rem;
+}
+
+.brand-logo {
+    display: block;
+    width: auto;
+    height: 2.95rem;
+    object-fit: contain;
+    object-position: center;
 }
 
 .top-actions {
@@ -740,6 +747,14 @@ h1 {
 @media (max-width: 720px) {
     .shell {
         width: min(100%, calc(100% - 1rem));
+    }
+
+    .brand {
+        min-height: 2.45rem;
+    }
+
+    .brand-logo {
+        height: 2.45rem;
     }
 
     .month-grid {
