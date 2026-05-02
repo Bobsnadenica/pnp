@@ -96,27 +96,60 @@ a {
 }
 
 .public-gallery-grid {
-    column-count: 4;
-    column-gap: 0.9rem;
+    display: grid;
+    grid-template-columns: repeat(12, minmax(0, 1fr));
+    grid-auto-flow: dense;
+    grid-auto-rows: 4vw;
+    gap: 0.8rem;
 }
 
 .public-card {
-    break-inside: avoid;
-    margin: 0 0 0.9rem;
-    border-radius: 1.2rem;
+    position: relative;
+    margin: 0;
+    border-radius: 1.6rem;
     overflow: hidden;
-    background: var(--surface);
-    border: 1px solid var(--line);
-    box-shadow: 0 18px 34px -28px rgba(17, 24, 39, 0.24);
+    background: transparent;
+    box-shadow: 0 24px 42px -28px rgba(17, 24, 39, 0.24);
+    grid-column: span 3;
+    grid-row: span 18;
+}
+
+.public-card-square {
+    grid-column: span 3;
+    grid-row: span 14;
+}
+
+.public-card-tall {
+    grid-column: span 3;
+    grid-row: span 20;
+}
+
+.public-card-portrait {
+    grid-column: span 3;
+    grid-row: span 22;
+}
+
+.public-card-wide {
+    grid-column: span 6;
+    grid-row: span 16;
+}
+
+.public-card-landscape {
+    grid-column: span 6;
+    grid-row: span 18;
 }
 
 .public-trigger {
     display: block;
+    width: 100%;
+    height: 100%;
     color: inherit;
     text-decoration: none;
 }
 
 .public-media {
+    width: 100%;
+    height: 100%;
     position: relative;
     overflow: hidden;
     background: #efede8;
@@ -126,13 +159,16 @@ a {
 .public-media video {
     display: block;
     width: 100%;
-    height: auto;
+    height: 100%;
     background: #efede8;
+    object-fit: cover;
+    transition: transform 0.45s ease, filter 0.45s ease;
 }
 
-.public-media video {
-    min-height: 220px;
-    object-fit: cover;
+.public-trigger:hover .public-media img,
+.public-trigger:hover .public-media video {
+    transform: scale(1.03);
+    filter: saturate(1.03);
 }
 
 .media-badge {
@@ -149,6 +185,149 @@ a {
     color: white;
     font-size: 0.82rem;
     backdrop-filter: blur(10px);
+}
+
+.public-viewer[hidden] {
+    display: none;
+}
+
+.public-viewer {
+    position: fixed;
+    inset: 0;
+    z-index: 700;
+}
+
+.public-viewer-backdrop {
+    position: absolute;
+    inset: 0;
+    background: rgba(9, 10, 12, 0.74);
+    backdrop-filter: blur(24px) saturate(1.08);
+}
+
+.public-viewer-stage {
+    position: absolute;
+    inset: 0;
+    --viewer-backdrop-image: none;
+}
+
+.public-viewer-stage::before {
+    content: "";
+    position: absolute;
+    inset: -8%;
+    background-image: var(--viewer-backdrop-image);
+    background-position: center;
+    background-size: cover;
+    filter: blur(42px) saturate(1.08);
+    opacity: 0.38;
+    transform: scale(1.08);
+}
+
+.public-viewer-media {
+    position: relative;
+    z-index: 1;
+    width: 100%;
+    height: 100%;
+    display: grid;
+    place-items: center;
+    padding:
+        max(1rem, env(safe-area-inset-top, 0px))
+        max(1rem, env(safe-area-inset-right, 0px))
+        calc(max(6rem, env(safe-area-inset-bottom, 0px) + 4.8rem))
+        max(1rem, env(safe-area-inset-left, 0px));
+}
+
+.public-viewer-media img,
+.public-viewer-media video {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    background: transparent;
+}
+
+.public-viewer-close,
+.public-viewer-nav {
+    position: absolute;
+    z-index: 3;
+    border: none;
+    color: white;
+    cursor: pointer;
+    backdrop-filter: blur(14px);
+}
+
+.public-viewer-close {
+    top: calc(0.9rem + env(safe-area-inset-top, 0px));
+    right: calc(0.9rem + env(safe-area-inset-right, 0px));
+    width: 2.4rem;
+    height: 2.4rem;
+    border-radius: 999px;
+    background: rgba(255, 255, 255, 0.14);
+    font-size: 1.3rem;
+}
+
+.public-viewer-nav {
+    top: 50%;
+    transform: translateY(-50%);
+    width: 3rem;
+    height: 3rem;
+    border-radius: 999px;
+    background: rgba(255, 255, 255, 0.12);
+    font-size: 1.6rem;
+}
+
+.public-viewer-nav:disabled {
+    opacity: 0.3;
+    cursor: default;
+}
+
+.public-viewer-nav-prev {
+    left: 1rem;
+}
+
+.public-viewer-nav-next {
+    right: 1rem;
+}
+
+.public-viewer-meta {
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 2;
+    display: flex;
+    justify-content: space-between;
+    align-items: end;
+    gap: 1rem;
+    padding:
+        1.1rem
+        max(1.2rem, env(safe-area-inset-right, 0px))
+        calc(1.2rem + env(safe-area-inset-bottom, 0px))
+        max(1.2rem, env(safe-area-inset-left, 0px));
+    background: linear-gradient(180deg, rgba(9, 10, 12, 0) 0%, rgba(9, 10, 12, 0.7) 100%);
+}
+
+.public-viewer-title,
+.public-viewer-key {
+    margin: 0;
+    color: white;
+}
+
+.public-viewer-title {
+    font-size: 0.95rem;
+    font-weight: 600;
+}
+
+.public-viewer-key {
+    margin-top: 0.2rem;
+    font-size: 0.78rem;
+    color: rgba(255, 255, 255, 0.74);
+    word-break: break-word;
+}
+
+.public-viewer-link {
+    color: white;
+    border-color: rgba(255, 255, 255, 0.16);
+    background: rgba(255, 255, 255, 0.08);
 }
 
 .modal-shell[aria-hidden="true"] {
@@ -246,7 +425,8 @@ a {
 
 @media (max-width: 900px) {
     .public-gallery-grid {
-        column-count: 3;
+        grid-template-columns: repeat(6, minmax(0, 1fr));
+        grid-auto-rows: 8vw;
     }
 }
 
@@ -256,7 +436,8 @@ a {
     }
 
     .public-gallery-grid {
-        column-count: 2;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        grid-auto-rows: 22vw;
     }
 
     .modal-actions {
@@ -270,10 +451,40 @@ a {
         width: 100%;
         text-align: center;
     }
+
+    .public-card,
+    .public-card-square,
+    .public-card-tall,
+    .public-card-portrait,
+    .public-card-wide,
+    .public-card-landscape {
+        grid-column: span 1;
+        grid-row: span 12;
+    }
+
+    .public-viewer-nav {
+        display: none;
+    }
+
+    .public-viewer-meta {
+        flex-direction: column;
+        align-items: stretch;
+    }
 }
 
 @media (max-width: 540px) {
     .public-gallery-grid {
-        column-count: 1;
+        grid-template-columns: 1fr;
+        grid-auto-rows: 46vw;
+    }
+
+    .public-card,
+    .public-card-square,
+    .public-card-tall,
+    .public-card-portrait,
+    .public-card-wide,
+    .public-card-landscape {
+        grid-column: span 1;
+        grid-row: span 9;
     }
 }
