@@ -10,6 +10,7 @@ document.addEventListener("DOMContentLoaded", async () => {
   const modalCloseTriggers = [...document.querySelectorAll("[data-modal-close]")];
   const status = document.getElementById("public-gallery-status");
   const grid = document.getElementById("public-gallery-grid");
+  const publicGallerySentinel = document.getElementById("public-gallery-sentinel");
   const publicGalleryActions = document.getElementById("public-gallery-actions");
   const publicGalleryLoadMore = document.getElementById("public-gallery-load-more");
   const loginSubmitIdleLabel = loginSubmit?.dataset.idleText || loginSubmit?.textContent?.trim() || "Continue";
@@ -18,10 +19,12 @@ document.addEventListener("DOMContentLoaded", async () => {
   const loadMoreLoadingLabel = publicGalleryLoadMore?.dataset.loadingText || "Loading...";
   const publicGalleryPageSize = 72;
   const publicGalleryCacheKey = `${config.projectSlug || "malkokote-gallery"}:public-gallery-cache`;
+  const publicGalleryAutoloadMarginPx = 1200;
 
   let currentSession = null;
   let lastFocus = null;
   let publicGalleryLoading = false;
+  let publicGalleryObserver = null;
   const publicGalleryState = {
     photos: [],
     heroPhotos: [],
@@ -301,6 +304,13 @@ document.addEventListener("DOMContentLoaded", async () => {
     }));
   }
 
+  function applyDriftClasses(photos) {
+    return photos.map((photo, index) => ({
+      ...photo,
+      driftClass: DRIFT_CLASSES[index % DRIFT_CLASSES.length],
+    }));
+  }
+
   async function prepareWallPhotos(photos) {
     const randomized = shufflePhotos(uniquePhotosByKey(photos));
     const enriched = await Promise.all(randomized.map((photo) => enrichPhoto(photo)));
@@ -369,8 +379,7 @@ document.addEventListener("DOMContentLoaded", async () => {
       return;
     }
 
-    const hasMore = Boolean(publicGalleryState.nextCursor);
-    publicGalleryActions.hidden = !hasMore;
+    publicGalleryActions.hidden = true;
     publicGalleryLoadMore.disabled = publicGalleryLoading;
     publicGalleryLoadMore.textContent = publicGalleryLoading ? loadMoreLoadingLabel : loadMoreIdleLabel;
   }
@@ -416,10 +425,21 @@ document.addEventListener("DOMContentLoaded", async () => {
 
     try {
       const manifest = await fetchPublicManifestPage(cursor);
-      const mergedPhotos = uniquePhotosByKey(cursor
-        ? [...publicGalleryState.photos, ...(manifest.photos || [])]
-        : [...(manifest.photos || [])]);
-      publicGalleryState.photos = await prepareWallPhotos(mergedPhotos);
+      const nextPhotos = uniquePhotosByKey(manifest.photos || []);
+
+      if (cursor) {
+        const existingKeys = new Set(
+          publicGalleryState.photos
+            .map((photo) => String(photo?.key || "").trim())
+            .filter(Boolean)
+        );
+        const appendedPhotos = nextPhotos.filter((photo) => !existingKeys.has(String(photo?.key || "").trim()));
+        const preparedPhotos = await prepareWallPhotos(appendedPhotos);
+        publicGalleryState.photos = applyDriftClasses([...publicGalleryState.photos, ...preparedPhotos]);
+      } else {
+        publicGalleryState.photos = await prepareWallPhotos(nextPhotos);
+      }
+
       publicGalleryState.heroPhotos = await Promise.all(uniquePhotosByKey(manifest.heroPhotos || []).map((photo) => enrichPhoto(photo)));
       publicGalleryState.nextCursor = manifest.nextCursor || null;
       publicGalleryState.expiresAt = manifest.expiresAt || 0;
@@ -429,7 +449,73 @@ document.addEventListener("DOMContentLoaded", async () => {
     } finally {
       publicGalleryLoading = false;
       updateLoadMoreButton();
+      maybeAutoloadPublicGallery();
     }
+  }
+
+  function canAutoloadPublicGallery() {
+    return Boolean(publicGalleryState.nextCursor) && !publicGalleryLoading;
+  }
+
+  async function loadNextPublicGalleryPage() {
+    if (!canAutoloadPublicGallery()) {
+      return;
+    }
+
+    try {
+      await loadPublicManifestPage(publicGalleryState.nextCursor);
+    } catch (error) {
+      console.error(error);
+      if (status) {
+        status.hidden = false;
+        status.textContent = error.message || "Unable to load more.";
+      }
+    }
+  }
+
+  function isNearPublicGalleryEnd() {
+    const scrollRoot = document.documentElement;
+    const remaining = scrollRoot.scrollHeight - (window.scrollY + window.innerHeight);
+    return remaining <= publicGalleryAutoloadMarginPx;
+  }
+
+  function maybeAutoloadPublicGallery() {
+    if (!canAutoloadPublicGallery()) {
+      return;
+    }
+
+    window.requestAnimationFrame(() => {
+      if (!canAutoloadPublicGallery()) {
+        return;
+      }
+
+      if (isNearPublicGalleryEnd()) {
+        void loadNextPublicGalleryPage();
+      }
+    });
+  }
+
+  function bindPublicGalleryAutoload() {
+    if (!grid) {
+      return;
+    }
+
+    if (publicGallerySentinel && "IntersectionObserver" in window && !publicGalleryObserver) {
+      publicGalleryObserver = new IntersectionObserver((entries) => {
+        if (entries.some((entry) => entry.isIntersecting)) {
+          void loadNextPublicGalleryPage();
+        }
+      }, {
+        root: null,
+        rootMargin: `0px 0px ${publicGalleryAutoloadMarginPx}px 0px`,
+        threshold: 0,
+      });
+
+      publicGalleryObserver.observe(publicGallerySentinel);
+    }
+
+    window.addEventListener("scroll", maybeAutoloadPublicGallery, { passive: true });
+    window.addEventListener("resize", maybeAutoloadPublicGallery);
   }
 
   function buildCard(photo, index) {
@@ -780,6 +866,7 @@ document.addEventListener("DOMContentLoaded", async () => {
         publicGalleryState.nextCursor = cachedManifest.nextCursor || null;
         publicGalleryState.expiresAt = cachedManifest.expiresAt || 0;
         await renderPublicGallery();
+        maybeAutoloadPublicGallery();
         return;
       }
 
@@ -877,20 +964,8 @@ document.addEventListener("DOMContentLoaded", async () => {
     trigger.addEventListener("click", closeModal);
   });
 
-  publicGalleryLoadMore?.addEventListener("click", async () => {
-    if (!publicGalleryState.nextCursor || publicGalleryLoading) {
-      return;
-    }
-
-    try {
-      await loadPublicManifestPage(publicGalleryState.nextCursor);
-    } catch (error) {
-      console.error(error);
-      if (status) {
-        status.hidden = false;
-        status.textContent = error.message || "Unable to load more.";
-      }
-    }
+  publicGalleryLoadMore?.addEventListener("click", () => {
+    void loadNextPublicGalleryPage();
   });
 
   document.addEventListener("keydown", (event) => {
@@ -905,5 +980,6 @@ document.addEventListener("DOMContentLoaded", async () => {
   });
 
   await window.MalkokoteAgeGate?.waitForAccess?.();
+  bindPublicGalleryAutoload();
   await Promise.all([refreshSession(), loadPublicGallery()]);
 });
