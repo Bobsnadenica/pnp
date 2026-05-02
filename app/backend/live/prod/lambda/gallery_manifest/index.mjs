@@ -7,7 +7,9 @@ const s3 = new S3Client({});
 const bucketName = process.env.GALLERY_BUCKET;
 const publicPrefix = normalizePrefix(process.env.GALLERY_PUBLIC_PREFIX || "public");
 const extraPrefix = normalizePrefix(process.env.GALLERY_EXTRA_PREFIX || "extra");
+const publicDayPrefix = `${publicPrefix}/day`;
 const publicHeroPrefix = `${publicPrefix}/hero/`;
+const publicDayHeroPrefix = `${publicDayPrefix}/hero/`;
 const publicBaseUrl = (process.env.GALLERY_PUBLIC_BASE_URL || "").replace(/\/+$/, "");
 const signerKeyPairId = process.env.GALLERY_SIGNER_KEY_PAIR_ID || "";
 const signerKmsKeyId = process.env.GALLERY_SIGNER_KMS_KEY_ID || "";
@@ -63,6 +65,10 @@ function parseCursorOffset(value) {
   }
 
   return parsed;
+}
+
+function normalizePublicTheme(value) {
+  return String(value || "").trim().toLowerCase() === "night" ? "night" : "day";
 }
 
 function json(statusCode, body) {
@@ -184,6 +190,28 @@ function isHeroKey(key) {
   return key.startsWith(publicHeroPrefix);
 }
 
+function isDayKey(key) {
+  return key.startsWith(`${publicDayPrefix}/`);
+}
+
+function isDayHeroKey(key) {
+  return key.startsWith(publicDayHeroPrefix);
+}
+
+function selectPublicThemeKeys(keys, theme) {
+  if (theme === "night") {
+    return {
+      regularKeys: keys.filter((key) => !isHeroKey(key) && !isDayKey(key)),
+      heroKeys: keys.filter((key) => isHeroKey(key)),
+    };
+  }
+
+  return {
+    regularKeys: keys.filter((key) => isDayKey(key) && !isDayHeroKey(key)),
+    heroKeys: keys.filter((key) => isDayHeroKey(key)),
+  };
+}
+
 async function buildSignedMedia(key, expiresAtEpochSeconds, cacheVersion) {
   const signedUrl = new URL(`${publicBaseUrl}/${encodePathSegments(key)}`);
 
@@ -225,6 +253,9 @@ export const handler = async (event) => {
     const claims = event?.requestContext?.authorizer?.jwt?.claims || {};
     const requestedLimit = parseManifestLimit(event?.queryStringParameters?.limit);
     const cursorOffset = parseCursorOffset(event?.queryStringParameters?.cursor);
+    const publicTheme = isPublicManifest
+      ? normalizePublicTheme(event?.queryStringParameters?.theme)
+      : null;
     const refreshToken = sanitizeOptionalCacheVersion(event?.queryStringParameters?.refresh || "");
     const cacheVersion = refreshToken
       ? `${defaultCacheVersion}.${refreshToken}`
@@ -238,8 +269,11 @@ export const handler = async (event) => {
 
     const prefix = isPublicManifest ? publicPrefix : extraPrefix;
     const keys = await listGalleryKeys(prefix);
-    const regularKeys = isPublicManifest ? keys.filter((key) => !isHeroKey(key)) : keys;
-    const heroKeys = isPublicManifest ? keys.filter((key) => isHeroKey(key)) : [];
+    const publicThemeKeys = isPublicManifest
+      ? selectPublicThemeKeys(keys, publicTheme)
+      : { regularKeys: keys, heroKeys: [] };
+    const regularKeys = publicThemeKeys.regularKeys;
+    const heroKeys = publicThemeKeys.heroKeys;
     const pageKeys = regularKeys.slice(cursorOffset, cursorOffset + requestedLimit);
     const nextCursor = cursorOffset + pageKeys.length < regularKeys.length
       ? String(cursorOffset + pageKeys.length)
@@ -257,8 +291,9 @@ export const handler = async (event) => {
     }
 
     return json(200, {
-      collection: isPublicManifest ? "public" : "extra",
+      collection: isPublicManifest ? `public-${publicTheme}` : "extra",
       prefix,
+      theme: publicTheme,
       total: regularKeys.length,
       count: photos.length,
       limit: requestedLimit,

@@ -2,6 +2,7 @@ document.addEventListener("DOMContentLoaded", async () => {
   const auth = window.PrivateGalleryAuth;
   const config = window.__PRIVATE_GALLERY_CONFIG__ || {};
   const profileButtons = [...document.querySelectorAll("[data-profile-trigger]")];
+  const galleryThemeButtons = [...document.querySelectorAll("[data-gallery-theme-toggle]")];
   const loginModal = document.getElementById("login-modal");
   const loginForm = document.getElementById("login-form");
   const loginEmailInput = document.getElementById("login-email");
@@ -18,7 +19,8 @@ document.addEventListener("DOMContentLoaded", async () => {
   const loadMoreIdleLabel = publicGalleryLoadMore?.dataset.idleText || publicGalleryLoadMore?.textContent?.trim() || "Load more";
   const loadMoreLoadingLabel = publicGalleryLoadMore?.dataset.loadingText || "Loading...";
   const publicGalleryPageSize = 72;
-  const publicGalleryCacheKey = `${config.projectSlug || "malkokote-gallery"}:public-gallery-cache`;
+  const siteLabel = config.projectSlug || "malkokote-gallery";
+  const publicGalleryThemeStorageKey = `${siteLabel}:gallery-theme`;
   const publicGalleryAutoloadMarginPx = 1200;
 
   let currentSession = null;
@@ -26,6 +28,7 @@ document.addEventListener("DOMContentLoaded", async () => {
   let publicGalleryLoading = false;
   let publicGalleryObserver = null;
   const publicGalleryState = {
+    theme: "day",
     photos: [],
     heroPhotos: [],
     nextCursor: null,
@@ -64,6 +67,72 @@ document.addEventListener("DOMContentLoaded", async () => {
     return String(value ?? "")
       .replace(/\\/g, "\\\\")
       .replace(/"/g, '\\"');
+  }
+
+  function normalizePublicTheme(value) {
+    return String(value || "").trim().toLowerCase() === "night" ? "night" : "day";
+  }
+
+  function getOppositePublicTheme(theme) {
+    return normalizePublicTheme(theme) === "night" ? "day" : "night";
+  }
+
+  function getPublicGalleryCacheKey(theme = publicGalleryState.theme) {
+    return `${siteLabel}:public-gallery-cache:${normalizePublicTheme(theme)}`;
+  }
+
+  function readStoredPublicTheme() {
+    try {
+      return normalizePublicTheme(localStorage.getItem(publicGalleryThemeStorageKey));
+    } catch (error) {
+      console.warn("Unable to read gallery theme.", error);
+      return "day";
+    }
+  }
+
+  function writeStoredPublicTheme(theme) {
+    try {
+      localStorage.setItem(publicGalleryThemeStorageKey, normalizePublicTheme(theme));
+    } catch (error) {
+      console.warn("Unable to persist gallery theme.", error);
+    }
+  }
+
+  function updateThemeButtons() {
+    const nextTheme = getOppositePublicTheme(publicGalleryState.theme);
+
+    galleryThemeButtons.forEach((button) => {
+      const label = button.querySelector("[data-gallery-theme-label]");
+
+      if (!label) {
+        return;
+      }
+
+      label.textContent = nextTheme === "night"
+        ? button.dataset.nightLabel || "Night"
+        : button.dataset.dayLabel || "Day";
+      button.dataset.targetTheme = nextTheme;
+      button.setAttribute("aria-pressed", String(publicGalleryState.theme === "night"));
+    });
+  }
+
+  function applyPublicTheme(theme, options = {}) {
+    const normalizedTheme = normalizePublicTheme(theme);
+    const previousTheme = publicGalleryState.theme;
+
+    publicGalleryState.theme = normalizedTheme;
+    document.body.dataset.galleryTheme = normalizedTheme;
+    updateThemeButtons();
+
+    if (options.persist !== false) {
+      writeStoredPublicTheme(normalizedTheme);
+    }
+
+    if (previousTheme !== normalizedTheme) {
+      window.dispatchEvent(new CustomEvent("malkokote:themechange", {
+        detail: { theme: normalizedTheme },
+      }));
+    }
   }
 
   function setFeedback(message) {
@@ -319,7 +388,7 @@ document.addEventListener("DOMContentLoaded", async () => {
 
   function getPublicGalleryCache() {
     try {
-      const raw = localStorage.getItem(publicGalleryCacheKey);
+      const raw = localStorage.getItem(getPublicGalleryCacheKey());
       const parsed = raw ? JSON.parse(raw) : null;
 
       if (!parsed || !Array.isArray(parsed.photos)) {
@@ -327,7 +396,7 @@ document.addEventListener("DOMContentLoaded", async () => {
       }
 
       if ((parsed.expiresAt || 0) * 1000 <= Date.now()) {
-        localStorage.removeItem(publicGalleryCacheKey);
+        localStorage.removeItem(getPublicGalleryCacheKey());
         return null;
       }
 
@@ -340,7 +409,8 @@ document.addEventListener("DOMContentLoaded", async () => {
 
   function savePublicGalleryCache() {
     try {
-      localStorage.setItem(publicGalleryCacheKey, JSON.stringify({
+      localStorage.setItem(getPublicGalleryCacheKey(), JSON.stringify({
+        theme: publicGalleryState.theme,
         photos: publicGalleryState.photos,
         heroPhotos: publicGalleryState.heroPhotos,
         nextCursor: publicGalleryState.nextCursor,
@@ -404,6 +474,7 @@ document.addEventListener("DOMContentLoaded", async () => {
   async function fetchPublicManifestPage(cursor = null) {
     const manifestUrl = new URL(`${String(config.galleryBaseUrl || "").replace(/\/+$/, "")}/api/gallery/public-manifest`);
     manifestUrl.searchParams.set("limit", String(publicGalleryPageSize));
+    manifestUrl.searchParams.set("theme", publicGalleryState.theme);
 
     if (cursor) {
       manifestUrl.searchParams.set("cursor", String(cursor));
@@ -420,11 +491,16 @@ document.addEventListener("DOMContentLoaded", async () => {
   }
 
   async function loadPublicManifestPage(cursor = null) {
+    const activeTheme = publicGalleryState.theme;
     publicGalleryLoading = true;
     updateLoadMoreButton();
 
     try {
       const manifest = await fetchPublicManifestPage(cursor);
+      if (publicGalleryState.theme !== activeTheme) {
+        return;
+      }
+
       const nextPhotos = uniquePhotosByKey(manifest.photos || []);
 
       if (cursor) {
@@ -858,11 +934,15 @@ document.addEventListener("DOMContentLoaded", async () => {
     }
 
     try {
+      const activeTheme = publicGalleryState.theme;
       const cachedManifest = getPublicGalleryCache();
 
       if (cachedManifest) {
         publicGalleryState.photos = await prepareWallPhotos(cachedManifest.photos);
         publicGalleryState.heroPhotos = await Promise.all(uniquePhotosByKey(Array.isArray(cachedManifest.heroPhotos) ? cachedManifest.heroPhotos : []).map((photo) => enrichPhoto(photo)));
+        if (publicGalleryState.theme !== activeTheme) {
+          return;
+        }
         publicGalleryState.nextCursor = cachedManifest.nextCursor || null;
         publicGalleryState.expiresAt = cachedManifest.expiresAt || 0;
         await renderPublicGallery();
@@ -960,6 +1040,38 @@ document.addEventListener("DOMContentLoaded", async () => {
     });
   });
 
+  galleryThemeButtons.forEach((button) => {
+    button.addEventListener("click", async () => {
+      const nextTheme = normalizePublicTheme(
+        button.dataset.targetTheme || getOppositePublicTheme(publicGalleryState.theme)
+      );
+
+      if (nextTheme === publicGalleryState.theme) {
+        return;
+      }
+
+      applyPublicTheme(nextTheme);
+
+      if (!grid) {
+        return;
+      }
+
+      dismissViewer();
+      publicGalleryState.photos = [];
+      publicGalleryState.heroPhotos = [];
+      publicGalleryState.nextCursor = null;
+      publicGalleryState.expiresAt = 0;
+
+      if (status) {
+        status.hidden = false;
+        status.textContent = nextTheme === "night" ? "Loading night gallery." : "Loading day gallery.";
+      }
+
+      grid.innerHTML = "";
+      await loadPublicGallery();
+    });
+  });
+
   modalCloseTriggers.forEach((trigger) => {
     trigger.addEventListener("click", closeModal);
   });
@@ -979,6 +1091,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     await beginLogin();
   });
 
+  applyPublicTheme(readStoredPublicTheme(), { persist: false });
   await window.MalkokoteAgeGate?.waitForAccess?.();
   bindPublicGalleryAutoload();
   await Promise.all([refreshSession(), loadPublicGallery()]);

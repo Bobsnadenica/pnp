@@ -19,6 +19,15 @@ body {
     background: linear-gradient(180deg, #faf9f7 0%, var(--bg) 100%);
 }
 
+body[data-gallery-theme="night"] {
+    --bg: #10141c;
+    --surface: rgba(19, 24, 32, 0.82);
+    --line: rgba(255, 255, 255, 0.12);
+    --text: #f4f7fb;
+    --muted: #aeb8c7;
+    background: linear-gradient(180deg, #171d28 0%, var(--bg) 100%);
+}
+
 body.has-ambient-background {
     background: #efebe6;
 }
@@ -73,6 +82,12 @@ a {
         radial-gradient(circle at top, rgba(255, 255, 255, 0.16), transparent 34%);
 }
 
+body[data-gallery-theme="night"] .ambient-background-wash {
+    background:
+        linear-gradient(180deg, rgba(12, 15, 22, 0.34) 0%, rgba(10, 13, 20, 0.48) 100%),
+        radial-gradient(circle at top, rgba(255, 255, 255, 0.06), transparent 32%);
+}
+
 .site-frame {
     position: relative;
     z-index: 1;
@@ -103,6 +118,10 @@ a {
     text-transform: uppercase;
 }
 
+body[data-gallery-theme="night"] .site-mark {
+    color: var(--text);
+}
+
 .ghost-button,
 .primary-button,
 .secondary-button {
@@ -128,6 +147,20 @@ a {
     background: #111111;
     color: white;
     box-shadow: 0 18px 30px -22px rgba(17, 24, 39, 0.38);
+}
+
+body[data-gallery-theme="night"] .ghost-button,
+body[data-gallery-theme="night"] .secondary-button {
+    border-color: rgba(255, 255, 255, 0.14);
+    background: rgba(19, 24, 32, 0.68);
+    color: var(--text);
+}
+
+body[data-gallery-theme="night"] .primary-button {
+    border-color: rgba(255, 255, 255, 0.18);
+    background: rgba(248, 250, 253, 0.92);
+    color: #10141c;
+    box-shadow: 0 18px 30px -22px rgba(5, 10, 18, 0.52);
 }
 
 .ghost-button:hover,
@@ -166,6 +199,13 @@ a {
     background: rgba(255, 255, 255, 0.42);
     backdrop-filter: blur(24px) saturate(1.25);
     box-shadow: 0 30px 54px -36px rgba(17, 24, 39, 0.34);
+}
+
+body[data-gallery-theme="night"] .contact-panel,
+body[data-gallery-theme="night"] .buy-copy {
+    border-color: rgba(255, 255, 255, 0.14);
+    background: rgba(13, 17, 24, 0.34);
+    box-shadow: 0 34px 64px -40px rgba(3, 7, 14, 0.64);
 }
 
 .contact-panel {
