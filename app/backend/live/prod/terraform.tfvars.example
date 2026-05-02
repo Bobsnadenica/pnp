@@ -1,18 +1,18 @@
-site_name             = "[NEW_SITE_NAME]"
-project_slug          = "[NEW_PROJECT_SLUG]"
+site_name             = "Malkokote"
+project_slug          = "malkokote-gallery"
 environment           = "prod"
-aws_region            = "[AWS_REGION]"
-website_base_url      = "[https://YOURDOMAIN.com]"
+aws_region            = "eu-central-1"
+website_base_url      = "https://www.malkokote.com"
 local_callback_url    = "[http://localhost:8000/auth/callback.html]"
-cognito_domain_prefix = "[UNIQUE_COGNITO_PREFIX]"
+cognito_domain_prefix = "malkokote-gallery-prod"
 
 auth_callback_urls = [
-  "[https://YOURDOMAIN.com]/auth/callback.html",
-  "[http://localhost:8000/auth/callback.html]"
+  "https://www.malkokote.com/auth/callback.html",
+  "http://localhost:8000/auth/callback.html"
 ]
 
 auth_logout_urls = [
-  "[https://YOURDOMAIN.com]/",
+  "https://www.malkokote.com/",
   "http://localhost:8000/"
 ]
 
@@ -26,7 +26,7 @@ gallery_cache_version   = "v1"
 gallery_signed_url_ttl_seconds = 31536000
 
 gallery_api_allowed_origins = [
-  "[https://YOURDOMAIN.com]",
+  "https://www.malkokote.com",
   "http://localhost:8000"
 ]
 
@@ -38,5 +38,6 @@ cognito_login_timeout_evaluation_window_sec = 300
 price_class                                 = "PriceClass_100"
 
 tags = {
-  Owner = "your-name"
+  Site  = "malkokote.com"
+  Stack = "gallery"
 }

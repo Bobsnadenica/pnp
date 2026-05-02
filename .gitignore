@@ -17,6 +17,9 @@ terraform.tfvars
 *.tfvars.json
 *.tfplan
 plan.out
+*.auto.tfvars
+*.auto.tfvars.json
+terraform.tfstate.backup
 
 # Local environment files
 .env
