@@ -71,6 +71,29 @@ resource "aws_cloudfront_response_headers_policy" "gallery_images" {
   }
 }
 
+resource "aws_cloudfront_response_headers_policy" "gallery_public_manifests" {
+  name    = "${local.prefix}-gallery-public-manifests"
+  comment = "CORS headers for public manifest JSON files."
+
+  cors_config {
+    access_control_allow_credentials = false
+    origin_override                  = true
+    access_control_max_age_sec       = 600
+
+    access_control_allow_headers {
+      items = ["*"]
+    }
+
+    access_control_allow_methods {
+      items = ["GET", "HEAD", "OPTIONS"]
+    }
+
+    access_control_allow_origins {
+      items = ["*"]
+    }
+  }
+}
+
 resource "aws_cloudfront_cache_policy" "gallery_media" {
   name        = "${local.prefix}-gallery-media"
   comment     = "Long-lived media cache with explicit manual busting through the v query string."
@@ -189,13 +212,14 @@ resource "aws_cloudfront_distribution" "gallery" {
   }
 
   ordered_cache_behavior {
-    path_pattern           = "/_manifests/public/*"
-    target_origin_id       = local.gallery_origin_id
-    viewer_protocol_policy = "redirect-to-https"
-    allowed_methods        = ["GET", "HEAD"]
-    cached_methods         = ["GET", "HEAD"]
-    compress               = true
-    cache_policy_id        = aws_cloudfront_cache_policy.gallery_public_manifests.id
+    path_pattern               = "/_manifests/public/*"
+    target_origin_id           = local.gallery_origin_id
+    viewer_protocol_policy     = "redirect-to-https"
+    allowed_methods            = ["GET", "HEAD"]
+    cached_methods             = ["GET", "HEAD"]
+    compress                   = true
+    cache_policy_id            = aws_cloudfront_cache_policy.gallery_public_manifests.id
+    response_headers_policy_id = aws_cloudfront_response_headers_policy.gallery_public_manifests.id
   }
 
   ordered_cache_behavior {

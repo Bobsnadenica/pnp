@@ -100,16 +100,20 @@ document.addEventListener("DOMContentLoaded", async () => {
   }
 
   async function fetchManifest(theme) {
-    const staticResponse = await fetch(buildPublicManifestStaticUrl(theme), { cache: "default" });
+    try {
+      const staticResponse = await fetch(buildPublicManifestStaticUrl(theme), { cache: "default" });
 
-    if (staticResponse.ok) {
-      const manifest = await staticResponse.json().catch(() => null);
+      if (staticResponse.ok) {
+        const manifest = await staticResponse.json().catch(() => null);
 
-      if (!manifest) {
-        throw new Error("Unable to parse background media.");
+        if (!manifest) {
+          throw new Error("Unable to parse background media.");
+        }
+
+        return manifest;
       }
-
-      return manifest;
+    } catch (error) {
+      console.warn("Static ambient manifest fetch failed, falling back to API.", error);
     }
 
     const fallbackResponse = await fetch(buildPublicManifestFallbackUrl(theme), { cache: "no-store" });
