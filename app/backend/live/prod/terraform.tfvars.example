@@ -16,7 +16,6 @@ auth_logout_urls = [
   "http://localhost:8000/"
 ]
 
-archive_transition_days   = 7
 gallery_public_prefix     = "public"
 gallery_extra_prefix      = "extra"
 

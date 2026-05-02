@@ -44,12 +44,6 @@ variable "cognito_domain_prefix" {
   type        = string
 }
 
-variable "archive_transition_days" {
-  description = "Days before archive uploads transition to DEEP_ARCHIVE."
-  type        = number
-  default     = 7
-}
-
 variable "gallery_public_prefix" {
   description = "Prefix inside the gallery bucket for the public showcase files."
   type        = string

@@ -1,8 +1,3 @@
-output "archive_bucket_name" {
-  description = "Bucket for the full long-term photo library."
-  value       = aws_s3_bucket.archive.bucket
-}
-
 output "gallery_bucket_name" {
   description = "Private bucket that holds the selected gallery photos."
   value       = aws_s3_bucket.gallery.bucket

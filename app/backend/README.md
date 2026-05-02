@@ -4,7 +4,6 @@ Terraform for the Malkokote production gallery backend lives here.
 
 ## What This Stack Creates
 
-- archive S3 bucket for long-term storage
 - private gallery S3 bucket
 - CloudFront distribution in front of the gallery bucket
 - Cognito user pool, app client, and Hosted UI domain
@@ -59,7 +58,6 @@ gallery_api_allowed_origins = [
   "http://localhost:8000"
 ]
 
-archive_transition_days                  = 7
 gallery_cache_version                    = "v1"
 gallery_signed_url_ttl_seconds           = 31536000
 cognito_login_captcha_rate_limit         = 10
