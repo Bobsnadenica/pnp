@@ -7,9 +7,6 @@ document.addEventListener("DOMContentLoaded", async () => {
   const loginEmailInput = document.getElementById("login-email");
   const loginFeedback = document.getElementById("login-feedback");
   const loginSubmit = document.getElementById("login-submit");
-  const accountPanel = document.getElementById("account-panel");
-  const accountSummary = document.getElementById("account-summary");
-  const accountSignout = document.getElementById("account-signout");
   const modalCloseTriggers = [...document.querySelectorAll("[data-modal-close]")];
   const status = document.getElementById("public-gallery-status");
   const grid = document.getElementById("public-gallery-grid");
@@ -83,7 +80,7 @@ document.addEventListener("DOMContentLoaded", async () => {
       }
 
       label.textContent = currentSession
-        ? button.dataset.signedInText || "Extra"
+        ? button.dataset.signedInText || button.dataset.signedOutText || "Login"
         : button.dataset.signedOutText || "Login";
     });
   }
@@ -512,7 +509,7 @@ document.addEventListener("DOMContentLoaded", async () => {
         <div class="public-viewer-stage" id="public-viewer-stage">
           <div class="public-viewer-media">
             <img id="public-viewer-image" alt="" hidden>
-            <video id="public-viewer-video" playsinline controls preload="metadata" hidden></video>
+            <video id="public-viewer-video" playsinline controls muted preload="metadata" hidden></video>
           </div>
         </div>
       </div>
@@ -622,6 +619,7 @@ document.addEventListener("DOMContentLoaded", async () => {
 
         if (viewerVideo) {
           viewerVideo.hidden = false;
+          viewerVideo.muted = true;
           viewerVideo.src = src;
           viewerVideo.load();
           viewerVideo.play().catch(() => {});
@@ -803,16 +801,8 @@ document.addEventListener("DOMContentLoaded", async () => {
     lastFocus = document.activeElement;
     loginModal.setAttribute("aria-hidden", "false");
     setFeedback("");
-
-    if (currentSession) {
-      loginForm.hidden = true;
-      accountPanel.hidden = false;
-      accountSummary.textContent = currentSession.claims?.email || "Signed in";
-    } else {
-      loginForm.hidden = false;
-      accountPanel.hidden = true;
-      window.setTimeout(() => loginEmailInput?.focus(), 30);
-    }
+    loginForm.hidden = false;
+    window.setTimeout(() => loginEmailInput?.focus(), 30);
   }
 
   function closeModal() {
@@ -856,7 +846,10 @@ document.addEventListener("DOMContentLoaded", async () => {
       currentSession = auth.completePopupLogin(result);
       updateProfileButtons();
       closeModal();
-      window.location.assign("/gallery/");
+      const galleryWindow = window.open("/gallery/", "_blank", "noopener");
+      if (!galleryWindow) {
+        window.location.assign("/gallery/");
+      }
     } catch (error) {
       console.error(error);
       setFeedback(error.message || "Unable to sign in.");
@@ -869,7 +862,10 @@ document.addEventListener("DOMContentLoaded", async () => {
   profileButtons.forEach((button) => {
     button.addEventListener("click", () => {
       if (currentSession) {
-        window.location.assign("/gallery/");
+        const galleryWindow = window.open("/gallery/", "_blank", "noopener");
+        if (!galleryWindow) {
+          window.location.assign("/gallery/");
+        }
         return;
       }
 
@@ -906,10 +902,6 @@ document.addEventListener("DOMContentLoaded", async () => {
   loginForm?.addEventListener("submit", async (event) => {
     event.preventDefault();
     await beginLogin();
-  });
-
-  accountSignout?.addEventListener("click", () => {
-    auth?.signOut({ logoutUri: `${window.location.origin}/` });
   });
 
   await window.MalkokoteAgeGate?.waitForAccess?.();

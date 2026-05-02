@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Malkokote | Buy</title>
+    <meta name="description" content="Buy page for Malkokote premium access.">
+    <meta name="robots" content="noindex, follow">
+    <meta name="theme-color" content="#111111">
+    <link rel="canonical" href="https://www.malkokote.com/buy.html">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" media="print" onload="this.media='all'">
+    <noscript>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap">
+    </noscript>
+    <link rel="stylesheet" href="/style.css">
+</head>
+<body class="age-gate-pending">
+    <div id="age-gate" class="age-gate" role="dialog" aria-modal="true" aria-labelledby="age-gate-title">
+        <div class="age-gate-card">
+            <p class="age-gate-kicker">18+</p>
+            <h1 id="age-gate-title">Adults only</h1>
+            <p class="age-gate-copy">This website contains adult modeling and photography content. Enter only if you are 18 or older.</p>
+            <p class="age-gate-copy age-gate-copy-secondary">Този сайт съдържа 18+ моделни и фотографски материали. Влезте само ако сте навършили 18 години.</p>
+            <div class="age-gate-actions">
+                <button class="primary-button" type="button" data-age-enter>Enter</button>
+                <button class="ghost-button" type="button" data-age-leave>Leave</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="site-frame">
+        <header class="site-header">
+            <a class="site-mark" href="/">Malkokote</a>
+            <div class="site-actions">
+                <a class="ghost-button button-link" href="/">Gallery</a>
+                <a class="ghost-button button-link" href="/contact.html">Contact</a>
+                <button class="ghost-button" type="button" data-profile-trigger data-signed-out-text="Login" data-signed-in-text="Login">
+                    <span data-profile-label>Login</span>
+                </button>
+            </div>
+        </header>
+
+        <main class="buy-shell">
+            <h1 class="sr-only">Buy premium access</h1>
+            <p class="buy-copy">Coming soon / Скоро</p>
+        </main>
+    </div>
+
+    <div id="login-modal" class="modal-shell" role="dialog" aria-modal="true" aria-hidden="true" aria-labelledby="login-modal-title">
+        <div class="modal-backdrop" data-modal-close></div>
+        <div class="modal-card">
+            <button class="modal-close" type="button" aria-label="Close sign-in dialog" data-modal-close>&times;</button>
+            <h2 id="login-modal-title">Login</h2>
+            <p class="modal-copy">Use your member account. Password reset is available on the secure page.</p>
+            <form id="login-form" class="login-form">
+                <input id="login-email" type="email" placeholder="Email" autocomplete="email" aria-label="Email address">
+                <div class="modal-actions">
+                    <button id="login-submit" class="primary-button" type="submit" data-idle-text="Continue" data-loading-text="Redirecting...">Continue</button>
+                </div>
+            </form>
+            <p id="login-feedback" class="login-feedback" hidden></p>
+        </div>
+    </div>
+
+    <script src="/age-gate.js" defer></script>
+    <script src="/config/site-config.js" defer></script>
+    <script src="/auth/auth.js" defer></script>
+    <script src="/script.js" defer></script>
+</body>
+</html>

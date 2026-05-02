@@ -4,8 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Malkokote | Contact Bulgaria</title>
-    <meta name="description" content="Contact Malkokote in Bulgaria for modeling, photography, portfolio work, and editorial inquiries. коте, малко коте, работа, модел, снимки, България.">
-    <meta name="keywords" content="Malkokote contact, Bulgaria modeling contact, photography contact Bulgaria, работа, модел, снимки, коте, малко коте, България">
+    <meta name="description" content="Contact Malkokote in Bulgaria for 18+ modeling, photography, portfolio access, collaborations, and editorial inquiries in English and Bulgarian.">
+    <meta name="keywords" content="Malkokote contact, Bulgaria modeling contact, photography contact Bulgaria, 18+ modeling Bulgaria, photography Bulgaria, работа, модел, снимки, България">
     <meta name="robots" content="index, follow">
     <meta name="theme-color" content="#111111">
     <link rel="canonical" href="https://www.malkokote.com/contact.html">
@@ -74,7 +74,8 @@
             <a class="site-mark" href="/">Malkokote</a>
             <div class="site-actions">
                 <a class="ghost-button button-link" href="/">Gallery</a>
-                <button class="ghost-button" type="button" data-profile-trigger data-signed-out-text="Login" data-signed-in-text="Extra">
+                <a class="ghost-button button-link" href="/buy.html">Buy</a>
+                <button class="ghost-button" type="button" data-profile-trigger data-signed-out-text="Login" data-signed-in-text="Login">
                     <span data-profile-label>Login</span>
                 </button>
             </div>
@@ -82,7 +83,22 @@
 
         <main class="contact-shell">
             <h1 class="sr-only">Contact Malkokote in Bulgaria</h1>
-            <a class="contact-link" href="mailto:contactus@malkokote.com">contactus@malkokote.com</a>
+            <section class="contact-panel" data-contact-language-root>
+                <div class="language-switch" aria-label="Language switcher">
+                    <button class="language-pill" type="button" data-language-option="bg" aria-pressed="false">🇧🇬 BG</button>
+                    <button class="language-pill" type="button" data-language-option="en" aria-pressed="false">🇬🇧 EN</button>
+                </div>
+                <div class="contact-copy" data-language-panel="bg" lang="bg" hidden>
+                    <p>Ако си 18+ коте и искаш да работиш с нас, пиши ни на <a href="mailto:contactus@malkokote.com">contactus@malkokote.com</a>.</p>
+                    <p>Ако искаш да гледаш още, прати ни своето 18+ портфолио на <a href="mailto:contactus@malkokote.com">contactus@malkokote.com</a> и ако е подходящо, ще ти дадем акаунт.</p>
+                    <p>Ако търсиш колаборация, фотосесия или реклама, пиши ни на <a href="mailto:contactus@malkokote.com">contactus@malkokote.com</a>.</p>
+                </div>
+                <div class="contact-copy" data-language-panel="en" lang="en" hidden>
+                    <p>If you are an 18+ model and want to work with us, write to <a href="mailto:contactus@malkokote.com">contactus@malkokote.com</a>.</p>
+                    <p>If you want to see more, send your 18+ portfolio to <a href="mailto:contactus@malkokote.com">contactus@malkokote.com</a> and if it is a fit, we will give you an account.</p>
+                    <p>If you are looking for a collaboration, a photoshoot, or advertising, write to <a href="mailto:contactus@malkokote.com">contactus@malkokote.com</a>.</p>
+                </div>
+            </section>
         </main>
     </div>
 
@@ -91,19 +107,13 @@
         <div class="modal-card">
             <button class="modal-close" type="button" aria-label="Close sign-in dialog" data-modal-close>&times;</button>
             <h2 id="login-modal-title">Login</h2>
+            <p class="modal-copy">Use your member account. Password reset is available on the secure page.</p>
             <form id="login-form" class="login-form">
                 <input id="login-email" type="email" placeholder="Email" autocomplete="email" aria-label="Email address">
                 <div class="modal-actions">
                     <button id="login-submit" class="primary-button" type="submit" data-idle-text="Continue" data-loading-text="Redirecting...">Continue</button>
                 </div>
             </form>
-            <div id="account-panel" class="account-panel" hidden>
-                <p id="account-summary">Signed in.</p>
-                <div class="modal-actions">
-                    <a class="primary-button button-link" href="/gallery/">Open Extra</a>
-                    <button id="account-signout" class="secondary-button button-link" type="button">Sign Out</button>
-                </div>
-            </div>
             <p id="login-feedback" class="login-feedback" hidden></p>
         </div>
     </div>
@@ -112,5 +122,6 @@
     <script src="/config/site-config.js" defer></script>
     <script src="/auth/auth.js" defer></script>
     <script src="/script.js" defer></script>
+    <script src="/contact.js" defer></script>
 </body>
 </html>

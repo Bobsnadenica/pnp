@@ -144,7 +144,7 @@
           <div class="viewer-stage" id="viewer-stage">
             <div class="viewer-media">
               <img id="viewer-image" alt="" hidden>
-              <video id="viewer-video" playsinline controls preload="metadata" hidden></video>
+              <video id="viewer-video" playsinline controls muted preload="metadata" hidden></video>
             </div>
           </div>
         </div>
@@ -255,6 +255,7 @@
 
         if (viewerVideo) {
           viewerVideo.hidden = false;
+          viewerVideo.muted = true;
           viewerVideo.src = src;
           viewerVideo.load();
           viewerVideo.play().catch(() => {});

@@ -98,7 +98,8 @@
             <a class="site-mark" href="/">Malkokote</a>
             <div class="site-actions">
                 <a class="ghost-button button-link" href="/contact.html">Contact</a>
-                <button class="ghost-button" type="button" data-profile-trigger data-signed-out-text="Login" data-signed-in-text="Extra">
+                <a class="ghost-button button-link" href="/buy.html">Buy</a>
+                <button class="ghost-button" type="button" data-profile-trigger data-signed-out-text="Login" data-signed-in-text="Login">
                     <span data-profile-label>Login</span>
                 </button>
             </div>
@@ -120,19 +121,13 @@
         <div class="modal-card">
             <button class="modal-close" type="button" aria-label="Close sign-in dialog" data-modal-close>&times;</button>
             <h2 id="login-modal-title">Login</h2>
+            <p class="modal-copy">Use your member account. Password reset is available on the secure page.</p>
             <form id="login-form" class="login-form">
                 <input id="login-email" type="email" placeholder="Email" autocomplete="email" aria-label="Email address">
                 <div class="modal-actions">
                     <button id="login-submit" class="primary-button" type="submit" data-idle-text="Continue" data-loading-text="Redirecting...">Continue</button>
                 </div>
             </form>
-            <div id="account-panel" class="account-panel" hidden>
-                <p id="account-summary">Signed in.</p>
-                <div class="modal-actions">
-                    <a class="primary-button button-link" href="/gallery/">Open Extra</a>
-                    <button id="account-signout" class="secondary-button button-link" type="button">Sign Out</button>
-                </div>
-            </div>
             <p id="login-feedback" class="login-feedback" hidden></p>
         </div>
     </div>

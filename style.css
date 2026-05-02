@@ -117,19 +117,83 @@ a {
     place-items: center;
 }
 
-.contact-link {
+.contact-panel,
+.buy-copy {
+    border: 1px solid rgba(17, 24, 39, 0.08);
+    background: rgba(255, 255, 255, 0.88);
+    box-shadow: 0 24px 42px -34px rgba(17, 24, 39, 0.24);
+}
+
+.contact-panel {
+    width: min(100%, 44rem);
+    padding: 1.2rem;
+    border-radius: 1.6rem;
+}
+
+.language-switch {
+    display: inline-flex;
+    gap: 0.55rem;
+    margin-bottom: 1.1rem;
+}
+
+.language-pill {
+    appearance: none;
+    border: 1px solid rgba(17, 24, 39, 0.1);
+    background: rgba(255, 255, 255, 0.76);
+    color: var(--text);
+    border-radius: 999px;
+    padding: 0.65rem 0.9rem;
+    font: inherit;
+    font-weight: 600;
+    cursor: pointer;
+    transition: transform 0.16s ease, background-color 0.16s ease, border-color 0.16s ease;
+}
+
+.language-pill:hover {
+    transform: translateY(-1px);
+}
+
+.language-pill.is-active {
+    background: #111111;
+    border-color: #111111;
+    color: white;
+}
+
+.contact-copy {
+    display: grid;
+    gap: 0.9rem;
+}
+
+.contact-copy p,
+.modal-copy {
+    margin: 0;
+    line-height: 1.72;
+    color: var(--muted);
+}
+
+.contact-copy a {
+    color: var(--text);
+    font-weight: 600;
+    text-decoration: none;
+}
+
+.buy-shell {
+    min-height: calc(100vh - 5rem);
+    display: grid;
+    place-items: center;
+}
+
+.buy-copy {
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    padding: 0.95rem 1.2rem;
+    margin: 0;
+    padding: 0.95rem 1.25rem;
     border-radius: 999px;
-    border: 1px solid rgba(17, 24, 39, 0.1);
-    background: rgba(255, 255, 255, 0.84);
-    text-decoration: none;
-    font-size: clamp(1rem, 2.2vw, 1.4rem);
+    color: var(--text);
+    font-size: clamp(1rem, 2.4vw, 1.3rem);
     font-weight: 600;
     letter-spacing: 0.01em;
-    box-shadow: 0 24px 42px -34px rgba(17, 24, 39, 0.28);
 }
 
 .age-gate[hidden] {
@@ -487,12 +551,8 @@ a {
     font-weight: 700;
 }
 
-.login-form,
-.account-panel {
-    margin-top: 0;
-}
-
 .login-form {
+    margin-top: 0.7rem;
     display: grid;
     gap: 0.55rem;
 }
@@ -512,12 +572,6 @@ a {
     margin-top: 0.25rem;
 }
 
-.account-panel {
-    display: grid;
-    gap: 0.8rem;
-}
-
-.account-panel p,
 .login-feedback {
     margin: 0;
     line-height: 1.65;
@@ -648,8 +702,16 @@ a {
         max-height: min(82svh, 52rem);
     }
 
-    .contact-link {
+    .contact-panel,
+    .buy-copy {
         width: 100%;
-        text-align: center;
+    }
+
+    .language-switch {
+        width: 100%;
+    }
+
+    .language-pill {
+        flex: 1 1 0;
     }
 }
