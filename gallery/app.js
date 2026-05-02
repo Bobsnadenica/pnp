@@ -469,6 +469,8 @@
     const content = document.getElementById("gallery-content");
     let refreshToken = readRefreshToken();
 
+    await window.MalkokoteAgeGate?.waitForAccess?.();
+
     if (!auth) {
       if (status) {
         status.textContent = "Unable to load.";

@@ -26,6 +26,14 @@ body {
         linear-gradient(180deg, #fffdf9 0%, var(--page-bg) 100%);
 }
 
+body.age-gate-pending {
+    overflow: hidden;
+}
+
+body.age-gate-pending .shell {
+    visibility: hidden;
+}
+
 body[data-gallery-mode="test"] {
     --page-bg: #f6efe7;
     --line: rgba(159, 97, 37, 0.16);
@@ -45,6 +53,64 @@ body[data-gallery-mode="router"] {
     background:
         radial-gradient(circle at top, rgba(190, 140, 34, 0.2), transparent 40%),
         linear-gradient(180deg, #fff9ef 0%, #ffffff 100%);
+}
+
+.age-gate[hidden] {
+    display: none;
+}
+
+.age-gate {
+    position: fixed;
+    inset: 0;
+    z-index: 950;
+    display: grid;
+    place-items: center;
+    padding: 1rem;
+    background: rgba(10, 7, 4, 0.76);
+    backdrop-filter: blur(20px) saturate(1.04);
+}
+
+.age-gate-card {
+    width: min(100%, 34rem);
+    padding: 1.6rem;
+    border-radius: 1.8rem;
+    background: rgba(255, 252, 247, 0.95);
+    border: 1px solid rgba(35, 24, 15, 0.08);
+    text-align: center;
+    box-shadow: 0 44px 90px -50px rgba(0, 0, 0, 0.52);
+}
+
+.age-gate-kicker {
+    margin: 0 0 0.75rem;
+    color: var(--accent);
+    font-size: 0.82rem;
+    font-weight: 700;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+}
+
+.age-gate-card h1 {
+    margin: 0;
+    font-family: "Fraunces", serif;
+    font-size: clamp(2rem, 4.5vw, 3rem);
+    letter-spacing: -0.04em;
+}
+
+.age-gate-copy {
+    margin: 1rem 0 0;
+    color: var(--text);
+    line-height: 1.72;
+}
+
+.age-gate-copy-secondary {
+    color: var(--muted);
+}
+
+.age-gate-actions {
+    display: flex;
+    justify-content: center;
+    gap: 0.75rem;
+    margin-top: 1.4rem;
 }
 
 .shell {
@@ -507,6 +573,11 @@ h1 {
     touch-action: pan-y;
 }
 
+.viewer-media img[hidden],
+.viewer-media video[hidden] {
+    display: none !important;
+}
+
 .viewer-media video {
     background: rgba(2, 6, 23, 0.24);
 }
@@ -661,6 +732,11 @@ h1 {
         width: min(100%, calc(100% - 1rem));
     }
 
+    .month-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 0.8rem;
+    }
+
     .topbar,
     .gallery-toolbar,
     .viewer-meta {
@@ -679,6 +755,16 @@ h1 {
         width: 100%;
     }
 
+    .media-shell {
+        aspect-ratio: 3 / 4;
+    }
+
+    .media-shell img,
+    .media-shell video {
+        object-fit: contain;
+        background: rgba(255, 255, 255, 0.9);
+    }
+
     .btn {
         width: 100%;
         text-align: center;
@@ -691,6 +777,10 @@ h1 {
 
     .viewer-nav {
         display: none;
+    }
+
+    .age-gate-actions {
+        flex-direction: column;
     }
 
     .month-header {
@@ -706,5 +796,24 @@ h1 {
         grid-column: auto;
         grid-row: auto;
         transform: none;
+    }
+}
+
+@media (max-width: 540px) {
+    .month-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .media-shell {
+        aspect-ratio: auto;
+        min-height: 15rem;
+        max-height: 72vh;
+    }
+
+    .media-shell img,
+    .media-shell video {
+        width: 100%;
+        height: auto;
+        max-height: 72vh;
     }
 }

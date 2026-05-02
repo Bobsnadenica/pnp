@@ -19,6 +19,15 @@ body {
     background: linear-gradient(180deg, #faf9f7 0%, var(--bg) 100%);
 }
 
+body.age-gate-pending {
+    overflow: hidden;
+}
+
+body.age-gate-pending .site-frame,
+body.age-gate-pending .modal-shell {
+    visibility: hidden;
+}
+
 a {
     color: inherit;
 }
@@ -35,6 +44,12 @@ a {
     justify-content: space-between;
     gap: 1rem;
     padding-bottom: 0.9rem;
+}
+
+.site-actions {
+    display: flex;
+    align-items: center;
+    gap: 0.7rem;
 }
 
 .site-mark {
@@ -82,6 +97,84 @@ a {
     display: inline-flex;
     align-items: center;
     justify-content: center;
+}
+
+.contact-shell {
+    min-height: calc(100vh - 5rem);
+    display: grid;
+    place-items: center;
+}
+
+.contact-link {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0.95rem 1.2rem;
+    border-radius: 999px;
+    border: 1px solid rgba(17, 24, 39, 0.1);
+    background: rgba(255, 255, 255, 0.84);
+    text-decoration: none;
+    font-size: clamp(1rem, 2.2vw, 1.4rem);
+    font-weight: 600;
+    letter-spacing: 0.01em;
+    box-shadow: 0 24px 42px -34px rgba(17, 24, 39, 0.28);
+}
+
+.age-gate[hidden] {
+    display: none;
+}
+
+.age-gate {
+    position: fixed;
+    inset: 0;
+    z-index: 900;
+    display: grid;
+    place-items: center;
+    padding: 1rem;
+    background: rgba(15, 14, 13, 0.74);
+    backdrop-filter: blur(22px) saturate(1.02);
+}
+
+.age-gate-card {
+    width: min(100%, 32rem);
+    padding: 1.5rem;
+    border-radius: 1.8rem;
+    background: rgba(255, 255, 255, 0.94);
+    border: 1px solid rgba(17, 24, 39, 0.08);
+    box-shadow: 0 42px 90px -48px rgba(0, 0, 0, 0.52);
+    text-align: center;
+}
+
+.age-gate-kicker {
+    margin: 0 0 0.7rem;
+    font-size: 0.82rem;
+    font-weight: 700;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--muted);
+}
+
+.age-gate-card h1 {
+    margin: 0;
+    font-size: clamp(1.9rem, 5vw, 2.6rem);
+    letter-spacing: -0.04em;
+}
+
+.age-gate-copy {
+    margin: 1rem 0 0;
+    color: var(--text);
+    line-height: 1.65;
+}
+
+.age-gate-copy-secondary {
+    color: var(--muted);
+}
+
+.age-gate-actions {
+    display: flex;
+    justify-content: center;
+    gap: 0.75rem;
+    margin-top: 1.35rem;
 }
 
 .public-gallery-shell {
@@ -240,6 +333,11 @@ a {
     background: transparent;
     border-radius: 0;
     box-shadow: 0 36px 80px -36px rgba(0, 0, 0, 0.45);
+}
+
+.public-viewer-media img[hidden],
+.public-viewer-media video[hidden] {
+    display: none !important;
 }
 
 .public-viewer-close,
@@ -413,8 +511,20 @@ a {
 
 @media (max-width: 900px) {
     .public-gallery-grid {
-        grid-template-columns: repeat(6, minmax(0, 1fr));
-        grid-auto-rows: 8vw;
+        grid-template-columns: repeat(8, minmax(0, 1fr));
+        grid-auto-rows: minmax(2rem, 8vw);
+    }
+
+    .public-card,
+    .public-card-square,
+    .public-card-tall,
+    .public-card-portrait {
+        grid-column: span 2;
+    }
+
+    .public-card-wide,
+    .public-card-landscape {
+        grid-column: span 4;
     }
 }
 
@@ -423,9 +533,16 @@ a {
         width: min(100%, calc(100% - 1rem));
     }
 
+    .site-header,
+    .site-actions {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
     .public-gallery-grid {
         grid-template-columns: repeat(2, minmax(0, 1fr));
-        grid-auto-rows: 22vw;
+        grid-auto-rows: auto;
+        gap: 0.7rem;
     }
 
     .modal-actions {
@@ -447,7 +564,29 @@ a {
     .public-card-wide,
     .public-card-landscape {
         grid-column: span 1;
-        grid-row: span 12;
+        grid-row: auto;
+        border-radius: 1.15rem;
+    }
+
+    .public-card-wide,
+    .public-card-landscape {
+        grid-column: span 2;
+    }
+
+    .public-media {
+        aspect-ratio: 3 / 4;
+    }
+
+    .public-media img,
+    .public-media video {
+        object-fit: contain;
+        background: rgba(255, 255, 255, 0.92);
+    }
+
+    .public-trigger:hover .public-media img,
+    .public-trigger:hover .public-media video {
+        transform: none;
+        filter: none;
     }
 
     .public-viewer-nav {
@@ -460,7 +599,25 @@ a {
     }
 
     .public-viewer-shell {
-        width: min(94vw, 1200px);
+        width: min(96vw, 1200px);
+        gap: 0.65rem;
+    }
+
+    .public-viewer {
+        padding: 0.6rem;
+    }
+
+    .public-viewer-media {
+        max-height: calc(100vh - 9.5rem);
+    }
+
+    .public-viewer-media img,
+    .public-viewer-media video {
+        max-height: calc(100vh - 9.5rem);
+    }
+
+    .age-gate-actions {
+        flex-direction: column;
     }
 }
 
@@ -477,6 +634,29 @@ a {
     .public-card-wide,
     .public-card-landscape {
         grid-column: span 1;
-        grid-row: span 9;
+        grid-row: auto;
+    }
+
+    .public-card-wide,
+    .public-card-landscape {
+        grid-column: span 1;
+    }
+
+    .public-media {
+        aspect-ratio: auto;
+        min-height: 15rem;
+        max-height: 72vh;
+    }
+
+    .public-media img,
+    .public-media video {
+        width: 100%;
+        height: auto;
+        max-height: 72vh;
+    }
+
+    .contact-link {
+        width: 100%;
+        text-align: center;
     }
 }

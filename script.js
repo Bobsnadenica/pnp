@@ -529,5 +529,6 @@ document.addEventListener("DOMContentLoaded", async () => {
     auth?.signOut({ logoutUri: `${window.location.origin}/` });
   });
 
+  await window.MalkokoteAgeGate?.waitForAccess?.();
   await Promise.all([refreshSession(), loadPublicGallery()]);
 });
