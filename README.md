@@ -1,14 +1,12 @@
-# [NEW_SITE_NAME]
+# Malkokote
 
-Isolated private gallery website and backend stack modeled after the existing Everyday Lilly implementation.
+Production gallery site for `www.malkokote.com` with:
 
-This repo now contains:
-
-- a static marketing site with a Cognito Hosted UI popup login
-- a callback page that closes the popup and restores the session in the main window
-- private gallery routes backed by a Cognito-protected manifest API
-- Terraform for a separate S3, CloudFront, Cognito, API Gateway, Lambda, and WAF stack
-- a cleanup script that destroys only this repo's Terraform-managed infrastructure
+- a public gallery served from `public/`
+- a paid member gallery served from `extra/`
+- Cognito Hosted UI popup login
+- CloudFront-signed media URLs minted by the backend
+- Terraform for S3, CloudFront, Cognito, API Gateway, Lambda, and WAF
 
 ## Structure
 
@@ -26,10 +24,6 @@ This repo now contains:
 │   ├── app.js
 │   ├── index.html
 │   ├── styles.css
-│   ├── months/
-│   │   └── index.html
-│   └── test/
-│       └── index.html
 ├── app/
 │   └── backend/
 │       ├── README.md
@@ -54,61 +48,40 @@ This repo now contains:
 
 ## Website Flow
 
-The site follows the same architecture and user experience as the Everyday Lilly reference:
-
 1. Visitors open the sign-in modal from the public site.
 2. The browser launches Cognito Hosted UI in a popup with PKCE.
 3. Cognito redirects to `/auth/callback.html`.
 4. The callback exchanges the code for tokens, posts the session back to the opener, and closes itself.
 5. The main site restores the session and routes the user to `/gallery/`.
-6. The gallery calls the backend manifest API with the Cognito ID token.
-7. The backend decides the allowed prefix, lists objects, and returns signed CloudFront URLs.
-
-The gallery supports:
-
-- pictures
-- GIFs
-- movies
-- filter chips by media type
-- a manual refresh button for cache busting
-- long-lived immutable caching otherwise
-- public showcase media from `public/`
-- paid member media from `extra/`
+6. The homepage loads the public manifest from `/api/gallery/public-manifest`.
+7. The private gallery loads the extra manifest from `/api/gallery/extra-manifest` with the Cognito ID token.
+8. The backend lists objects under the correct prefix and returns signed CloudFront URLs.
 
 ## Configure The Site
 
 Terraform creates the backend values, but the static website also needs them.
 
-After `terraform apply`, update [config/site-config.js](/Users/privileged/Projects/malkokote/pnp/config/site-config.js) with:
+The live site config already points at:
 
-- `siteName`: `[NEW_SITE_NAME]`
-- `projectSlug`: `[NEW_PROJECT_SLUG]`
-- `environment`: `prod`
-- `websiteBaseUrl`: `[https://YOURDOMAIN.com]`
-- `localBaseUrl`: `http://localhost:8000`
-- `authBaseUrl`: Terraform output `cognito_hosted_ui_base_url`
-- `authClientId`: Terraform output `cognito_app_client_id`
-- `galleryBaseUrl`: `https://` + Terraform output `gallery_cloudfront_domain_name`
-- `galleryPublicPrefix`: `public`
-- `galleryExtraPrefix`: `extra`
+- `siteName = "Malkokote"`
+- `projectSlug = "malkokote-gallery"`
+- `websiteBaseUrl = "https://www.malkokote.com"`
+- `galleryBaseUrl = "https://d9yvi8gvtdxu6.cloudfront.net"`
 
-If this repo will own the production domain, also update [CNAME](/Users/privileged/Projects/malkokote/pnp/CNAME) to match your real host.
+The remaining live auth values are also already filled in [config/site-config.js](/Users/privileged/Projects/malkokote/pnp/config/site-config.js).
 
 ## Terraform Inputs
 
-Create [app/backend/live/prod/terraform.tfvars](/Users/privileged/Projects/malkokote/pnp/app/backend/live/prod/terraform.tfvars) from the example and set:
+The live Terraform vars already use:
 
-- `site_name = "[NEW_SITE_NAME]"`
-- `project_slug = "[NEW_PROJECT_SLUG]"`
+- `site_name = "Malkokote"`
+- `project_slug = "malkokote-gallery"`
 - `environment = "prod"`
-- `aws_region = "[AWS_REGION]"`
-- `website_base_url = "[https://YOURDOMAIN.com]"`
-- `local_callback_url = "[http://localhost:8000/auth/callback.html]"`
-- `cognito_domain_prefix = "[UNIQUE_COGNITO_PREFIX]"`
+- `aws_region = "eu-central-1"`
+- `website_base_url = "https://www.malkokote.com"`
+- `cognito_domain_prefix = "malkokote-gallery-prod"`
 - `gallery_public_prefix = "public"`
 - `gallery_extra_prefix = "extra"`
-
-You will also set the callback and logout lists exactly as shown in the backend README.
 
 ## Commands
 
@@ -119,7 +92,7 @@ terraform init
 terraform apply
 ```
 
-Then update [config/site-config.js](/Users/privileged/Projects/malkokote/pnp/config/site-config.js), and preview the site locally:
+To preview the site locally:
 
 ```bash
 cd /Users/privileged/Projects/malkokote/pnp
