@@ -2,6 +2,9 @@ document.addEventListener("DOMContentLoaded", async () => {
   const shell = document.querySelector(".ambient-background");
   const target = document.querySelector("[data-ambient-background]");
   const config = window.__PRIVATE_GALLERY_CONFIG__ || {};
+  const siteLabel = config.projectSlug || "malkokote-gallery";
+  const publicGalleryCacheKey = `${siteLabel}:public-gallery-cache`;
+  const ambientBackgroundCacheKey = `${siteLabel}:ambient-background-cache`;
 
   if (!shell || !target) {
     return;
@@ -39,6 +42,30 @@ document.addEventListener("DOMContentLoaded", async () => {
     return items[Math.floor(Math.random() * items.length)] || null;
   }
 
+  function readCache(key) {
+    try {
+      const raw = localStorage.getItem(key);
+      return raw ? JSON.parse(raw) : null;
+    } catch {
+      return null;
+    }
+  }
+
+  function isCacheFresh(cache) {
+    const expiresAt = Number.parseInt(String(cache?.expiresAt || "0"), 10);
+    return Array.isArray(cache?.photos) && expiresAt * 1000 > Date.now();
+  }
+
+  function saveCache(manifest) {
+    try {
+      localStorage.setItem(ambientBackgroundCacheKey, JSON.stringify({
+        photos: manifest?.photos || [],
+        heroPhotos: manifest?.heroPhotos || [],
+        expiresAt: manifest?.expiresAt || 0,
+      }));
+    } catch {}
+  }
+
   async function fetchManifestPage(limit, cursor = null) {
     const requestUrl = new URL(`${galleryBaseUrl}/api/gallery/public-manifest`);
     requestUrl.searchParams.set("limit", String(limit));
@@ -59,28 +86,39 @@ document.addEventListener("DOMContentLoaded", async () => {
 
   function selectImageCandidate(manifest) {
     const candidates = [...(manifest?.photos || []), ...(manifest?.heroPhotos || [])]
-      .filter((photo) => getMediaKind(photo) !== "movie");
+      .filter((photo) => getMediaKind(photo) === "picture");
 
     return pickRandomItem(candidates);
   }
 
+  function applyBackground(photo) {
+    if (!photo?.url) {
+      return false;
+    }
+
+    target.style.setProperty("--ambient-image", `url("${String(photo.url).replace(/"/g, '\\"')}")`);
+    shell.classList.add("is-loaded");
+    return true;
+  }
+
   try {
-    await window.MalkokoteAgeGate?.waitForAccess?.();
+    const cachedPublicManifest = readCache(publicGalleryCacheKey);
+    const cachedAmbientManifest = readCache(ambientBackgroundCacheKey);
+    const cachedManifest = isCacheFresh(cachedPublicManifest)
+      ? cachedPublicManifest
+      : isCacheFresh(cachedAmbientManifest)
+        ? cachedAmbientManifest
+        : null;
 
-    const summary = await fetchManifestPage(1);
-    const total = Number.parseInt(String(summary?.total || "0"), 10) || 0;
-    const windowSize = 12;
-    const maxStart = Math.max(0, total - windowSize);
-    const randomStart = maxStart > 0 ? Math.floor(Math.random() * (maxStart + 1)) : 0;
-    const detailManifest = total > 1 ? await fetchManifestPage(windowSize, randomStart) : summary;
-    const selected = selectImageCandidate(detailManifest) || selectImageCandidate(summary);
-
-    if (!selected?.url) {
+    if (cachedManifest && applyBackground(selectImageCandidate(cachedManifest))) {
       return;
     }
 
-    target.style.setProperty("--ambient-image", `url("${String(selected.url).replace(/"/g, '\\"')}")`);
-    shell.classList.add("is-loaded");
+    const manifest = await fetchManifestPage(18);
+    saveCache(manifest);
+    const selected = selectImageCandidate(manifest);
+
+    applyBackground(selected);
   } catch (error) {
     console.error(error);
   }

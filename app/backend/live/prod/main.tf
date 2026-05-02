@@ -107,6 +107,10 @@ resource "aws_cloudfront_distribution" "gallery" {
   price_class         = var.price_class
   wait_for_deployment = true
 
+  lifecycle {
+    ignore_changes = [origin]
+  }
+
   origin {
     connection_attempts         = 3
     connection_timeout          = 10
