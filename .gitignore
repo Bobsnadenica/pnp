@@ -15,6 +15,7 @@ override.tf.json
 terraform.tfvars
 *.tfvars
 *.tfvars.json
+*.tfvars.example
 *.tfplan
 plan.out
 *.auto.tfvars
