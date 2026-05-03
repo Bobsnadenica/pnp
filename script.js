@@ -1145,7 +1145,12 @@ document.addEventListener("DOMContentLoaded", async () => {
 
       if (status) {
         status.hidden = false;
-        status.textContent = nextTheme === "night" ? "Loading night gallery." : "Loading day gallery.";
+        const lang = window.MalkokoteLanguage?.getLanguage?.() || "en";
+        if (lang === "bg") {
+            status.textContent = nextTheme === "night" ? "Зареждане на нощната галерия." : "Зареждане на дневната галерия.";
+        } else {
+            status.textContent = nextTheme === "night" ? "Loading night gallery." : "Loading day gallery.";
+        }
       }
 
       grid.innerHTML = "";
