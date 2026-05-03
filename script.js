@@ -1178,6 +1178,26 @@ document.addEventListener("DOMContentLoaded", async () => {
   });
 
   applyPublicTheme(readStoredPublicTheme(), { persist: false });
+  
+  // Scroll To Top Button logic
+  const scrollToTopBtn = document.createElement("button");
+  scrollToTopBtn.className = "scroll-to-top";
+  scrollToTopBtn.setAttribute("aria-label", "Scroll to top");
+  scrollToTopBtn.innerHTML = '<svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M18 15l-6-6-6 6"/></svg>';
+  document.body.appendChild(scrollToTopBtn);
+
+  window.addEventListener("scroll", () => {
+    if (window.scrollY > 450) {
+      scrollToTopBtn.classList.add("is-visible");
+    } else {
+      scrollToTopBtn.classList.remove("is-visible");
+    }
+  }, { passive: true });
+
+  scrollToTopBtn.addEventListener("click", () => {
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  });
+
   await window.MalkokoteAgeGate?.waitForAccess?.();
   bindPublicGalleryAutoload();
   await Promise.all([refreshSession(), loadPublicGallery()]);

@@ -521,9 +521,30 @@
     await loadManifest();
   }
 
+  function initScrollToTop() {
+    const btn = document.createElement("button");
+    btn.className = "scroll-to-top";
+    btn.setAttribute("aria-label", "Scroll to top");
+    btn.innerHTML = '<svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M18 15l-6-6-6 6"/></svg>';
+    document.body.appendChild(btn);
+
+    window.addEventListener("scroll", () => {
+      if (window.scrollY > 450) {
+        btn.classList.add("is-visible");
+      } else {
+        btn.classList.remove("is-visible");
+      }
+    }, { passive: true });
+
+    btn.addEventListener("click", () => {
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    });
+  }
+
   document.addEventListener("DOMContentLoaded", () => {
     if (document.body.dataset.galleryMode === "extra") {
       initGalleryPage();
+      initScrollToTop();
     }
   });
 })();

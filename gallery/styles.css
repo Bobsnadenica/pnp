@@ -739,15 +739,46 @@ h1 {
     }
 }
 
-@media (max-width: 540px) {
-    .media-shell {
-        min-height: min(82svh, 52rem);
-        max-height: none;
-    }
+/* Scroll To Top Button */
+.scroll-to-top {
+    position: fixed;
+    bottom: 2rem;
+    right: 2rem;
+    width: 3.2rem;
+    height: 3.2rem;
+    border-radius: 50%;
+    background: #23180f;
+    color: #fbf3e7;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(20px);
+    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    box-shadow: 0 10px 30px -5px rgba(0, 0, 0, 0.4);
+}
 
-    .media-shell img,
-    .media-shell video {
-        width: 100%;
-        max-height: min(82svh, 52rem);
+.scroll-to-top.is-visible {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+}
+
+.scroll-to-top:hover {
+    transform: scale(1.1);
+    background: #8a5a10;
+    color: white;
+}
+
+@media (max-width: 720px) {
+    .scroll-to-top {
+        bottom: 1.5rem;
+        right: 1.5rem;
+        width: 2.8rem;
+        height: 2.8rem;
     }
 }
