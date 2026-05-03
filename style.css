@@ -241,9 +241,19 @@ body[data-gallery-theme="night"] .theme-icon-moon {
 /* Stand-out Theme Toggle */
 [data-gallery-theme-toggle] {
     position: relative;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
     border-color: #f39c12 !important;
     background: rgba(243, 156, 18, 0.08) !important;
     color: #f39c12 !important;
+    padding: 0.78rem !important; /* Make it more square for centering */
+    width: 2.8rem;
+    height: 2.8rem;
+}
+
+[data-gallery-theme-toggle] .theme-icon-shell {
+    margin: 0; /* Ensure no margins interfere with centering */
 }
 
 [data-gallery-theme-toggle]:hover {
@@ -326,18 +336,17 @@ body[data-gallery-theme="night"] .theme-thinking-bubble {
     transform: translateY(0) scale(1);
 }
 
-.thinking-text {
+.thinking-text-day,
+.thinking-text-night {
     display: none;
 }
 
-.thinking-text-day {
+/* Day theme - show day text */
+body:not([data-gallery-theme="night"]) .thinking-text-day {
     display: block;
 }
 
-body[data-gallery-theme="night"] .thinking-text-day {
-    display: none;
-}
-
+/* Night theme - show night text */
 body[data-gallery-theme="night"] .thinking-text-night {
     display: block;
 }
