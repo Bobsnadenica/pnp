@@ -230,6 +230,29 @@ body[data-gallery-theme="night"] .theme-icon-moon {
     transform: rotate(90deg) scale(0.5);
 }
 
+/* Stand-out Theme Toggle */
+[data-gallery-theme-toggle] {
+    border-color: #f39c12 !important;
+    background: rgba(243, 156, 18, 0.08) !important;
+    color: #f39c12 !important;
+}
+
+[data-gallery-theme-toggle]:hover {
+    background: #f39c12 !important;
+    color: white !important;
+}
+
+body[data-gallery-theme="night"] [data-gallery-theme-toggle] {
+    border-color: #f1c40f !important;
+    background: rgba(241, 196, 15, 0.12) !important;
+    color: #f1c40f !important;
+}
+
+body[data-gallery-theme="night"] [data-gallery-theme-toggle]:hover {
+    background: #f1c40f !important;
+    color: #10141c !important;
+}
+
 .button-link {
     display: inline-flex;
     align-items: center;
