@@ -82,6 +82,17 @@ variable "gallery_api_allowed_origins" {
   type        = list(string)
 }
 
+variable "gallery_signer_public_key" {
+  description = "The public key (PEM) for CloudFront URL signing."
+  type        = string
+}
+
+variable "gallery_signer_private_key" {
+  description = "The private key (PEM) for CloudFront URL signing."
+  type        = string
+  sensitive   = true
+}
+
 variable "price_class" {
   description = "CloudFront price class."
   type        = string

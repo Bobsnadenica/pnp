@@ -10,33 +10,44 @@ data "archive_file" "gallery_manifest_builder_lambda" {
   output_path = "${path.module}/.terraform/gallery_manifest_builder_lambda.zip"
 }
 
-resource "aws_kms_key" "gallery_signer" {
-  description              = "KMS signing key for CloudFront gallery signed URLs."
-  deletion_window_in_days  = 30
-  customer_master_key_spec = "RSA_2048"
-  key_usage                = "SIGN_VERIFY"
-}
-
-resource "aws_kms_alias" "gallery_signer" {
-  name          = "alias/${local.prefix}-gallery-signer"
-  target_key_id = aws_kms_key.gallery_signer.key_id
-}
-
-data "aws_kms_public_key" "gallery_signer" {
-  key_id = aws_kms_key.gallery_signer.key_id
-}
+# --- UNBLOCKING SECTION: Old resources being emptied to break the cycle ---
 
 resource "aws_cloudfront_public_key" "gallery" {
-  comment     = "Public key for ${local.prefix} gallery signed URLs."
-  encoded_key = data.aws_kms_public_key.gallery_signer.public_key_pem
-  name        = "${local.prefix}-gallery-signer"
+  comment     = "OLD KEY - UNBLOCKING"
+  encoded_key = <<-EOT
+-----BEGIN PUBLIC KEY-----
+MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAw5DP88CMOIznTpjXknqA
+Bd/GcGlZELgfS20BOiYbD0fYGeHy5OihCdIvqYjF4KlE9owlRHKmWLjK7YpZ6Q6j
+O5lBW/B9wcAXiigZx1/jM8VP+EDD8RDVeiSPQxpLiqBjmfIF93mXnc7ETz3bjNZU
+mc/1aH61sUS/utw2PnhFHJzUk00pM2EBbr1pQ1hZ2qCUxUeozLpNILoO8rlg3Gzk
+b9rKXKWazlAPy5cJLhyt45VESnXT51tSyxng8XnX8OLT+aB6qCdu5LmC2RzF8kdR
+oF7/7zgqj78zReb45UWMxgHqKi1gvPG3OHoAJ/Eae+A4pZgG5VT+dLF2WE/DjniC
+GQIDAQAB
+-----END PUBLIC KEY-----
+EOT
+  name        = "malkokote-gallery-prod-gallery-signer"
 }
 
 resource "aws_cloudfront_key_group" "gallery" {
-  comment = "Trusted key group for ${local.prefix} gallery signed URLs."
-  items   = [aws_cloudfront_public_key.gallery.id]
-  name    = "${local.prefix}-gallery-key-group"
+  items = [] # BROKEN CYCLE: No longer depends on the key
+  name  = "malkokote-gallery-prod-gallery-key-group"
 }
+
+# --- PERMANENT SECTION: New RSA-based resources ---
+
+resource "aws_cloudfront_public_key" "gallery_rsa" {
+  comment     = "Public key for ${local.prefix} gallery signed URLs."
+  encoded_key = var.gallery_signer_public_key
+  name        = "${local.prefix}-gallery-signer-rsa"
+}
+
+resource "aws_cloudfront_key_group" "gallery_rsa" {
+  comment = "Trusted key group for ${local.prefix} gallery signed URLs."
+  items   = [aws_cloudfront_public_key.gallery_rsa.id]
+  name    = "${local.prefix}-gallery-key-group-rsa"
+}
+
+# --- REST OF CONFIGURATION ---
 
 resource "aws_cloudfront_origin_request_policy" "gallery_api" {
   comment = "Forward auth and CORS headers to the private gallery manifest API."
@@ -111,13 +122,6 @@ resource "aws_iam_role_policy" "gallery_manifest_lambda" {
         ]
         Effect   = "Allow"
         Resource = "${aws_s3_bucket.gallery.arn}/*"
-      },
-      {
-        Action = [
-          "kms:Sign"
-        ]
-        Effect   = "Allow"
-        Resource = aws_kms_key.gallery_signer.arn
       }
     ]
   })
@@ -190,8 +194,8 @@ resource "aws_lambda_function" "gallery_manifest" {
       GALLERY_CACHE_VERSION             = var.gallery_cache_version
       GALLERY_SIGNED_URL_TTL            = tostring(var.gallery_signed_url_ttl_seconds)
       GALLERY_PUBLIC_MANIFEST_CACHE_TTL = tostring(var.gallery_public_manifest_cache_ttl_seconds)
-      GALLERY_SIGNER_KEY_PAIR_ID        = aws_cloudfront_public_key.gallery.id
-      GALLERY_SIGNER_KMS_KEY_ID         = aws_kms_key.gallery_signer.key_id
+      GALLERY_SIGNER_KEY_PAIR_ID        = aws_cloudfront_public_key.gallery_rsa.id
+      GALLERY_SIGNER_PRIVATE_KEY        = var.gallery_signer_private_key
       GALLERY_MANIFEST_PREFIX           = local.gallery_manifest_prefix
       GALLERY_PUBLIC_DAY_MANIFEST_KEY   = local.gallery_public_day_manifest_object_key
       GALLERY_PUBLIC_NIGHT_MANIFEST_KEY = local.gallery_public_night_manifest_object_key

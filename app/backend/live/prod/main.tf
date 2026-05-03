@@ -197,7 +197,7 @@ resource "aws_cloudfront_distribution" "gallery" {
     compress                   = true
     cache_policy_id            = aws_cloudfront_cache_policy.gallery_media.id
     response_headers_policy_id = aws_cloudfront_response_headers_policy.gallery_images.id
-    trusted_key_groups         = [aws_cloudfront_key_group.gallery.id]
+    trusted_key_groups         = [aws_cloudfront_key_group.gallery_rsa.id]
   }
 
   ordered_cache_behavior {

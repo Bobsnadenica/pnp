@@ -1,7 +1,6 @@
-import { KMSClient, SignCommand } from "@aws-sdk/client-kms";
+import crypto from "node:crypto";
 import { GetObjectCommand, ListObjectsV2Command, PutObjectCommand, S3Client } from "@aws-sdk/client-s3";
 
-const kms = new KMSClient({});
 const s3 = new S3Client({});
 
 const bucketName = process.env.GALLERY_BUCKET;
@@ -12,7 +11,7 @@ const publicHeroPrefix = `${publicPrefix}/hero/`;
 const publicDayHeroPrefix = `${publicDayPrefix}/hero/`;
 const publicBaseUrl = (process.env.GALLERY_PUBLIC_BASE_URL || "").replace(/\/+$/, "");
 const signerKeyPairId = process.env.GALLERY_SIGNER_KEY_PAIR_ID || "";
-const signerKmsKeyId = process.env.GALLERY_SIGNER_KMS_KEY_ID || "";
+const signerPrivateKey = process.env.GALLERY_SIGNER_PRIVATE_KEY || "";
 const manifestPrefix = normalizePrefix(process.env.GALLERY_MANIFEST_PREFIX || "_manifests");
 const publicDayManifestKey = process.env.GALLERY_PUBLIC_DAY_MANIFEST_KEY || `${manifestPrefix}/public/day.json`;
 const publicNightManifestKey = process.env.GALLERY_PUBLIC_NIGHT_MANIFEST_KEY || `${manifestPrefix}/public/night.json`;
@@ -139,21 +138,11 @@ function buildCannedPolicy(resourceUrl, expiresAtEpochSeconds) {
   });
 }
 
-async function signPolicy(policy) {
-  const response = await kms.send(
-    new SignCommand({
-      KeyId: signerKmsKeyId,
-      Message: Buffer.from(policy, "utf8"),
-      MessageType: "RAW",
-      SigningAlgorithm: "RSASSA_PKCS1_V1_5_SHA_256",
-    })
-  );
-
-  if (!response.Signature) {
-    throw new Error("KMS did not return a CloudFront signature.");
-  }
-
-  return toCloudFrontSafeBase64(response.Signature);
+function signPolicy(policy) {
+  const sign = crypto.createSign("RSA-SHA256");
+  sign.update(policy);
+  const signature = sign.sign(signerPrivateKey);
+  return toCloudFrontSafeBase64(signature);
 }
 
 function compareGalleryKeys(left, right) {
@@ -402,7 +391,7 @@ async function buildSignedMedia(item, expiresAtEpochSeconds, refreshToken) {
   }
 
   const policy = buildCannedPolicy(signedUrl.toString(), expiresAtEpochSeconds);
-  const signature = await signPolicy(policy);
+  const signature = signPolicy(policy);
 
   signedUrl.searchParams.set("Expires", String(expiresAtEpochSeconds));
   signedUrl.searchParams.set("Signature", signature);
@@ -434,7 +423,7 @@ function paginatePhotos(photos, limit, cursorOffset) {
 
 export const handler = async (event) => {
   try {
-    if (!bucketName || !publicBaseUrl || !signerKeyPairId || !signerKmsKeyId) {
+    if (!bucketName || !publicBaseUrl || !signerKeyPairId || !signerPrivateKey) {
       return json(500, {
         error: "Gallery manifest backend is missing required configuration.",
       });
