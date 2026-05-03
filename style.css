@@ -275,7 +275,7 @@ body[data-gallery-theme="night"] [data-gallery-theme-toggle]:hover {
 /* Thinking Bubble */
 .theme-thinking-bubble {
     position: absolute;
-    bottom: calc(100% + 14px);
+    top: calc(100% + 14px);
     right: 0;
     background: #111111;
     color: #ffffff;
@@ -287,26 +287,11 @@ body[data-gallery-theme="night"] [data-gallery-theme-toggle]:hover {
     white-space: nowrap;
     pointer-events: none;
     opacity: 0;
-    transform: translateY(10px) scale(0.8);
-    transform-origin: bottom right;
+    transform: translateY(-10px) scale(0.8);
+    transform-origin: top right;
     transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
     box-shadow: 0 12px 24px -8px rgba(0, 0, 0, 0.3);
     z-index: 100;
-}
-
-@media (max-width: 720px) {
-    .site-actions {
-        overflow: visible !important;
-    }
-    
-    .theme-thinking-bubble {
-        right: -10px; /* Slight offset back for mobile since we fixed overflow */
-    }
-}
-
-body[data-gallery-theme="night"] .theme-thinking-bubble {
-    background: #f1c40f;
-    color: #10141c;
 }
 
 .theme-thinking-bubble::before,
@@ -320,20 +305,62 @@ body[data-gallery-theme="night"] .theme-thinking-bubble {
 .theme-thinking-bubble::before {
     width: 10px;
     height: 10px;
-    bottom: -12px;
-    right: 15px;
+    top: -12px;
+    right: 20px;
 }
 
 .theme-thinking-bubble::after {
     width: 6px;
     height: 6px;
-    bottom: -18px;
-    right: 10px;
+    top: -22px;
+    right: 32px;
+}
+
+@media (max-width: 720px) {
+    .site-actions {
+        overflow: visible !important;
+    }
+    
+    .theme-thinking-bubble {
+        right: -5px;
+    }
 }
 
 [data-gallery-theme-toggle]:hover .theme-thinking-bubble {
     opacity: 1;
     transform: translateY(0) scale(1);
+}
+
+body[data-gallery-theme="night"] .theme-thinking-bubble {
+    background: #f1c40f;
+    color: #10141c;
+}
+
+/* Page Specific Backgrounds */
+body:not(.has-ambient-background) {
+    background-image: url("/daybackground.jpg");
+    background-position: center;
+    background-size: cover;
+    background-attachment: fixed;
+    background-repeat: no-repeat;
+}
+
+body:not(.has-ambient-background)[data-gallery-theme="night"] {
+    background-image: url("/nightbackground.jpg");
+}
+
+/* Front Page Specific (Static Only) */
+body.home-page {
+    background-image: url("/daybackground.jpg") !important;
+}
+
+body.home-page[data-gallery-theme="night"] {
+    background-image: url("/nightbackground.jpg") !important;
+}
+
+/* Ensure Home Page does not show ambient loaded images */
+body.home-page .ambient-background {
+    display: none !important;
 }
 
 .thinking-text-day,
