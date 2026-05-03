@@ -1,137 +1,183 @@
-
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Support Us - Everyday Lilly</title>
-  <link rel="stylesheet" href="style.css" />
-  <script src="script.js" defer></script>
-  <script src="https://cdn.tailwindcss.com"></script>
-  <style>
-    body {
-      background: linear-gradient(to bottom right, #ecfdf5, #d1fae5);
-      font-family: 'Inter', sans-serif;
-      color: #1f2937;
-    }
-    .wallet-box {
-      background: white;
-      border-radius: 12px;
-      box-shadow: 0 4px 10px rgba(0,0,0,0.05);
-      padding: 1.5rem;
-      transition: transform 0.2s ease, box-shadow 0.2s ease;
-    }
-    .wallet-box:hover {
-      transform: translateY(-3px);
-      box-shadow: 0 6px 14px rgba(0,0,0,0.08);
-    }
-    .coin-icon {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      width: 28px;
-      height: 28px;
-      border-radius: 50%;
-      font-size: 0.95rem;
-      font-weight: 800;
-      vertical-align: middle;
-      margin-right: 6px;
-      flex-shrink: 0;
-    }
-    .coin-btc  { background: #f7931a; color: #fff; }
-    .coin-eth  { background: #627eea; color: #fff; }
-    .coin-sol  { background: linear-gradient(135deg,#9945ff,#14f195); color: #fff; }
-    .coin-xrp  { background: #00aae4; color: #fff; }
-    .coin-doge { background: #c2a633; color: #fff; }
-    .coin-rev  { background: #191c1f; color: #fff; }
-    .wallet-title {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Malkokote | Support Us</title>
+    <meta name="description" content="Support Malkokote - Independent, ad-free, and professional modeling platform.">
+    <meta name="robots" content="noindex, nofollow">
+    <meta name="theme-color" content="#111111">
+    <link rel="canonical" href="https://www.malkokote.com/supportus.html">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" media="print" onload="this.media='all'">
+    <noscript>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap">
+    </noscript>
+    <link rel="stylesheet" href="/style.css">
 </head>
-<body>
-  <header class="text-center py-12">
-    <h1 class="text-5xl font-display font-bold text-emerald-700 mb-4">Support Everyday Lilly, Everyday Dandelion & Everyday Filetrap</h1>
-    <p class="text-lg text-gray-600 max-w-2xl mx-auto">Everyday Lilly, Everyday Dandelion, and Everyday Filetrap are built with love and dedication — fully independent, ad-free, and privacy-focused. Your support helps us continue developing new features, translations, and creative tools across all our companion apps.</p>
-  </header>
+<body class="age-gate-pending has-ambient-background">
+    <div id="age-gate" class="age-gate" role="dialog" aria-modal="true" aria-labelledby="age-gate-title">
+        <div class="age-gate-card">
+            <p class="age-gate-kicker">18+</p>
+            <h1 id="age-gate-title">Adults only</h1>
+            <p class="age-gate-copy">This website contains adult modeling and photography content. Enter only if you are 18 or older.</p>
+            <p class="age-gate-copy age-gate-copy-secondary">Този сайт съдържа 18+ моделни и фотографски материали. Влезте само ако сте навършили 18 години.</p>
+            <div class="age-gate-actions">
+                <button class="primary-button" type="button" data-age-enter>Enter</button>
+                <button class="ghost-button" type="button" data-age-leave>Leave</button>
+            </div>
+        </div>
+    </div>
 
-  <main class="container mx-auto px-6 pb-20">
-    <section class="grid sm:grid-cols-2 lg:grid-cols-3 gap-8">
-      <!-- BTC -->
-      <div class="wallet-box text-center">
-        <img src="images/supportus/btc.png" alt="Bitcoin" class="w-24 h-24 mx-auto mb-4" />
-        <h2 class="text-xl font-semibold mb-2 wallet-title"><span class="coin-icon coin-btc">₿</span>Bitcoin (BTC)</h2>
-        <p class="text-sm text-gray-500 mb-2 break-all">bc1q9jh0w4w8ug59qdt2e9lxw54c9sz2aw5q2njxgl</p>
-        <button onclick="copyWallet('bc1q9jh0w4w8ug59qdt2e9lxw54c9sz2aw5q2njxgl')" class="btn-primary px-4 py-2 rounded text-sm">Copy Address</button>
-      </div>
+    <div class="ambient-background" aria-hidden="true">
+        <div class="ambient-background-media" data-ambient-background></div>
+        <div class="ambient-background-wash"></div>
+    </div>
 
-      <!-- Ethereum -->
-      <div class="wallet-box text-center">
-        <img src="images/supportus/ethereum.png" alt="Ethereum" class="w-24 h-24 mx-auto mb-4" />
-        <h2 class="text-xl font-semibold mb-2 wallet-title"><span class="coin-icon coin-eth">Ξ</span>Ethereum (ETH)</h2>
-        <p class="text-sm text-gray-500 mb-2 break-all">0xF00716eDAF7Aca38Db93228D3372B3c642F03b03</p>
-        <button onclick="copyWallet('0xF00716eDAF7Aca38Db93228D3372B3c642F03b03')" class="btn-primary px-4 py-2 rounded text-sm">Copy Address</button>
-      </div>
+    <div class="site-frame">
+        <header class="site-header">
+            <a class="site-mark" href="/">
+                <img src="/logo.png" alt="" class="site-logo">
+                <span>Malkokote</span>
+            </a>
+            <div class="site-actions">
+                <div class="language-switch">
+                    <button class="language-pill" type="button" data-language-option="bg" aria-label="Bulgarian">🇧🇬</button>
+                    <button class="language-pill" type="button" data-language-option="en" aria-label="English">🇬🇧</button>
+                </div>
+                <a class="ghost-button button-link" href="/" data-i18n-en="Gallery" data-i18n-bg="Галерия">Gallery</a>
+                <a class="ghost-button button-link" href="/contact.html" data-i18n-en="Contact" data-i18n-bg="Контакт">Contact</a>
+                <a class="ghost-button button-link" href="/buy.html" data-i18n-en="Buy" data-i18n-bg="Купи">Buy</a>
+                <button class="ghost-button" type="button" data-gallery-theme-toggle aria-label="Toggle color theme">
+                    <span class="theme-icon-shell">
+                        <svg class="theme-icon theme-icon-sun" viewBox="0 0 24 24" aria-hidden="true">
+                            <circle cx="12" cy="12" r="4"></circle>
+                            <path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"></path>
+                        </svg>
+                        <svg class="theme-icon theme-icon-moon" viewBox="0 0 24 24" aria-hidden="true">
+                            <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                        </svg>
+                    </span>
+                </button>
+                <button class="ghost-button" type="button" data-profile-trigger 
+                    data-i18n-en="Login" data-i18n-bg="Вход"
+                    data-en-signed-out="Login" data-en-signed-in="Login"
+                    data-bg-signed-out="Вход" data-bg-signed-in="Вход">
+                    <span data-profile-label>Login</span>
+                </button>
+            </div>
+        </header>
 
-      <!-- Solana -->
-      <div class="wallet-box text-center">
-        <img src="images/supportus/sol.png" alt="Solana" class="w-24 h-24 mx-auto mb-4" />
-        <h2 class="text-xl font-semibold mb-2 wallet-title"><span class="coin-icon coin-sol">◎</span>Solana (SOL)</h2>
-        <p class="text-sm text-gray-500 mb-2 break-all">5dnwFVsjHcrCSNzA4wy88pFq1o57kKU9gm8C8JzmMwBa</p>
-        <button onclick="copyWallet('5dnwFVsjHcrCSNzA4wy88pFq1o57kKU9gm8C8JzmMwBa')" class="btn-primary px-4 py-2 rounded text-sm">Copy Address</button>
-      </div>
+        <main class="buy-shell">
+            <h1 class="sr-only">Support Malkokote</h1>
+            
+            <div data-language-panel="en" lang="en">
+                <div style="text-align: center; margin-bottom: 3rem;">
+                    <h2 style="font-size: 2.4rem; margin-bottom: 1rem;">Support Malkokote</h2>
+                    <p style="color: var(--muted); max-width: 32rem; margin: 0 auto; line-height: 1.6;">Your support helps us keep the site independent, ad-free, and focused on high-quality modeling content.</p>
+                </div>
 
-      <!-- XRP -->
-      <div class="wallet-box text-center">
-        <img src="images/supportus/XRP.png" alt="XRP" class="w-24 h-24 mx-auto mb-4" />
-        <h2 class="text-xl font-semibold mb-2 wallet-title"><span class="coin-icon coin-xrp">✕</span>Ripple (XRP)</h2>
-        <p class="text-sm text-gray-500 mb-2 break-all">r3y1du8c8BZrxcX45vehoz2rSkEFqjD154</p>
-        <button onclick="copyWallet('r3y1du8c8BZrxcX45vehoz2rSkEFqjD154')" class="btn-primary px-4 py-2 rounded text-sm">Copy Address</button>
-      </div>
+                <div class="buy-grid">
+                    <article class="buy-card">
+                        <h2 class="buy-card-title">Bitcoin (BTC)</h2>
+                        <p class="buy-card-description" style="word-break: break-all; font-family: monospace;">bc1q9jh0w4w8ug59qdt2e9lxw54c9sz2aw5q2njxgl</p>
+                        <div class="buy-card-footer">
+                            <button class="primary-button" type="button" onclick="copyWallet('bc1q9jh0w4w8ug59qdt2e9lxw54c9sz2aw5q2njxgl', this)">Copy Address</button>
+                        </div>
+                    </article>
 
-      <!-- Dogecoin -->
-      <div class="wallet-box text-center">
-        <img src="images/supportus/doge.png" alt="Dogecoin" class="w-24 h-24 mx-auto mb-4" />
-        <h2 class="text-xl font-semibold mb-2 wallet-title"><span class="coin-icon coin-doge">Ð</span>Dogecoin (DOGE)</h2>
-        <p class="text-sm text-gray-500 mb-2 break-all">bnb1a4aye09zl258qjt8laqggqhd86j6g8chelgwv9</p>
-        <button onclick="copyWallet('bnb1a4aye09zl258qjt8laqggqhd86j6g8chelgwv9')" class="btn-primary px-4 py-2 rounded text-sm">Copy Address</button>
-      </div>
-      <!-- Revolut -->
-      <div class="wallet-box text-center">
-        <img src="images/supportus/revolut.jpg" alt="Revolut" class="w-24 h-24 mx-auto mb-4" />
-        <h2 class="text-xl font-semibold mb-2 wallet-title"><span class="coin-icon coin-rev">R</span>Revolut</h2>
-        <p class="text-sm text-gray-500 mb-2 break-all">Support us directly via Revolut</p>
-        <a href="https://revolut.me/privileged" target="_blank" rel="noopener" class="btn-primary px-4 py-2 rounded text-sm inline-flex items-center justify-center gap-2">
-          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-5 h-5">
-            <path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5L21 12l-7.5 7.5M3 12h18" />
-          </svg>
-          <span>Open Revolut.me</span>
-        </a>
-      </div>
-    </section>
+                    <article class="buy-card">
+                        <h2 class="buy-card-title">Ethereum (ETH)</h2>
+                        <p class="buy-card-description" style="word-break: break-all; font-family: monospace;">0xF00716eDAF7Aca38Db93228D3372B3c642F03b03</p>
+                        <div class="buy-card-footer">
+                            <button class="primary-button" type="button" onclick="copyWallet('0xF00716eDAF7Aca38Db93228D3372B3c642F03b03', this)">Copy Address</button>
+                        </div>
+                    </article>
 
-    <section class="text-center mt-16">
-      <h2 class="text-3xl font-display text-emerald-800 mb-4">Thank You for Supporting Us 🌿</h2>
-      <p class="text-gray-600 max-w-xl mx-auto mb-8">Your contributions help keep Everyday Lilly and its companion apps alive, privacy-respecting, and ever-improving for users around the world.</p>
-      <a href="https://www.everydaylilly.com" class="btn-secondary px-6 py-3 rounded-lg inline-flex items-center gap-2 font-medium">
-        ← Back to Home
-      </a>
-    </section>
-  </main>
+                    <article class="buy-card">
+                        <h2 class="buy-card-title">Revolut</h2>
+                        <p class="buy-card-description">Support us directly and securely via Revolut.me payment link.</p>
+                        <div class="buy-card-footer">
+                            <a href="https://revolut.me/privileged" target="_blank" rel="noopener" class="primary-button button-link">Open Revolut</a>
+                        </div>
+                    </article>
+                </div>
+            </div>
 
-  <footer class="text-center text-gray-500 py-8 text-sm">
-    &copy; <span id="year"></span> Everyday Lilly. All Rights Reserved.
-  </footer>
+            <div data-language-panel="bg" lang="bg" hidden>
+                <div style="text-align: center; margin-bottom: 3rem;">
+                    <h2 style="font-size: 2.4rem; margin-bottom: 1rem;">Подкрепете Malkokote</h2>
+                    <p style="color: var(--muted); max-width: 32rem; margin: 0 auto; line-height: 1.6;">Вашата подкрепа ни помага да запазим сайта независим, без реклами и фокусиран върху висококачествено моделно съдържание.</p>
+                </div>
 
-  <script>
-    function copyWallet(address) {
-      navigator.clipboard.writeText(address);
-      alert("Wallet address copied to clipboard!");
-    }
-    document.getElementById("year").textContent = new Date().getFullYear();
-  </script>
+                <div class="buy-grid">
+                    <article class="buy-card">
+                        <h2 class="buy-card-title">Bitcoin (BTC)</h2>
+                        <p class="buy-card-description" style="word-break: break-all; font-family: monospace;">bc1q9jh0w4w8ug59qdt2e9lxw54c9sz2aw5q2njxgl</p>
+                        <div class="buy-card-footer">
+                            <button class="primary-button" type="button" onclick="copyWallet('bc1q9jh0w4w8ug59qdt2e9lxw54c9sz2aw5q2njxgl', this)">Копирай адрес</button>
+                        </div>
+                    </article>
+
+                    <article class="buy-card">
+                        <h2 class="buy-card-title">Ethereum (ETH)</h2>
+                        <p class="buy-card-description" style="word-break: break-all; font-family: monospace;">0xF00716eDAF7Aca38Db93228D3372B3c642F03b03</p>
+                        <div class="buy-card-footer">
+                            <button class="primary-button" type="button" onclick="copyWallet('0xF00716eDAF7Aca38Db93228D3372B3c642F03b03', this)">Копирай адрес</button>
+                        </div>
+                    </article>
+
+                    <article class="buy-card">
+                        <h2 class="buy-card-title">Revolut</h2>
+                        <p class="buy-card-description">Подкрепете ни директно и сигурно чрез линк за плащане в Revolut.me.</p>
+                        <div class="buy-card-footer">
+                            <a href="https://revolut.me/privileged" target="_blank" rel="noopener" class="primary-button button-link">Отвори Revolut</a>
+                        </div>
+                    </article>
+                </div>
+            </div>
+
+            <p class="buy-copy" style="margin-top: 3rem;">Thank you for your support! / Благодарим за подкрепата!</p>
+        </main>
+    </div>
+
+    <div id="login-modal" class="modal-shell" role="dialog" aria-modal="true" aria-hidden="true" aria-labelledby="login-modal-title">
+        <div class="modal-backdrop" data-modal-close></div>
+        <div class="modal-card">
+            <button class="modal-close" type="button" aria-label="Close sign-in dialog" data-modal-close>&times;</button>
+            <h2 id="login-modal-title">Login</h2>
+            <p class="modal-copy">Use your member account. Password reset is available on the secure page.</p>
+            <form id="login-form" class="login-form">
+                <input id="login-email" type="email" placeholder="Email" autocomplete="email" aria-label="Email address">
+                <div class="modal-actions">
+                    <button id="login-submit" class="primary-button" type="submit" data-idle-text="Continue" data-loading-text="Redirecting...">Continue</button>
+                </div>
+            </form>
+            <p id="login-feedback" class="login-feedback" hidden></p>
+        </div>
+    </div>
+
+    <script src="/age-gate.js" defer></script>
+    <script src="/language.js" defer></script>
+    <script src="/config/site-config.js" defer></script>
+    <script src="/auth/auth.js" defer></script>
+    <script src="/ambient-background.js" defer></script>
+    <script src="/script.js" defer></script>
+    <script>
+        function copyWallet(address, button) {
+            navigator.clipboard.writeText(address);
+            const originalText = button.textContent;
+            button.textContent = window.MalkokoteLanguage?.getLanguage?.() === "bg" ? "Копирано!" : "Copied!";
+            button.classList.add("secondary-button");
+            button.classList.remove("primary-button");
+            setTimeout(() => {
+                button.textContent = originalText;
+                button.classList.add("primary-button");
+                button.classList.remove("secondary-button");
+            }, 2000);
+        }
+    </script>
 </body>
 </html>
