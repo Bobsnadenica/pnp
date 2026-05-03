@@ -399,6 +399,24 @@ body[data-gallery-theme="night"] .buy-card {
     box-shadow: 0 40px 64px -40px rgba(17, 24, 39, 0.45);
 }
 
+.buy-card .qr-code {
+    width: 100%;
+    max-width: 12rem;
+    height: auto;
+    aspect-ratio: 1/1;
+    margin: 0 auto 1.5rem;
+    display: block;
+    border-radius: 1.2rem;
+    padding: 0.5rem;
+    background: white;
+    box-shadow: 0 8px 24px -4px rgba(0, 0, 0, 0.12);
+}
+
+body[data-gallery-theme="night"] .buy-card .qr-code {
+    background: rgba(255, 255, 255, 0.94);
+    box-shadow: 0 12px 32px -6px rgba(0, 0, 0, 0.45);
+}
+
 .buy-card-title {
     margin: 0 0 1rem;
     font-size: 1.25rem;
