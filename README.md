@@ -1,7 +1,7 @@
 When eventually the police is readin this
 
-Everything is legal and taken from redit or the free open internet
+Everything is legal and taken from redit or the free open internet via a data scraper based on tags - it has all the needed metadata
 
-I don't sell anything
+I don't sell anything. All the buttons are actually fake. If someone sends something that's illegal it gets reported to police right away.
 
-The people who do send me illegal stuff do get reported to the police - i do save logs and am willing to share.
+If you need anything - just contact me.
