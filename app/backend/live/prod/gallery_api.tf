@@ -10,29 +10,6 @@ data "archive_file" "gallery_manifest_builder_lambda" {
   output_path = "${path.module}/.terraform/gallery_manifest_builder_lambda.zip"
 }
 
-# --- UNBLOCKING SECTION: Old resources being emptied to break the cycle ---
-
-resource "aws_cloudfront_public_key" "gallery" {
-  comment     = "OLD KEY - UNBLOCKING"
-  encoded_key = <<-EOT
------BEGIN PUBLIC KEY-----
-MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAw5DP88CMOIznTpjXknqA
-Bd/GcGlZELgfS20BOiYbD0fYGeHy5OihCdIvqYjF4KlE9owlRHKmWLjK7YpZ6Q6j
-O5lBW/B9wcAXiigZx1/jM8VP+EDD8RDVeiSPQxpLiqBjmfIF93mXnc7ETz3bjNZU
-mc/1aH61sUS/utw2PnhFHJzUk00pM2EBbr1pQ1hZ2qCUxUeozLpNILoO8rlg3Gzk
-b9rKXKWazlAPy5cJLhyt45VESnXT51tSyxng8XnX8OLT+aB6qCdu5LmC2RzF8kdR
-oF7/7zgqj78zReb45UWMxgHqKi1gvPG3OHoAJ/Eae+A4pZgG5VT+dLF2WE/DjniC
-GQIDAQAB
------END PUBLIC KEY-----
-EOT
-  name        = "malkokote-gallery-prod-gallery-signer"
-}
-
-resource "aws_cloudfront_key_group" "gallery" {
-  items = [] # BROKEN CYCLE: No longer depends on the key
-  name  = "malkokote-gallery-prod-gallery-key-group"
-}
-
 # --- PERMANENT SECTION: New RSA-based resources ---
 
 resource "aws_cloudfront_public_key" "gallery_rsa" {

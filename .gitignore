@@ -24,3 +24,4 @@ terraform.tfstate.backup
 # Local environment files
 .env
 .env.*
+*.pem
