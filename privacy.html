@@ -20,7 +20,7 @@
     </noscript>
     <link rel="stylesheet" href="/style.css">
 </head>
-<body class="age-gate-pending">
+<body class="age-gate-pending has-ambient-background">
     <div id="age-gate" class="age-gate" role="dialog" aria-modal="true" aria-labelledby="age-gate-title">
         <div class="age-gate-card">
             <p class="age-gate-kicker">18+</p>
@@ -34,15 +34,35 @@
         </div>
     </div>
 
+    <div class="ambient-background" aria-hidden="true">
+        <div class="ambient-background-media" data-ambient-background></div>
+        <div class="ambient-background-wash"></div>
+    </div>
+
     <div class="site-frame">
         <header class="site-header">
-            <a class="site-mark" href="/">Malkokote</a>
+            <a class="site-mark" href="/">
+                <img src="/logo.png" alt="" class="site-logo">
+                <span>Malkokote</span>
+            </a>
             <div class="site-actions">
+                <div class="language-switch">
+                    <button class="language-pill" type="button" data-language-option="bg" aria-label="Bulgarian">🇧🇬</button>
+                    <button class="language-pill" type="button" data-language-option="en" aria-label="English">🇬🇧</button>
+                </div>
                 <a class="ghost-button button-link" href="/">Gallery</a>
                 <a class="ghost-button button-link" href="/contact.html">Contact</a>
                 <a class="ghost-button button-link" href="/buy.html">Buy</a>
-                <button class="ghost-button" type="button" data-gallery-theme-toggle data-day-label="Day" data-night-label="Night">
-                    <span data-gallery-theme-label>Night</span>
+                <button class="ghost-button" type="button" data-gallery-theme-toggle aria-label="Toggle color theme">
+                    <span class="theme-icon-shell">
+                        <svg class="theme-icon theme-icon-sun" viewBox="0 0 24 24" aria-hidden="true">
+                            <circle cx="12" cy="12" r="4"></circle>
+                            <path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"></path>
+                        </svg>
+                        <svg class="theme-icon theme-icon-moon" viewBox="0 0 24 24" aria-hidden="true">
+                            <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                        </svg>
+                    </span>
                 </button>
                 <button class="ghost-button" type="button" data-profile-trigger data-signed-out-text="Login" data-signed-in-text="Login">
                     <span data-profile-label>Login</span>
@@ -52,11 +72,7 @@
 
         <main class="contact-shell">
             <h1 class="sr-only">Privacy policy for Malkokote</h1>
-            <section class="contact-panel policy-panel" data-language-root data-language-storage-key="malkokote:language">
-                <div class="language-switch" aria-label="Language switcher">
-                    <button class="language-pill" type="button" data-language-option="bg" aria-pressed="false">🇧🇬 BG</button>
-                    <button class="language-pill" type="button" data-language-option="en" aria-pressed="false">🇬🇧 EN</button>
-                </div>
+            <section class="contact-panel policy-panel">
                 <div class="contact-copy" data-language-panel="bg" lang="bg" hidden>
                     <h1>Политика за поверителност</h1>
                     <p>Този сайт показва 18+ фотографско и моделно съдържание. Част от публичните изображения може да идват от публично достъпни интернет източници или изпратени портфолиа.</p>
@@ -94,9 +110,10 @@
     </div>
 
     <script src="/age-gate.js" defer></script>
+    <script src="/language.js" defer></script>
     <script src="/config/site-config.js" defer></script>
     <script src="/auth/auth.js" defer></script>
+    <script src="/ambient-background.js" defer></script>
     <script src="/script.js" defer></script>
-    <script src="/contact.js" defer></script>
 </body>
 </html>

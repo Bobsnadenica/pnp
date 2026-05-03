@@ -43,8 +43,12 @@
                 <span>Malkokote</span>
             </a>
             <div class="site-actions">
-                <a class="ghost-button button-link" href="/">Gallery</a>
-                <a class="ghost-button button-link" href="/contact.html">Contact</a>
+                <div class="language-switch">
+                    <button class="language-pill" type="button" data-language-option="bg" aria-label="Bulgarian">🇧🇬</button>
+                    <button class="language-pill" type="button" data-language-option="en" aria-label="English">🇬🇧</button>
+                </div>
+                <a class="ghost-button button-link" href="/" data-i18n-en="Gallery" data-i18n-bg="Галерия">Gallery</a>
+                <a class="ghost-button button-link" href="/contact.html" data-i18n-en="Contact" data-i18n-bg="Контакт">Contact</a>
                 <button class="ghost-button" type="button" data-gallery-theme-toggle aria-label="Toggle color theme">
                     <span class="theme-icon-shell">
                         <svg class="theme-icon theme-icon-sun" viewBox="0 0 24 24" aria-hidden="true">
@@ -56,7 +60,10 @@
                         </svg>
                     </span>
                 </button>
-                <button class="ghost-button" type="button" data-profile-trigger data-signed-out-text="Login" data-signed-in-text="Login">
+                <button class="ghost-button" type="button" data-profile-trigger 
+                    data-i18n-en="Login" data-i18n-bg="Вход"
+                    data-en-signed-out="Login" data-en-signed-in="Login"
+                    data-bg-signed-out="Вход" data-bg-signed-in="Вход">
                     <span data-profile-label>Login</span>
                 </button>
             </div>
@@ -65,13 +72,13 @@
         <main class="buy-shell">
             <h1 class="sr-only">Buy premium services and support</h1>
             
-            <div class="buy-grid">
+            <div class="buy-grid" data-language-panel="en" lang="en">
                 <article class="buy-card">
                     <h2 class="buy-card-title">The Complete Generation Guide</h2>
                     <p class="buy-card-description">Want to learn how to create your own professional images? This comprehensive guide teaches you how to generate anything you want with elite precision.</p>
                     <div class="buy-card-footer">
                         <span class="buy-card-price">€99.99</span>
-                        <button class="primary-button" type="button" data-buy-trigger>Buy Now</button>
+                        <button class="primary-button" type="button" data-buy-trigger data-coming-soon-text="Coming Soon">Buy Now</button>
                     </div>
                 </article>
 
@@ -80,7 +87,7 @@
                     <p class="buy-card-description">Want content of your choice? You choose the category or theme, and we provide you with exclusive, high-quality access tailored to your preference.</p>
                     <div class="buy-card-footer">
                         <span class="buy-card-price">€49.99</span>
-                        <button class="primary-button" type="button" data-buy-trigger>Buy Now</button>
+                        <button class="primary-button" type="button" data-buy-trigger data-coming-soon-text="Coming Soon">Buy Now</button>
                     </div>
                 </article>
 
@@ -89,7 +96,36 @@
                     <p class="buy-card-description">Get access to exclusive extra content not available in the public gallery. Your purchase directly supports the continued growth of the website.</p>
                     <div class="buy-card-footer">
                         <span class="buy-card-price">€9.99</span>
-                        <button class="primary-button" type="button" data-buy-trigger>Buy Now</button>
+                        <button class="primary-button" type="button" data-buy-trigger data-coming-soon-text="Coming Soon">Buy Now</button>
+                    </div>
+                </article>
+            </div>
+
+            <div class="buy-grid" data-language-panel="bg" lang="bg" hidden>
+                <article class="buy-card">
+                    <h2 class="buy-card-title">Пълното ръководство за генериране</h2>
+                    <p class="buy-card-description">Искате ли да се научите как да създавате свои собствени професионални изображения? Това изчерпателно ръководство ще ви научи как да генерирате всичко, което искате, с елитна прецизност.</p>
+                    <div class="buy-card-footer">
+                        <span class="buy-card-price">€99.99</span>
+                        <button class="primary-button" type="button" data-buy-trigger data-coming-soon-text="Скоро">Купи сега</button>
+                    </div>
+                </article>
+
+                <article class="buy-card">
+                    <h2 class="buy-card-title">Заявка за персонализирано съдържание</h2>
+                    <p class="buy-card-description">Искате ли съдържание по ваш избор? Вие избирате категорията или темата, а ние ви предоставяме ексклузивен, висококачествен достъп, съобразен с вашите предпочитания.</p>
+                    <div class="buy-card-footer">
+                        <span class="buy-card-price">€49.99</span>
+                        <button class="primary-button" type="button" data-buy-trigger data-coming-soon-text="Скоро">Купи сега</button>
+                    </div>
+                </article>
+
+                <article class="buy-card">
+                    <h2 class="buy-card-title">Екстра съдържание и подкрепа</h2>
+                    <p class="buy-card-description">Получете достъп до ексклузивно допълнително съдържание, което не е достъпно в публичната галерия. Вашата покупка директно подкрепя по-нататъшния растеж на уебсайта.</p>
+                    <div class="buy-card-footer">
+                        <span class="buy-card-price">€9.99</span>
+                        <button class="primary-button" type="button" data-buy-trigger data-coming-soon-text="Скоро">Купи сега</button>
                     </div>
                 </article>
             </div>
@@ -115,6 +151,7 @@
     </div>
 
     <script src="/age-gate.js" defer></script>
+    <script src="/language.js" defer></script>
     <script src="/config/site-config.js" defer></script>
     <script src="/auth/auth.js" defer></script>
     <script src="/ambient-background.js" defer></script>
@@ -124,7 +161,8 @@
             document.querySelectorAll("[data-buy-trigger]").forEach(button => {
                 button.addEventListener("click", () => {
                     const originalText = button.textContent;
-                    button.textContent = "Coming Soon";
+                    const comingSoonText = button.dataset.comingSoonText || "Coming Soon";
+                    button.textContent = comingSoonText;
                     button.disabled = true;
                     setTimeout(() => {
                         button.textContent = originalText;

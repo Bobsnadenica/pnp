@@ -1,0 +1,137 @@
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Support Us - Everyday Lilly</title>
+  <link rel="stylesheet" href="style.css" />
+  <script src="script.js" defer></script>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    body {
+      background: linear-gradient(to bottom right, #ecfdf5, #d1fae5);
+      font-family: 'Inter', sans-serif;
+      color: #1f2937;
+    }
+    .wallet-box {
+      background: white;
+      border-radius: 12px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+      padding: 1.5rem;
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+    .wallet-box:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 6px 14px rgba(0,0,0,0.08);
+    }
+    .coin-icon {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      font-size: 0.95rem;
+      font-weight: 800;
+      vertical-align: middle;
+      margin-right: 6px;
+      flex-shrink: 0;
+    }
+    .coin-btc  { background: #f7931a; color: #fff; }
+    .coin-eth  { background: #627eea; color: #fff; }
+    .coin-sol  { background: linear-gradient(135deg,#9945ff,#14f195); color: #fff; }
+    .coin-xrp  { background: #00aae4; color: #fff; }
+    .coin-doge { background: #c2a633; color: #fff; }
+    .coin-rev  { background: #191c1f; color: #fff; }
+    .wallet-title {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+  </style>
+</head>
+<body>
+  <header class="text-center py-12">
+    <h1 class="text-5xl font-display font-bold text-emerald-700 mb-4">Support Everyday Lilly, Everyday Dandelion & Everyday Filetrap</h1>
+    <p class="text-lg text-gray-600 max-w-2xl mx-auto">Everyday Lilly, Everyday Dandelion, and Everyday Filetrap are built with love and dedication — fully independent, ad-free, and privacy-focused. Your support helps us continue developing new features, translations, and creative tools across all our companion apps.</p>
+  </header>
+
+  <main class="container mx-auto px-6 pb-20">
+    <section class="grid sm:grid-cols-2 lg:grid-cols-3 gap-8">
+      <!-- BTC -->
+      <div class="wallet-box text-center">
+        <img src="images/supportus/btc.png" alt="Bitcoin" class="w-24 h-24 mx-auto mb-4" />
+        <h2 class="text-xl font-semibold mb-2 wallet-title"><span class="coin-icon coin-btc">₿</span>Bitcoin (BTC)</h2>
+        <p class="text-sm text-gray-500 mb-2 break-all">bc1q9jh0w4w8ug59qdt2e9lxw54c9sz2aw5q2njxgl</p>
+        <button onclick="copyWallet('bc1q9jh0w4w8ug59qdt2e9lxw54c9sz2aw5q2njxgl')" class="btn-primary px-4 py-2 rounded text-sm">Copy Address</button>
+      </div>
+
+      <!-- Ethereum -->
+      <div class="wallet-box text-center">
+        <img src="images/supportus/ethereum.png" alt="Ethereum" class="w-24 h-24 mx-auto mb-4" />
+        <h2 class="text-xl font-semibold mb-2 wallet-title"><span class="coin-icon coin-eth">Ξ</span>Ethereum (ETH)</h2>
+        <p class="text-sm text-gray-500 mb-2 break-all">0xF00716eDAF7Aca38Db93228D3372B3c642F03b03</p>
+        <button onclick="copyWallet('0xF00716eDAF7Aca38Db93228D3372B3c642F03b03')" class="btn-primary px-4 py-2 rounded text-sm">Copy Address</button>
+      </div>
+
+      <!-- Solana -->
+      <div class="wallet-box text-center">
+        <img src="images/supportus/sol.png" alt="Solana" class="w-24 h-24 mx-auto mb-4" />
+        <h2 class="text-xl font-semibold mb-2 wallet-title"><span class="coin-icon coin-sol">◎</span>Solana (SOL)</h2>
+        <p class="text-sm text-gray-500 mb-2 break-all">5dnwFVsjHcrCSNzA4wy88pFq1o57kKU9gm8C8JzmMwBa</p>
+        <button onclick="copyWallet('5dnwFVsjHcrCSNzA4wy88pFq1o57kKU9gm8C8JzmMwBa')" class="btn-primary px-4 py-2 rounded text-sm">Copy Address</button>
+      </div>
+
+      <!-- XRP -->
+      <div class="wallet-box text-center">
+        <img src="images/supportus/XRP.png" alt="XRP" class="w-24 h-24 mx-auto mb-4" />
+        <h2 class="text-xl font-semibold mb-2 wallet-title"><span class="coin-icon coin-xrp">✕</span>Ripple (XRP)</h2>
+        <p class="text-sm text-gray-500 mb-2 break-all">r3y1du8c8BZrxcX45vehoz2rSkEFqjD154</p>
+        <button onclick="copyWallet('r3y1du8c8BZrxcX45vehoz2rSkEFqjD154')" class="btn-primary px-4 py-2 rounded text-sm">Copy Address</button>
+      </div>
+
+      <!-- Dogecoin -->
+      <div class="wallet-box text-center">
+        <img src="images/supportus/doge.png" alt="Dogecoin" class="w-24 h-24 mx-auto mb-4" />
+        <h2 class="text-xl font-semibold mb-2 wallet-title"><span class="coin-icon coin-doge">Ð</span>Dogecoin (DOGE)</h2>
+        <p class="text-sm text-gray-500 mb-2 break-all">bnb1a4aye09zl258qjt8laqggqhd86j6g8chelgwv9</p>
+        <button onclick="copyWallet('bnb1a4aye09zl258qjt8laqggqhd86j6g8chelgwv9')" class="btn-primary px-4 py-2 rounded text-sm">Copy Address</button>
+      </div>
+      <!-- Revolut -->
+      <div class="wallet-box text-center">
+        <img src="images/supportus/revolut.jpg" alt="Revolut" class="w-24 h-24 mx-auto mb-4" />
+        <h2 class="text-xl font-semibold mb-2 wallet-title"><span class="coin-icon coin-rev">R</span>Revolut</h2>
+        <p class="text-sm text-gray-500 mb-2 break-all">Support us directly via Revolut</p>
+        <a href="https://revolut.me/privileged" target="_blank" rel="noopener" class="btn-primary px-4 py-2 rounded text-sm inline-flex items-center justify-center gap-2">
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-5 h-5">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5L21 12l-7.5 7.5M3 12h18" />
+          </svg>
+          <span>Open Revolut.me</span>
+        </a>
+      </div>
+    </section>
+
+    <section class="text-center mt-16">
+      <h2 class="text-3xl font-display text-emerald-800 mb-4">Thank You for Supporting Us 🌿</h2>
+      <p class="text-gray-600 max-w-xl mx-auto mb-8">Your contributions help keep Everyday Lilly and its companion apps alive, privacy-respecting, and ever-improving for users around the world.</p>
+      <a href="https://www.everydaylilly.com" class="btn-secondary px-6 py-3 rounded-lg inline-flex items-center gap-2 font-medium">
+        ← Back to Home
+      </a>
+    </section>
+  </main>
+
+  <footer class="text-center text-gray-500 py-8 text-sm">
+    &copy; <span id="year"></span> Everyday Lilly. All Rights Reserved.
+  </footer>
+
+  <script>
+    function copyWallet(address) {
+      navigator.clipboard.writeText(address);
+      alert("Wallet address copied to clipboard!");
+    }
+    document.getElementById("year").textContent = new Date().getFullYear();
+  </script>
+</body>
+</html>

@@ -81,8 +81,12 @@
                 <span>Malkokote</span>
             </a>
             <div class="site-actions">
-                <a class="ghost-button button-link" href="/">Gallery</a>
-                <a class="ghost-button button-link" href="/buy.html">Buy</a>
+                <div class="language-switch">
+                    <button class="language-pill" type="button" data-language-option="bg" aria-label="Bulgarian">🇧🇬</button>
+                    <button class="language-pill" type="button" data-language-option="en" aria-label="English">🇬🇧</button>
+                </div>
+                <a class="ghost-button button-link" href="/" data-i18n-en="Gallery" data-i18n-bg="Галерия">Gallery</a>
+                <a class="ghost-button button-link" href="/buy.html" data-i18n-en="Buy" data-i18n-bg="Купи">Buy</a>
                 <button class="ghost-button" type="button" data-gallery-theme-toggle aria-label="Toggle color theme">
                     <span class="theme-icon-shell">
                         <svg class="theme-icon theme-icon-sun" viewBox="0 0 24 24" aria-hidden="true">
@@ -94,7 +98,10 @@
                         </svg>
                     </span>
                 </button>
-                <button class="ghost-button" type="button" data-profile-trigger data-signed-out-text="Login" data-signed-in-text="Login">
+                <button class="ghost-button" type="button" data-profile-trigger 
+                    data-i18n-en="Login" data-i18n-bg="Вход"
+                    data-en-signed-out="Login" data-en-signed-in="Login"
+                    data-bg-signed-out="Вход" data-bg-signed-in="Вход">
                     <span data-profile-label>Login</span>
                 </button>
             </div>
@@ -102,11 +109,7 @@
 
         <main class="contact-shell">
             <h1 class="sr-only">Contact Malkokote in Bulgaria</h1>
-            <section class="contact-panel" data-language-root data-language-storage-key="malkokote:language">
-                <div class="language-switch" aria-label="Language switcher">
-                    <button class="language-pill" type="button" data-language-option="bg" aria-pressed="false">🇧🇬 BG</button>
-                    <button class="language-pill" type="button" data-language-option="en" aria-pressed="false">🇬🇧 EN</button>
-                </div>
+            <section class="contact-panel">
                 <div class="contact-copy" data-language-panel="bg" lang="bg" hidden>
                     <p>Ако си 18+ коте и искаш да работиш с нас, пиши ни на <a href="mailto:contactus@malkokote.com">contactus@malkokote.com</a>.</p>
                     <p>Ако искаш да гледаш още, прати ни своето 18+ портфолио на <a href="mailto:contactus@malkokote.com">contactus@malkokote.com</a> и ако е подходящо, ще ти дадем акаунт.</p>
@@ -140,10 +143,10 @@
     </div>
 
     <script src="/age-gate.js" defer></script>
+    <script src="/language.js" defer></script>
     <script src="/config/site-config.js" defer></script>
     <script src="/auth/auth.js" defer></script>
     <script src="/ambient-background.js" defer></script>
     <script src="/script.js" defer></script>
-    <script src="/contact.js" defer></script>
 </body>
 </html>
