@@ -53,11 +53,6 @@ output "gallery_extra_example_object_key" {
   value       = "${var.gallery_extra_prefix}/behind-the-scenes.mp4"
 }
 
-output "cognito_waf_web_acl_arn" {
-  description = "Regional AWS WAF web ACL that protects Cognito managed login from bursts and bot spam."
-  value       = aws_wafv2_web_acl.cognito_login.arn
-}
-
 output "cognito_user_pool_id" {
   description = "Cognito user pool id."
   value       = aws_cognito_user_pool.gallery.id

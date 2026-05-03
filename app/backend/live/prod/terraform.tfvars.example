@@ -30,11 +30,6 @@ gallery_api_allowed_origins = [
   "http://localhost:8000"
 ]
 
-cognito_login_captcha_rate_limit            = 10
-cognito_login_captcha_evaluation_window_sec = 60
-cognito_login_captcha_immunity_time_sec     = 900
-cognito_login_timeout_rate_limit            = 25
-cognito_login_timeout_evaluation_window_sec = 300
 price_class                                 = "PriceClass_100"
 
 tags = {

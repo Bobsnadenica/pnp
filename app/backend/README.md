@@ -10,7 +10,6 @@ Terraform for the Malkokote production gallery backend lives here.
 - public static manifest JSON files rebuilt on S3 upload and delete
 - JWT-protected gallery manifest API through API Gateway for the extra gallery
 - Lambda that reads prebuilt manifest metadata and mints signed CloudFront URLs
-- WAF rules attached to Cognito for burst protection and hidden CAPTCHA
 
 ## Access Model
 
@@ -63,11 +62,6 @@ gallery_api_allowed_origins = [
 gallery_cache_version                    = "v1"
 gallery_public_manifest_cache_ttl_seconds = 60
 gallery_signed_url_ttl_seconds           = 31536000
-cognito_login_captcha_rate_limit         = 10
-cognito_login_captcha_evaluation_window_sec = 60
-cognito_login_captcha_immunity_time_sec  = 900
-cognito_login_timeout_rate_limit         = 25
-cognito_login_timeout_evaluation_window_sec = 300
 price_class                              = "PriceClass_100"
 
 tags = {

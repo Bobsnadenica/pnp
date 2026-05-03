@@ -82,36 +82,6 @@ variable "gallery_api_allowed_origins" {
   type        = list(string)
 }
 
-variable "cognito_login_captcha_rate_limit" {
-  description = "Per-IP request rate for hidden CAPTCHA on Cognito managed login endpoints. AWS WAF requires a minimum of 10."
-  type        = number
-  default     = 10
-}
-
-variable "cognito_login_captcha_evaluation_window_sec" {
-  description = "Evaluation window in seconds for the Cognito managed login CAPTCHA rate rule."
-  type        = number
-  default     = 60
-}
-
-variable "cognito_login_captcha_immunity_time_sec" {
-  description = "How long a solved Cognito managed login CAPTCHA stays valid for that browser session."
-  type        = number
-  default     = 900
-}
-
-variable "cognito_login_timeout_rate_limit" {
-  description = "Per-IP request rate that upgrades Cognito managed login abuse from CAPTCHA to a temporary block timeout."
-  type        = number
-  default     = 25
-}
-
-variable "cognito_login_timeout_evaluation_window_sec" {
-  description = "Evaluation window in seconds for the Cognito managed login temporary block rule."
-  type        = number
-  default     = 300
-}
-
 variable "price_class" {
   description = "CloudFront price class."
   type        = string
