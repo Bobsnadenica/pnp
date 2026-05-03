@@ -63,8 +63,38 @@
         </header>
 
         <main class="buy-shell">
-            <h1 class="sr-only">Buy premium access</h1>
-            <p class="buy-copy">Coming soon / Скоро</p>
+            <h1 class="sr-only">Buy premium services and support</h1>
+            
+            <div class="buy-grid">
+                <article class="buy-card">
+                    <h2 class="buy-card-title">The Complete Generation Guide</h2>
+                    <p class="buy-card-description">Want to learn how to create your own professional images? This comprehensive guide teaches you how to generate anything you want with elite precision.</p>
+                    <div class="buy-card-footer">
+                        <span class="buy-card-price">€99.99</span>
+                        <button class="primary-button" type="button" data-buy-trigger>Buy Now</button>
+                    </div>
+                </article>
+
+                <article class="buy-card">
+                    <h2 class="buy-card-title">Custom Content Request</h2>
+                    <p class="buy-card-description">Want content of your choice? You choose the category or theme, and we provide you with exclusive, high-quality access tailored to your preference.</p>
+                    <div class="buy-card-footer">
+                        <span class="buy-card-price">€49.99</span>
+                        <button class="primary-button" type="button" data-buy-trigger>Buy Now</button>
+                    </div>
+                </article>
+
+                <article class="buy-card">
+                    <h2 class="buy-card-title">Extra Content & Support</h2>
+                    <p class="buy-card-description">Get access to exclusive extra content not available in the public gallery. Your purchase directly supports the continued growth of the website.</p>
+                    <div class="buy-card-footer">
+                        <span class="buy-card-price">€9.99</span>
+                        <button class="primary-button" type="button" data-buy-trigger>Buy Now</button>
+                    </div>
+                </article>
+            </div>
+
+            <p class="buy-copy" style="margin-top: 2rem;">Digital delivery / Дигитална доставка</p>
         </main>
     </div>
 
@@ -89,5 +119,20 @@
     <script src="/auth/auth.js" defer></script>
     <script src="/ambient-background.js" defer></script>
     <script src="/script.js" defer></script>
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            document.querySelectorAll("[data-buy-trigger]").forEach(button => {
+                button.addEventListener("click", () => {
+                    const originalText = button.textContent;
+                    button.textContent = "Coming Soon";
+                    button.disabled = true;
+                    setTimeout(() => {
+                        button.textContent = originalText;
+                        button.disabled = false;
+                    }, 2000);
+                });
+            });
+        });
+    </script>
 </body>
 </html>
