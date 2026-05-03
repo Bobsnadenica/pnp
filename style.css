@@ -111,11 +111,27 @@ body[data-gallery-theme="night"] .ambient-background-wash {
 }
 
 .site-mark {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
     text-decoration: none;
     font-size: 0.9rem;
     font-weight: 700;
     letter-spacing: 0.12em;
     text-transform: uppercase;
+    color: var(--text);
+}
+
+.site-logo {
+    display: block;
+    width: auto;
+    height: 1.8rem;
+    object-fit: contain;
+    filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.1));
+}
+
+body[data-gallery-theme="night"] .site-logo {
+    filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.4)) brightness(1.1);
 }
 
 body[data-gallery-theme="night"] .site-mark {
