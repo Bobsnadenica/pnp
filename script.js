@@ -108,15 +108,6 @@ document.addEventListener("DOMContentLoaded", async () => {
     const nextTheme = getOppositePublicTheme(publicGalleryState.theme);
 
     galleryThemeButtons.forEach((button) => {
-      const label = button.querySelector("[data-gallery-theme-label]");
-
-      if (!label) {
-        return;
-      }
-
-      label.textContent = nextTheme === "night"
-        ? button.dataset.nightLabel || "Night"
-        : button.dataset.dayLabel || "Day";
       button.dataset.targetTheme = nextTheme;
       button.setAttribute("aria-pressed", String(publicGalleryState.theme === "night"));
     });
