@@ -72,7 +72,7 @@ a {
 
 .ambient-background-media {
     inset: -3rem;
-    background-image: var(--ambient-image, url("/daybackground.jpg"));
+    background-image: var(--ambient-image, none);
     background-position: center;
     background-repeat: no-repeat;
     background-size: cover;
@@ -81,7 +81,7 @@ a {
 }
 
 body[data-gallery-theme="night"] .ambient-background-media {
-    background-image: var(--ambient-image, url("/nightbackground.jpg"));
+    background-image: var(--ambient-image, none);
 }
 
 .ambient-background-wash {
@@ -291,7 +291,7 @@ body[data-gallery-theme="night"] [data-gallery-theme-toggle]:hover {
     transform-origin: top right;
     transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
     box-shadow: 0 12px 24px -8px rgba(0, 0, 0, 0.3);
-    z-index: 100;
+    z-index: 1000; /* Higher z-index to stay above carousel and other elements */
 }
 
 .theme-thinking-bubble::before,
@@ -338,7 +338,7 @@ body[data-gallery-theme="night"] .theme-thinking-bubble {
 
 /* Page Specific Backgrounds */
 body:not(.has-ambient-background) {
-    background-image: url("/daybackground.jpg");
+    background: linear-gradient(180deg, #faf9f7 0%, var(--bg) 100%);
     background-position: center;
     background-size: cover;
     background-attachment: fixed;
@@ -346,21 +346,7 @@ body:not(.has-ambient-background) {
 }
 
 body:not(.has-ambient-background)[data-gallery-theme="night"] {
-    background-image: url("/nightbackground.jpg");
-}
-
-/* Front Page Specific (Static Only) */
-body.home-page {
-    background-image: url("/daybackground.jpg") !important;
-}
-
-body.home-page[data-gallery-theme="night"] {
-    background-image: url("/nightbackground.jpg") !important;
-}
-
-/* Ensure Home Page does not show ambient loaded images */
-body.home-page .ambient-background {
-    display: none !important;
+    background: linear-gradient(180deg, #171d28 0%, var(--bg) 100%);
 }
 
 .thinking-text-day,

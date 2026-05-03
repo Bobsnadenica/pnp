@@ -10,14 +10,6 @@ document.addEventListener("DOMContentLoaded", async () => {
     return;
   }
 
-  // Skip dynamic loading on the home page to keep it static as requested
-  if (document.body.classList.contains("home-page")) {
-    window.addEventListener("malkokote:themechange", (event) => {
-      document.body.dataset.galleryTheme = normalizePublicTheme(event.detail?.theme);
-    });
-    return;
-  }
-
   const galleryBaseUrl = String(config.galleryBaseUrl || "").replace(/\/+$/, "");
 
   if (!galleryBaseUrl) {
