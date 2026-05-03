@@ -1229,30 +1229,42 @@ body[data-gallery-theme="night"] .public-carousel-slide {
 @media (max-width: 720px) {
     .site-frame {
         width: min(100%, calc(100% - 1rem));
+        padding: 0.6rem 0 1rem;
     }
 
     .site-header {
         align-items: center;
-        gap: 0.4rem;
+        gap: 0.3rem;
+        padding-bottom: 0.6rem;
+    }
+
+    .site-mark {
+        font-size: 0.75rem;
+        gap: 0.35rem;
+        flex-shrink: 0;
+    }
+
+    .site-logo {
+        height: 1.4rem;
     }
 
     .site-actions {
         flex-wrap: nowrap;
         overflow-x: auto;
         justify-content: flex-end;
-        gap: 0.35rem;
+        gap: 0.25rem;
         -webkit-overflow-scrolling: touch;
         scrollbar-width: none;
         min-width: 0;
     }
 
     .site-header .language-switch {
-        margin-right: 0.1rem;
+        margin-right: 0;
     }
 
     .language-pill {
-        padding: 0.35rem 0.5rem;
-        font-size: 0.85rem;
+        padding: 0.3rem 0.45rem;
+        font-size: 0.8rem;
     }
 
     .site-actions::-webkit-scrollbar {
@@ -1289,8 +1301,8 @@ body[data-gallery-theme="night"] .public-carousel-slide {
     .secondary-button {
         width: 100%;
         text-align: center;
-        padding: 0.65rem 0.9rem;
-        font-size: 0.9rem;
+        padding: 0.6rem 0.8rem;
+        font-size: 0.85rem;
     }
 
     .site-actions .ghost-button,
@@ -1298,6 +1310,18 @@ body[data-gallery-theme="night"] .public-carousel-slide {
     .site-actions .secondary-button {
         width: auto;
         flex: 0 0 auto;
+        padding: 0.55rem 0.75rem;
+    }
+
+    [data-gallery-theme-toggle] {
+        width: 2.3rem;
+        height: 2.3rem;
+        padding: 0 !important;
+    }
+    
+    [data-profile-trigger] {
+        padding-left: 0.85rem !important;
+        padding-right: 0.85rem !important;
     }
 
     .public-card,
@@ -1353,6 +1377,12 @@ body[data-gallery-theme="night"] .public-carousel-slide {
 
     .age-gate-actions {
         flex-direction: column;
+    }
+}
+
+@media (max-width: 440px) {
+    .site-mark span {
+        display: none;
     }
 }
 
