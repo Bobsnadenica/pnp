@@ -34,19 +34,6 @@ body.age-gate-pending .shell {
     visibility: hidden;
 }
 
-body[data-gallery-mode="test"] {
-    --page-bg: #f6efe7;
-    --line: rgba(159, 97, 37, 0.16);
-    --accent: #9f6125;
-    --hero-start: #6d3a0f;
-    --hero-end: #d28d3b;
-    --hero-glow: rgba(255, 255, 255, 0.14);
-    background:
-        radial-gradient(circle at top left, rgba(212, 141, 59, 0.18), transparent 28%),
-        radial-gradient(circle at top right, rgba(248, 220, 178, 0.28), transparent 24%),
-        linear-gradient(180deg, #fffaf3 0%, var(--page-bg) 100%);
-}
-
 body[data-gallery-mode="router"] {
     display: grid;
     place-items: center;
@@ -482,52 +469,6 @@ h1 {
     word-break: break-word;
 }
 
-.test-collage {
-    display: grid;
-    grid-template-columns: repeat(12, minmax(0, 1fr));
-    grid-auto-rows: 180px;
-    grid-auto-flow: dense;
-    gap: 1rem;
-}
-
-.test-card {
-    grid-column: span var(--col-span, 4);
-    grid-row: span var(--row-span, 1);
-    position: relative;
-    overflow: hidden;
-    border-radius: 1.6rem;
-    background: white;
-    border: 1px solid rgba(159, 97, 37, 0.14);
-    box-shadow: 0 24px 42px -34px rgba(93, 49, 15, 0.44);
-    transform: rotate(var(--tilt, 0deg));
-}
-
-.test-card::before {
-    content: "";
-    position: absolute;
-    inset: auto auto -30% -10%;
-    width: 60%;
-    height: 60%;
-    border-radius: 999px;
-    background: var(--accent-wash, rgba(190, 140, 34, 0.18));
-    filter: blur(16px);
-    pointer-events: none;
-}
-
-.test-card .photo-link {
-    height: 100%;
-}
-
-.test-card .media-shell {
-    height: 100%;
-    aspect-ratio: auto;
-}
-
-.test-card img,
-.test-card video {
-    background: #fbf0df;
-}
-
 .viewer[hidden] {
     display: none;
 }
@@ -732,8 +673,8 @@ h1 {
 }
 
 @media (max-width: 900px) {
-    .test-collage {
-        grid-template-columns: repeat(6, minmax(0, 1fr));
+    .month-grid {
+        grid-template-columns: repeat(2, 1fr);
     }
 }
 
@@ -795,16 +736,6 @@ h1 {
     .month-header {
         align-items: start;
         flex-direction: column;
-    }
-
-    .test-collage {
-        grid-template-columns: 1fr;
-    }
-
-    .test-card {
-        grid-column: auto;
-        grid-row: auto;
-        transform: none;
     }
 }
 

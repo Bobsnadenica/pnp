@@ -18,12 +18,6 @@
   }
 
   function getAppBaseUrl() {
-    const { hostname } = window.location;
-
-    if (hostname === "localhost" || hostname === "127.0.0.1") {
-      return globalConfig.localBaseUrl || "http://localhost:8000";
-    }
-
     return globalConfig.websiteBaseUrl || window.location.origin;
   }
 
@@ -207,67 +201,6 @@
 
   function getReturnPath() {
     return `${window.location.pathname}${window.location.search}${window.location.hash}` || "/";
-  }
-
-  function normalizeClaimValues(value) {
-    if (Array.isArray(value)) {
-      return value
-        .map((entry) => String(entry).trim().toLowerCase())
-        .filter(Boolean);
-    }
-
-    if (typeof value === "string") {
-      const trimmed = value.trim();
-
-      if (
-        (trimmed.startsWith("[") && trimmed.endsWith("]")) ||
-        (trimmed.startsWith("{") && trimmed.endsWith("}")) ||
-        (trimmed.startsWith("\"") && trimmed.endsWith("\""))
-      ) {
-        try {
-          return normalizeClaimValues(JSON.parse(trimmed));
-        } catch (error) {
-          console.warn("Unable to parse structured claim string.", error);
-        }
-      }
-
-      return value
-        .split(/[\s,;|]+/)
-        .map((entry) => entry.trim().toLowerCase().replace(/^[\[\]"']+|[\[\]"']+$/g, ""))
-        .filter(Boolean);
-    }
-
-    if (typeof value === "number" || typeof value === "boolean") {
-      return [String(value).trim().toLowerCase()];
-    }
-
-    return [];
-  }
-
-  function sessionClaims(input) {
-    return input?.claims || input || {};
-  }
-
-  function isTestAccount(input) {
-    const claims = sessionClaims(input);
-    const target = "test";
-    const groups = normalizeClaimValues(claims["cognito:groups"]);
-
-    if (groups.includes(target)) {
-      return true;
-    }
-
-    const tagKeys = ["custom:tag", "custom:tags", "tag", "tags"];
-    const tagValues = tagKeys.flatMap((key) => normalizeClaimValues(claims[key]));
-
-    if (tagValues.includes(target)) {
-      return true;
-    }
-
-    return ["custom:test", "test"].some((key) => {
-      const values = normalizeClaimValues(claims[key]);
-      return values.includes("true") || values.includes(target);
-    });
   }
 
   function getGalleryCollection() {
@@ -609,7 +542,6 @@
     getGalleryDestination,
     getSession,
     handleCallback,
-    isTestAccount,
     signOut,
     startLogin,
   };
