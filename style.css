@@ -16,11 +16,7 @@ body {
     min-height: 100vh;
     font-family: "Inter", sans-serif;
     color: var(--text);
-    background-image: url("/daybackground.jpg");
-    background-position: center;
-    background-size: cover;
-    background-attachment: fixed;
-    background-repeat: no-repeat;
+    background: linear-gradient(180deg, #faf9f7 0%, var(--bg) 100%);
 }
 
 body[data-gallery-theme="night"] {
@@ -29,7 +25,7 @@ body[data-gallery-theme="night"] {
     --line: rgba(255, 255, 255, 0.12);
     --text: #f4f7fb;
     --muted: #aeb8c7;
-    background-image: url("/nightbackground.jpg");
+    background: linear-gradient(180deg, #171d28 0%, var(--bg) 100%);
 }
 
 body.has-ambient-background {
@@ -110,6 +106,8 @@ body[data-gallery-theme="night"] .ambient-background-wash {
     justify-content: space-between;
     gap: 1rem;
     padding-bottom: 0.9rem;
+    position: relative;
+    z-index: 10; /* Ensure header content stays above other site-frame sections */
 }
 
 .site-actions {
@@ -277,7 +275,8 @@ body[data-gallery-theme="night"] [data-gallery-theme-toggle]:hover {
     position: absolute;
     top: calc(100% + 14px);
     right: 0;
-    background: #111111;
+    background: rgba(17, 24, 39, 0.9);
+    backdrop-filter: blur(12px);
     color: #ffffff;
     padding: 0.6rem 0.9rem;
     border-radius: 1.2rem;
@@ -332,22 +331,11 @@ body[data-gallery-theme="night"] [data-gallery-theme-toggle]:hover {
 }
 
 body[data-gallery-theme="night"] .theme-thinking-bubble {
-    background: #f1c40f;
+    background: rgba(241, 196, 15, 0.9);
     color: #10141c;
 }
 
-/* Page Specific Backgrounds */
-body:not(.has-ambient-background) {
-    background: linear-gradient(180deg, #faf9f7 0%, var(--bg) 100%);
-    background-position: center;
-    background-size: cover;
-    background-attachment: fixed;
-    background-repeat: no-repeat;
-}
-
-body:not(.has-ambient-background)[data-gallery-theme="night"] {
-    background: linear-gradient(180deg, #171d28 0%, var(--bg) 100%);
-}
+/* Thinking Bubble Styles End */
 
 .thinking-text-day,
 .thinking-text-night {
