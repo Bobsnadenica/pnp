@@ -740,7 +740,7 @@ document.addEventListener("DOMContentLoaded", async () => {
             aria-label="${escapeHtml(label)}"
           >
             <div class="public-media">
-              <video src="${escapeHtml(photo.url)}" muted loop autoplay playsinline preload="metadata"${isUserAd ? ' style="filter: blur(20px); opacity: 0.8;"' : ""}></video>
+              <video src="${escapeHtml(photo.url)}" muted loop autoplay playsinline preload="metadata"${isUserAd ? ' style="filter: blur(10px); opacity: 0.8;"' : ""}></video>
               ${isUserAd ? `
                 <div class="user-ad-badge" aria-hidden="true">
                   <span class="user-ad-kicker">${escapeHtml(userAdLabel)}</span>
@@ -776,7 +776,7 @@ document.addEventListener("DOMContentLoaded", async () => {
           aria-label="${escapeHtml(label)}"
         >
           <div class="public-media">
-            <img src="${escapeHtml(photo.url)}" alt="${escapeHtml(label)}" loading="${fetchPriority === "high" ? "eager" : "lazy"}" fetchpriority="${escapeHtml(fetchPriority)}" decoding="async"${isUserAd ? ' style="filter: blur(20px); opacity: 0.8;"' : ""}>
+            <img src="${escapeHtml(photo.url)}" alt="${escapeHtml(label)}" loading="${fetchPriority === "high" ? "eager" : "lazy"}" fetchpriority="${escapeHtml(fetchPriority)}" decoding="async"${isUserAd ? ' style="filter: blur(10px); opacity: 0.8;"' : ""}>
             ${badge}
           </div>
         </a>
@@ -1112,6 +1112,10 @@ document.addEventListener("DOMContentLoaded", async () => {
   function openModal() {
     if (!loginModal) {
       return;
+    }
+
+    if (window.MalkokoteLanguage?.getLanguage) {
+      window.MalkokoteLanguage.applyLanguage(window.MalkokoteLanguage.getLanguage());
     }
 
     lastFocus = document.activeElement;

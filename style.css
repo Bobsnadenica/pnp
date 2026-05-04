@@ -1480,7 +1480,7 @@ body[data-gallery-theme="night"] .public-carousel-slide {
 
 .user-ad-card .public-media img,
 .user-ad-card .public-media video {
-    filter: blur(20px);
+    filter: blur(10px);
     opacity: 0.6;
     transform: scale(1.1); /* Prevent edges from showing through blur */
 }
