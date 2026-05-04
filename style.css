@@ -1382,7 +1382,7 @@ body[data-gallery-theme="night"] .public-carousel-slide {
 
 @media (max-width: 440px) {
     .site-mark span {
-        display: none;
+        display: block;
     }
 }
 
@@ -1480,7 +1480,7 @@ body[data-gallery-theme="night"] .public-carousel-slide {
 
 .user-ad-card .public-media img,
 .user-ad-card .public-media video {
-    filter: blur(4px);
+    filter: blur(10px);
     opacity: 0.6;
     transform: scale(1.1); /* Prevent edges from showing through blur */
 }
@@ -1516,4 +1516,29 @@ body[data-gallery-theme="night"] .public-carousel-slide {
 .is-hero-ad:hover::before {
     border-color: rgba(212, 175, 55, 0.7);
     box-shadow: inset 0 0 20px rgba(212, 175, 55, 0.3), 0 0 15px rgba(212, 175, 55, 0.3);
+}
+
+.user-ad-corner-name {
+    position: absolute;
+    bottom: 12px;
+    left: 12px;
+    background: rgba(0, 0, 0, 0.4);
+    backdrop-filter: blur(6px);
+    -webkit-backdrop-filter: blur(6px);
+    color: #fff;
+    padding: 0.3rem 0.7rem;
+    border-radius: 8px;
+    font-size: 0.85rem;
+    font-weight: 600;
+    z-index: 10;
+    pointer-events: none;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+}
+
+.user-ad-badge .user-ad-kicker {
+    font-size: 0.85rem;
+    opacity: 1;
+    font-weight: 700;
+    letter-spacing: 0.05em;
 }

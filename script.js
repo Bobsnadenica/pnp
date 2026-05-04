@@ -479,10 +479,36 @@ document.addEventListener("DOMContentLoaded", async () => {
   }
 
   const GIRL_NAMES = [
-    "Alexandra", "Beatris", "Celine", "Desislava", "Elena", "Gabriela", "Isabella", 
-    "Gergana", "Kamelia", "Lora", "Maria", "Natalia", "Olivia", "Polina", "Ralitsa", 
-    "Simona", "Teodora", "Victoria", "Yana", "Zornitsa", "Chloe", "Sophie", "Emma",
-    "Nicole", "Vanessa", "Raya", "Daria", "Svetlana", "Maya", "Jessica"
+    { en: "Alexandra", bg: "Александра" },
+    { en: "Beatris", bg: "Беатрис" },
+    { en: "Celine", bg: "Селин" },
+    { en: "Desislava", bg: "Десислава" },
+    { en: "Elena", bg: "Елена" },
+    { en: "Gabriela", bg: "Габриела" },
+    { en: "Isabella", bg: "Изабела" },
+    { en: "Gergana", bg: "Гергана" },
+    { en: "Kamelia", bg: "Камелия" },
+    { en: "Lora", bg: "Лора" },
+    { en: "Maria", bg: "Мария" },
+    { en: "Natalia", bg: "Наталия" },
+    { en: "Olivia", bg: "Оливия" },
+    { en: "Polina", bg: "Полина" },
+    { en: "Ralitsa", bg: "Ралица" },
+    { en: "Simona", bg: "Симона" },
+    { en: "Teodora", bg: "Теодора" },
+    { en: "Victoria", bg: "Виктория" },
+    { en: "Yana", bg: "Яна" },
+    { en: "Zornitsa", bg: "Зорница" },
+    { en: "Chloe", bg: "Клои" },
+    { en: "Sophie", bg: "Софи" },
+    { en: "Emma", bg: "Ема" },
+    { en: "Nicole", bg: "Никол" },
+    { en: "Vanessa", bg: "Ванеса" },
+    { en: "Raya", bg: "Рая" },
+    { en: "Daria", bg: "Дария" },
+    { en: "Svetlana", bg: "Светлана" },
+    { en: "Maya", bg: "Мая" },
+    { en: "Jessica", bg: "Джесика" }
   ];
 
   function getRandomGirlName() {
@@ -497,7 +523,7 @@ document.addEventListener("DOMContentLoaded", async () => {
       publicGalleryState.allPhotos.filter((p) => getMediaKind(p) === "picture")
     ).slice(0, 10).map(photo => ({
       ...photo,
-      userName: getRandomGirlName()
+      userNames: getRandomGirlName()
     }));
     publicGalleryState.renderedCount = 0;
     publicGalleryState.fetchedAt = fetchedAt;
@@ -724,7 +750,8 @@ document.addEventListener("DOMContentLoaded", async () => {
     const isHeroAd = !!photo.isHeroAd;
     const lang = window.MalkokoteLanguage?.getLanguage?.() || "en";
     const userAdLabel = lang === "bg" ? "Топ коте" : "Top kitty";
-    const label = isUserAd ? `${userAdLabel} ${photo.userName || ""}` : (photo.label || photo.key || "Gallery item");
+    const userName = isUserAd ? (photo.userNames?.[lang] || photo.userNames?.en || "") : "";
+    const label = isUserAd ? `${userAdLabel} ${userName}` : (photo.label || photo.key || "Gallery item");
 
     if (kind === "movie") {
       return `
@@ -741,12 +768,12 @@ document.addEventListener("DOMContentLoaded", async () => {
             aria-label="${escapeHtml(label)}"
           >
             <div class="public-media">
-              <video src="${escapeHtml(photo.url)}" muted loop autoplay playsinline preload="metadata"${isUserAd ? ' style="filter: blur(4px); opacity: 0.8;"' : ""}></video>
+              <video src="${escapeHtml(photo.url)}" muted loop autoplay playsinline preload="metadata"${isUserAd ? ' style="filter: blur(10px); opacity: 0.8;"' : ""}></video>
               ${isUserAd ? `
                 <div class="user-ad-badge" aria-hidden="true">
                   <span class="user-ad-kicker">${escapeHtml(userAdLabel)}</span>
-                  <span class="user-ad-name">${escapeHtml(photo.userName || "")}</span>
                 </div>
+                <span class="user-ad-corner-name">${escapeHtml(userName)}</span>
               ` : '<span class="media-badge" aria-hidden="true">&#9654;</span>'}
             </div>
           </a>
@@ -758,8 +785,8 @@ document.addEventListener("DOMContentLoaded", async () => {
       ? `
         <div class="user-ad-badge" aria-hidden="true">
           <span class="user-ad-kicker">${escapeHtml(userAdLabel)}</span>
-          <span class="user-ad-name">${escapeHtml(photo.userName || "")}</span>
         </div>
+        <span class="user-ad-corner-name">${escapeHtml(userName)}</span>
       ` 
       : (kind === "gif" ? '<span class="media-badge" aria-hidden="true">GIF</span>' : "");
 
@@ -777,7 +804,7 @@ document.addEventListener("DOMContentLoaded", async () => {
           aria-label="${escapeHtml(label)}"
         >
           <div class="public-media">
-            <img src="${escapeHtml(photo.url)}" alt="${escapeHtml(label)}" loading="${fetchPriority === "high" ? "eager" : "lazy"}" fetchpriority="${escapeHtml(fetchPriority)}" decoding="async"${isUserAd ? ' style="filter: blur(4px); opacity: 0.8;"' : ""}>
+            <img src="${escapeHtml(photo.url)}" alt="${escapeHtml(label)}" loading="${fetchPriority === "high" ? "eager" : "lazy"}" fetchpriority="${escapeHtml(fetchPriority)}" decoding="async"${isUserAd ? ' style="filter: blur(10px); opacity: 0.8;"' : ""}>
             ${badge}
           </div>
         </a>
