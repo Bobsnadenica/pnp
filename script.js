@@ -721,13 +721,14 @@ document.addEventListener("DOMContentLoaded", async () => {
     const fetchPriority = index < 4 ? "high" : "low";
 
     const isUserAd = !!photo.isUserAd;
+    const isHeroAd = !!photo.isHeroAd;
     const lang = window.MalkokoteLanguage?.getLanguage?.() || "en";
     const userAdLabel = lang === "bg" ? "Топ коте" : "Top kitty";
     const label = isUserAd ? `${userAdLabel} ${photo.userName || ""}` : (photo.label || photo.key || "Gallery item");
 
     if (kind === "movie") {
       return `
-        <article class="public-card public-card-${escapeHtml(layoutClass)} ${escapeHtml(driftClass)}${isUserAd ? " user-ad-card" : ""}">
+        <article class="public-card public-card-${escapeHtml(layoutClass)} ${escapeHtml(driftClass)}${isUserAd ? " user-ad-card" : ""}${isHeroAd ? " is-hero-ad" : ""}">
           <a
             class="public-trigger"
             href="${escapeHtml(photo.url)}"
@@ -740,7 +741,7 @@ document.addEventListener("DOMContentLoaded", async () => {
             aria-label="${escapeHtml(label)}"
           >
             <div class="public-media">
-              <video src="${escapeHtml(photo.url)}" muted loop autoplay playsinline preload="metadata"${isUserAd ? ' style="filter: blur(10px); opacity: 0.8;"' : ""}></video>
+              <video src="${escapeHtml(photo.url)}" muted loop autoplay playsinline preload="metadata"${isUserAd ? ' style="filter: blur(4px); opacity: 0.8;"' : ""}></video>
               ${isUserAd ? `
                 <div class="user-ad-badge" aria-hidden="true">
                   <span class="user-ad-kicker">${escapeHtml(userAdLabel)}</span>
@@ -763,7 +764,7 @@ document.addEventListener("DOMContentLoaded", async () => {
       : (kind === "gif" ? '<span class="media-badge" aria-hidden="true">GIF</span>' : "");
 
     return `
-      <article class="public-card public-card-${escapeHtml(layoutClass)} ${escapeHtml(driftClass)}${isUserAd ? " user-ad-card" : ""}">
+      <article class="public-card public-card-${escapeHtml(layoutClass)} ${escapeHtml(driftClass)}${isUserAd ? " user-ad-card" : ""}${isHeroAd ? " is-hero-ad" : ""}">
         <a
           class="public-trigger"
           href="${escapeHtml(photo.url)}"
@@ -776,7 +777,7 @@ document.addEventListener("DOMContentLoaded", async () => {
           aria-label="${escapeHtml(label)}"
         >
           <div class="public-media">
-            <img src="${escapeHtml(photo.url)}" alt="${escapeHtml(label)}" loading="${fetchPriority === "high" ? "eager" : "lazy"}" fetchpriority="${escapeHtml(fetchPriority)}" decoding="async"${isUserAd ? ' style="filter: blur(10px); opacity: 0.8;"' : ""}>
+            <img src="${escapeHtml(photo.url)}" alt="${escapeHtml(label)}" loading="${fetchPriority === "high" ? "eager" : "lazy"}" fetchpriority="${escapeHtml(fetchPriority)}" decoding="async"${isUserAd ? ' style="filter: blur(4px); opacity: 0.8;"' : ""}>
             ${badge}
           </div>
         </a>
