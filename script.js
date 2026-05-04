@@ -36,6 +36,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     allPhotos: [],
     photos: [],
     heroPhotos: [],
+    userAdPhotos: [],
     renderedCount: 0,
     fetchedAt: 0,
     nextCursor: null,
@@ -481,30 +482,58 @@ document.addEventListener("DOMContentLoaded", async () => {
     publicGalleryState.allPhotos = shufflePhotos(uniquePhotosByKey(manifest?.photos || []));
     publicGalleryState.photos = [];
     publicGalleryState.heroPhotos = uniquePhotosByKey(manifest?.heroPhotos || []);
+    publicGalleryState.userAdPhotos = shufflePhotos(
+      publicGalleryState.allPhotos.filter((p) => getMediaKind(p) === "picture")
+    ).slice(0, 10);
     publicGalleryState.renderedCount = 0;
     publicGalleryState.fetchedAt = fetchedAt;
     publicGalleryState.nextCursor = publicGalleryState.allPhotos.length ? "0" : null;
   }
 
   function buildDisplayPhotos() {
-    const basePhotos = uniquePhotosByKey(publicGalleryState.photos);
+    const basePhotos = [...uniquePhotosByKey(publicGalleryState.photos)];
     const heroPhotos = shufflePhotos(uniquePhotosByKey(publicGalleryState.heroPhotos));
+    const userAdPhotos = publicGalleryState.userAdPhotos;
 
-    if (!heroPhotos.length) {
+    if (!basePhotos.length) {
       return basePhotos;
     }
 
-    if (!basePhotos.length) {
-      return [heroPhotos[0]];
+    // 1. Inject Top Signed In User Ad at index 0
+    if (userAdPhotos.length > 0) {
+      const replaced = basePhotos[0];
+      basePhotos[0] = {
+        ...userAdPhotos[0],
+        wallClass: replaced.wallClass,
+        driftClass: replaced.driftClass,
+        isUserAd: true,
+      };
     }
 
-    const replacedPhoto = basePhotos[0];
-    basePhotos[0] = {
-      ...heroPhotos[0],
-      wallClass: replacedPhoto?.wallClass || heroPhotos[0].wallClass,
-      driftClass: replacedPhoto?.driftClass || heroPhotos[0].driftClass,
-      isHeroAd: true,
-    };
+    // 2. Inject Hero Ad at index 1 (shifted from index 0)
+    if (heroPhotos.length > 0 && basePhotos.length > 1) {
+      const replaced = basePhotos[1];
+      basePhotos[1] = {
+        ...heroPhotos[0],
+        wallClass: replaced.wallClass,
+        driftClass: replaced.driftClass,
+        isHeroAd: true,
+      };
+    }
+
+    // 3. Inject User Ads every 24 items
+    if (userAdPhotos.length > 0) {
+      for (let i = 24; i < basePhotos.length; i += 24) {
+        const adIndex = (Math.floor(i / 24)) % userAdPhotos.length;
+        const replaced = basePhotos[i];
+        basePhotos[i] = {
+          ...userAdPhotos[adIndex],
+          wallClass: replaced.wallClass,
+          driftClass: replaced.driftClass,
+          isUserAd: true,
+        };
+      }
+    }
 
     return basePhotos;
   }
@@ -673,51 +702,57 @@ document.addEventListener("DOMContentLoaded", async () => {
 
   function buildCard(photo, index) {
     const kind = photo.kind || getMediaKind(photo);
-    const label = photo.label || photo.key || "Gallery item";
     const layoutClass = photo.wallClass || "square";
     const driftClass = photo.driftClass || DRIFT_CLASSES[index % DRIFT_CLASSES.length];
     const fetchPriority = index < 4 ? "high" : "low";
 
+    const isUserAd = !!photo.isUserAd;
+    const lang = window.MalkokoteLanguage?.getLanguage?.() || "en";
+    const userAdLabel = lang === "bg" ? "Топ потребител" : "Top signed in user";
+    const label = isUserAd ? userAdLabel : (photo.label || photo.key || "Gallery item");
+
     if (kind === "movie") {
       return `
-        <article class="public-card public-card-${escapeHtml(layoutClass)} ${escapeHtml(driftClass)}">
+        <article class="public-card public-card-${escapeHtml(layoutClass)} ${escapeHtml(driftClass)}${isUserAd ? " user-ad-card" : ""}">
           <a
             class="public-trigger"
             href="${escapeHtml(photo.url)}"
-            data-public-trigger
+            ${isUserAd ? 'data-user-ad="true"' : `data-public-trigger
             data-photo-kind="${escapeHtml(kind)}"
             data-photo-label="${escapeHtml(label)}"
             data-photo-key="${escapeHtml(photo.key)}"
             data-photo-src="${escapeHtml(photo.url)}"
-            data-photo-backdrop=""
+            data-photo-backdrop=""`}
             aria-label="${escapeHtml(label)}"
           >
             <div class="public-media">
-              <video src="${escapeHtml(photo.url)}" muted loop autoplay playsinline preload="metadata"></video>
-              <span class="media-badge" aria-hidden="true">&#9654;</span>
+              <video src="${escapeHtml(photo.url)}" muted loop autoplay playsinline preload="metadata"${isUserAd ? ' style="filter: blur(40px); opacity: 0.8;"' : ""}></video>
+              ${isUserAd ? `<span class="user-ad-badge" aria-hidden="true">${escapeHtml(userAdLabel)}</span>` : '<span class="media-badge" aria-hidden="true">&#9654;</span>'}
             </div>
           </a>
         </article>
       `;
     }
 
-    const badge = kind === "gif" ? '<span class="media-badge" aria-hidden="true">GIF</span>' : "";
+    const badge = isUserAd 
+      ? `<span class="user-ad-badge" aria-hidden="true">${escapeHtml(userAdLabel)}</span>` 
+      : (kind === "gif" ? '<span class="media-badge" aria-hidden="true">GIF</span>' : "");
 
     return `
-      <article class="public-card public-card-${escapeHtml(layoutClass)} ${escapeHtml(driftClass)}">
+      <article class="public-card public-card-${escapeHtml(layoutClass)} ${escapeHtml(driftClass)}${isUserAd ? " user-ad-card" : ""}">
         <a
           class="public-trigger"
           href="${escapeHtml(photo.url)}"
-          data-public-trigger
+          ${isUserAd ? 'data-user-ad="true"' : `data-public-trigger
           data-photo-kind="${escapeHtml(kind)}"
           data-photo-label="${escapeHtml(label)}"
           data-photo-key="${escapeHtml(photo.key)}"
           data-photo-src="${escapeHtml(photo.url)}"
-          data-photo-backdrop="${escapeHtml(photo.url)}"
+          data-photo-backdrop="${escapeHtml(photo.url)}"`}
           aria-label="${escapeHtml(label)}"
         >
           <div class="public-media">
-            <img src="${escapeHtml(photo.url)}" alt="${escapeHtml(label)}" loading="${fetchPriority === "high" ? "eager" : "lazy"}" fetchpriority="${escapeHtml(fetchPriority)}" decoding="async">
+            <img src="${escapeHtml(photo.url)}" alt="${escapeHtml(label)}" loading="${fetchPriority === "high" ? "eager" : "lazy"}" fetchpriority="${escapeHtml(fetchPriority)}" decoding="async"${isUserAd ? ' style="filter: blur(40px); opacity: 0.8;"' : ""}>
             ${badge}
           </div>
         </a>
@@ -907,9 +942,15 @@ document.addEventListener("DOMContentLoaded", async () => {
     }
 
     container.addEventListener("click", (event) => {
-      const trigger = event.target.closest("[data-public-trigger]");
+      const trigger = event.target.closest("[data-public-trigger], [data-user-ad]");
 
       if (!trigger) {
+        return;
+      }
+
+      if (trigger.dataset.userAd === "true") {
+        event.preventDefault();
+        openModal();
         return;
       }
 

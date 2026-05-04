@@ -1423,3 +1423,47 @@ body[data-gallery-theme="night"] .public-carousel-slide {
         flex: 1 1 0;
     }
 }
+
+/* Top Signed In User Ads */
+.user-ad-card {
+    cursor: pointer;
+}
+
+.user-ad-card .public-media {
+    background: #1a1a1a;
+}
+
+.user-ad-badge {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.15) 0%, rgba(255, 255, 255, 0.05) 100%);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    color: #fff;
+    padding: 0.75rem 1.25rem;
+    border-radius: 100px;
+    font-size: 0.875rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    white-space: nowrap;
+    z-index: 10;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+    pointer-events: none;
+    transition: transform 0.2s ease, background 0.2s ease;
+}
+
+.public-trigger:hover .user-ad-badge {
+    transform: translate(-50%, -50%) scale(1.05);
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.2) 0%, rgba(255, 255, 255, 0.1) 100%);
+}
+
+.user-ad-card .public-media img,
+.user-ad-card .public-media video {
+    filter: blur(40px);
+    opacity: 0.6;
+    transform: scale(1.1); /* Prevent edges from showing through blur */
+}
