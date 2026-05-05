@@ -77,11 +77,10 @@
     <div class="site-frame">
         <header class="site-header">
             <a class="site-mark" href="/">
-                
                 <img src="/logo.png" alt="" class="site-logo">
                 <span>Malkokote</span>
             </a>
-            <div class="site-actions">
+            <div class="site-header-group">
                 <div class="language-dropdown">
                     <button class="language-pill" type="button" data-language-toggle aria-label="Select Language">
                         <span data-current-language-flag>🇬🇧</span>
@@ -103,37 +102,40 @@
                         <button class="language-item" type="button" data-language-option="ar" aria-label="Arabic">🇸🇦 العربية</button>
                     </div>
                 </div>
-                <a class="ghost-button button-link" href="/" data-i18n="gallery">Gallery</a>
-                <a class="ghost-button button-link" href="/contact.html" data-i18n="contact">Contact</a>
-                <a class="ghost-button button-link" href="/buy.html" data-i18n="buy">Buy</a>
-                <button class="ghost-button" type="button" data-gallery-theme-toggle aria-label="Toggle color theme">
-                    <div class="theme-thinking-bubble">
-                        <span class="thinking-text thinking-text-day" data-i18n="dayThinking">Look what she does at night</span>
-                        <span class="thinking-text thinking-text-night" data-i18n="nightThinking">She's not that type of girl</span>
-                    </div>
-                    <div class="theme-pulse-circle"></div>
-                    <span class="theme-icon-shell">
-                        <svg class="theme-icon theme-icon-sun" viewBox="0 0 24 24" aria-hidden="true">
-                            <circle cx="12" cy="12" r="4"></circle>
-                            <path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"></path>
-                        </svg>
-                        <svg class="theme-icon theme-icon-moon" viewBox="0 0 24 24" aria-hidden="true">
-                            <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
-                        </svg>
-                    </span>
-                </button>
-                <button class="ghost-button" type="button" data-profile-trigger 
-                    data-i18n="login"
-                    data-en-signed-out="Login" data-en-signed-in="Logout"
-                    data-bg-signed-out="Вход" data-bg-signed-in="Изход"
-                    data-ja-signed-out="ログイン" data-ja-signed-in="ログアウト"
-                    data-fr-signed-out="Connexion" data-fr-signed-in="Déconnexion"
-                    data-de-signed-out="Anmelden" data-de-signed-in="Abmelden"
-                    data-tr-signed-out="Giriş Yap" data-tr-signed-in="Çıkış Yap">
-                    <span data-profile-label>Login</span>
-                </button>
+                <div class="site-actions">
+                    <a class="ghost-button button-link" href="/" data-i18n="gallery">Gallery</a>
+                    <a class="ghost-button button-link" href="/contact.html" data-i18n="contact">Contact</a>
+                    <a class="ghost-button button-link" href="/buy.html" data-i18n="buy">Buy</a>
+                    <button class="ghost-button" type="button" data-gallery-theme-toggle aria-label="Toggle color theme">
+                        <div class="theme-thinking-bubble">
+                            <span class="thinking-text thinking-text-day" data-i18n="dayThinking">Look what she does at night</span>
+                            <span class="thinking-text thinking-text-night" data-i18n="nightThinking">She's not that type of girl</span>
+                        </div>
+                        <div class="theme-pulse-circle"></div>
+                        <span class="theme-icon-shell">
+                            <svg class="theme-icon theme-icon-sun" viewBox="0 0 24 24" aria-hidden="true">
+                                <circle cx="12" cy="12" r="4"></circle>
+                                <path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"></path>
+                            </svg>
+                            <svg class="theme-icon theme-icon-moon" viewBox="0 0 24 24" aria-hidden="true">
+                                <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                            </svg>
+                        </span>
+                    </button>
+                    <button class="ghost-button" type="button" data-profile-trigger 
+                        data-i18n="login"
+                        data-en-signed-out="Login" data-en-signed-in="Logout"
+                        data-bg-signed-out="Вход" data-bg-signed-in="Изход"
+                        data-ja-signed-out="ログイン" data-ja-signed-in="ログアウト"
+                        data-fr-signed-out="Connexion" data-fr-signed-in="Déconnexion"
+                        data-de-signed-out="Anmelden" data-de-signed-in="Abmelden"
+                        data-tr-signed-out="Giriş Yap" data-tr-signed-in="Çıkış Yap">
+                        <span data-profile-label>Login</span>
+                    </button>
+                </div>
             </div>
         </header>
+
 
         <main class="contact-shell">
             <h1 class="sr-only">Contact Malkokote in Bulgaria</h1>
