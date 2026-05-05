@@ -127,19 +127,20 @@
       return viewer;
     }
 
+    const translate = window.MalkokoteLanguage?.translate || ((k) => k);
     viewer = document.createElement("div");
     viewer.id = "gallery-viewer";
     viewer.className = "viewer";
     viewer.hidden = true;
     viewer.setAttribute("role", "dialog");
     viewer.setAttribute("aria-modal", "true");
-    viewer.setAttribute("aria-label", "Gallery viewer");
+    viewer.setAttribute("aria-label", translate("galleryViewer") || "Gallery viewer");
     viewer.innerHTML = `
       <div class="viewer-backdrop" data-viewer-close></div>
       <div class="viewer-card">
-        <button class="viewer-close" type="button" aria-label="Close media viewer" data-viewer-close>&times;</button>
-        <button class="viewer-nav viewer-nav-prev" type="button" aria-label="Previous item" data-viewer-nav="-1">&#10094;</button>
-        <button class="viewer-nav viewer-nav-next" type="button" aria-label="Next item" data-viewer-nav="1">&#10095;</button>
+        <button class="viewer-close" type="button" aria-label="${translate("closeViewer")}" data-viewer-close>&times;</button>
+        <button class="viewer-nav viewer-nav-prev" type="button" aria-label="${translate("prevItem")}" data-viewer-nav="-1">&#10094;</button>
+        <button class="viewer-nav viewer-nav-next" type="button" aria-label="${translate("nextItem")}" data-viewer-nav="1">&#10095;</button>
         <div class="viewer-frame">
           <div class="viewer-stage" id="viewer-stage">
             <div class="viewer-media">

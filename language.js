@@ -46,7 +46,37 @@
       unableToLoadGallery: "Unable to load gallery.",
       humanCheck: "Human check",
       solveToContinue: "Solve the check to continue.",
-      checkComplete: "Human check complete."
+      checkComplete: "Human check complete.",
+      topKitty: "Top kitty",
+      signingIn: "Signing In",
+      pleaseWait: "Please wait.",
+      exchangingCode: "Exchanging your secure sign-in code.",
+      authHelperError: "The sign-in helper could not load.",
+      authFinishedClosing: "Secure sign-in finished. Closing this window now.",
+      signedInRedirecting: "Signed in. Redirecting.",
+      authFailedTitle: "We could not finish sign-in",
+      authFailedCopy: "The secure sign-in flow returned an error. You can head back and try again.",
+      authFailedStatus: "Something went wrong while completing sign-in.",
+      buyTitle: "Malkokote | Buy",
+      buyDescription: "Buy page for Malkokote premium access.",
+      indexTitle: "Malkokote | Best 18+ Modeling & Photography Website Bulgaria",
+      indexDescription: "Malkokote is a premier 18+ modeling, photography, and influencer platform in Bulgaria.",
+      contactTitle: "Malkokote | Contact",
+      contactDescription: "Contact us for any inquiries.",
+      supportTitle: "Malkokote | Support Us",
+      supportDescription: "Support Malkokote and get access.",
+      privacyTitle: "Malkokote | Privacy Policy",
+      privacyDescription: "Our privacy policy and data protection.",
+      extraTitle: "Malkokote | Extra",
+      extraDescription: "Private members gallery access.",
+      selectLanguage: "Select Language",
+      toggleTheme: "Toggle color theme",
+      closeDialog: "Close sign-in dialog",
+      emailAddress: "Email address",
+      galleryViewer: "Gallery viewer",
+      closeViewer: "Close viewer",
+      prevItem: "Previous item",
+      nextItem: "Next item"
     },
     bg: {
       gallery: "Галерия",
@@ -75,7 +105,37 @@
       unableToLoadGallery: "Неуспешно зареждане на галерията.",
       humanCheck: "Проверка",
       solveToContinue: "Решете задачата, за да продължите.",
-      checkComplete: "Проверката е завършена."
+      checkComplete: "Проверката е завършена.",
+      topKitty: "Топ коте",
+      signingIn: "Влизане",
+      pleaseWait: "Моля, изчакайте.",
+      exchangingCode: "Размяна на код за сигурност.",
+      authHelperError: "Помощникът за влизане не можа да се зареди.",
+      authFinishedClosing: "Влизането завърши. Прозорецът се затваря.",
+      signedInRedirecting: "Успешно влизане. Пренасочване.",
+      authFailedTitle: "Не успяхме да завършим влизането",
+      authFailedCopy: "Възникна грешка при влизането. Можете да се върнете и да опитате отново.",
+      authFailedStatus: "Нещо се обърка при завършване на влизането.",
+      buyTitle: "Malkokote | Купи",
+      buyDescription: "Страница за закупуване на премиум достъп до Malkokote.",
+      indexTitle: "Malkokote | Най-добрият 18+ сайт за модели и фотография в България",
+      indexDescription: "18+ сайт за модели и фотография в България с ексклузивно съдържание и галерия.",
+      contactTitle: "Malkokote | Контакт",
+      contactDescription: "Свържете се с нас за всякакви въпроси.",
+      supportTitle: "Malkokote | Подкрепи ни",
+      supportDescription: "Подкрепете проекта Malkokote и получете достъп.",
+      privacyTitle: "Malkokote | Политика за поверителност",
+      privacyDescription: "Нашата политика за поверителност и защита на данните.",
+      extraTitle: "Malkokote | Екстра",
+      extraDescription: "Частен достъп до галерията за членове.",
+      selectLanguage: "Избери език",
+      toggleTheme: "Превключи цветовата тема",
+      closeDialog: "Затвори диалоговия прозорец",
+      emailAddress: "Имейл адрес",
+      galleryViewer: "Преглед на галерията",
+      closeViewer: "Затвори",
+      prevItem: "Предишен",
+      nextItem: "Следващ"
     },
     ja: {
       gallery: "ギャラリー",
@@ -220,7 +280,37 @@
       unableToLoadGallery: "Не удалось загрузить галерею.",
       humanCheck: "Проверка",
       solveToContinue: "Решите задачу, чтобы продолжить.",
-      checkComplete: "Проверка пройдена."
+      checkComplete: "Проверка пройдена.",
+      topKitty: "Топ кошечка",
+      signingIn: "Вход в систему",
+      pleaseWait: "Пожалуйста, подождите.",
+      exchangingCode: "Обмен защищенного кода входа.",
+      authHelperError: "Не удалось загрузить помощник входа.",
+      authFinishedClosing: "Вход завершен. Закрытие окна.",
+      signedInRedirecting: "Вы вошли. Перенаправление.",
+      authFailedTitle: "Не удалось завершить вход",
+      authFailedCopy: "Произошла ошибка при входе. Вы можете вернуться и попробовать снова.",
+      authFailedStatus: "Что-то пошло не так при завершении входа.",
+      buyTitle: "Malkokote | Купить",
+      buyDescription: "Страница покупки премиум-доступа к Malkokote.",
+      indexTitle: "Malkokote | Лучший сайт 18+ моделинга и фотографии в Болгарии",
+      indexDescription: "Сайт 18+ моделинга и фотографии в Болгарии с эксклюзивным контентом и галереей.",
+      contactTitle: "Malkokote | Контакты",
+      contactDescription: "Свяжитесь с нами по любым вопросам.",
+      supportTitle: "Malkokote | Поддержите нас",
+      supportDescription: "Поддержите проект Malkokote и получите доступ.",
+      privacyTitle: "Malkokote | Политика конфиденциальности",
+      privacyDescription: "Наша политика конфиденциальности и защиты данных.",
+      extraTitle: "Malkokote | Экстра",
+      extraDescription: "Частный доступ к галерее для участников.",
+      selectLanguage: "Выберите язык",
+      toggleTheme: "Переключить цветовую тему",
+      closeDialog: "Закрыть диалоговое окно",
+      emailAddress: "Электронная почта",
+      galleryViewer: "Просмотр галереи",
+      closeViewer: "Закрыть просмотр",
+      prevItem: "Предыдущий элемент",
+      nextItem: "Следующий элемент"
     },
     es: {
       gallery: "Galería",
@@ -294,7 +384,7 @@
       loading: "Carregando...",
       continue: "Continuar",
       redirecting: "Redirecionando...",
-      accountRequest: "Se você quer uma conta, use",
+      accountRequest: "Se você quer una conta, use",
       dayThinking: "Veja o que ela faz à noite",
       nightThinking: "Ela não é esse tipo de garota",
       refresh: "Atualizar",
@@ -392,7 +482,7 @@
       loadingNight: "جاري تحميل معرض الليل.",
       loadingDay: "جاري تحميل معرض النهار.",
       unableToLoadGallery: "تعذر تحميل المعرض.",
-      humanCheck: "التحقق البشري",
+      humanCheck: "التحقق البشри",
       solveToContinue: "حل التحقق للاستمرار.",
       checkComplete: "اكتمل التحقق البشري."
     }
@@ -445,6 +535,14 @@
         } else {
            el.textContent = text;
         }
+
+        // Apply to attributes if requested
+        if (el.hasAttribute("data-i18n-attr")) {
+          const attrs = el.getAttribute("data-i18n-attr").split(",");
+          attrs.forEach(attr => {
+            el.setAttribute(attr.trim(), text);
+          });
+        }
       }
       
       // Update data attributes for script.js to pick up
@@ -459,6 +557,19 @@
       if (idleText) el.dataset.idleText = idleText;
       if (loadingText) el.dataset.loadingText = loadingText;
     });
+
+    // Handle Page Metadata
+    const pageId = document.body.dataset.pageId;
+    if (pageId) {
+      const titleKey = `${pageId}Title`;
+      const descKey = `${pageId}Description`;
+      if (TRANSLATIONS[language]?.[titleKey]) {
+        document.title = TRANSLATIONS[language][titleKey];
+      }
+      if (TRANSLATIONS[language]?.[descKey]) {
+        document.querySelector('meta[name="description"]')?.setAttribute('content', TRANSLATIONS[language][descKey]);
+      }
+    }
 
     document.documentElement.lang = language;
     document.documentElement.dir = language === "ar" ? "rtl" : "ltr";

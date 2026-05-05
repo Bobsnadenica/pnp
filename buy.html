@@ -214,7 +214,7 @@
                     <a class="ghost-button button-link" href="/" data-i18n="gallery">Gallery</a>
                     <a class="ghost-button button-link" href="/contact.html" data-i18n="contact">Contact</a>
                     <a class="ghost-button button-link" href="/buy.html" data-i18n="buy">Buy</a>
-                    <button class="ghost-button" type="button" data-gallery-theme-toggle aria-label="Toggle color theme">
+                    <button class="ghost-button" type="button" data-gallery-theme-toggle data-i18n="toggleTheme" data-i18n-attr="aria-label">
                         <div class="theme-thinking-bubble">
                             <span class="thinking-text thinking-text-day" data-i18n="dayThinking">Look what she does at night</span>
                             <span class="thinking-text thinking-text-night" data-i18n="nightThinking">She's not that type of girl</span>
@@ -339,19 +339,19 @@
                     </p>
                     <div class="buy-card-price">€49.99</div>
                     <a href="/supportus.html?note=guide" class="primary-button button-link">Kılavuzu Satın Al</a>
-                    <p class="buy-requirements">Gereksinimler: Düzgün bir bilgisayar veya yeni bir телефон</p>
+                    <p class="buy-requirements">Gereksinimler: Düzgün bir bilgisayar veya yeni bir telefon</p>
                 </div>
 
                 <div class="buy-card-new" data-language-panel="ru" lang="ru" hidden>
                     <h2 class="buy-card-title">Руководство по генерации</h2>
                     <p class="buy-card-text">
-                        Научитесь сами 
+                        <strong>Что вы получаете:</strong> Полное руководство по генерации 
                         <span class="guide-showcase-trigger">
-                            создавать любые изображения
+                            любых изображений
                             <span class="guide-showcase-hint">(Нажмите, чтобы увидеть, что можно создать)</span>
                             <span class="guide-showcase" data-showcase></span>
-                        </span>! 
-                        С телефона или ПК. Все, что сможете вообразить.
+                        </span> 
+                        на вашем телефоне или компьютере (требуется достаточно мощный ПК или современный телефон). Я покажу вам простой и бесплатный способ настройки локальной модели генерации изображений, которой можно пользоваться так же, как ChatGPT. Я научу вас искать и находить любые нужные вам модели — хентай, реалистичные, фурри и всё остальное, мы никого не осуждаем.
                     </p>
                     <div class="buy-card-price">€49.99</div>
                     <a href="/supportus.html?note=guide" class="primary-button button-link">Купить руководство</a>
@@ -603,7 +603,7 @@
                 <a href="/contact.html" data-i18n="contact">Contact</a> 
             </p>
             <form id="login-form" class="login-form">
-                <input id="login-email" type="email" placeholder="Email" autocomplete="email" aria-label="Email address">
+                <input id="login-email" type="email" placeholder="Email" autocomplete="email" data-i18n="emailAddress" data-i18n-attr="placeholder, aria-label">
                 <div class="modal-actions">
                     <button id="login-submit" class="primary-button" type="submit" 
                         data-idle-en="Continue" data-loading-en="Redirecting..."
@@ -611,7 +611,9 @@
                         data-idle-ja="続行" data-loading-ja="リダイレクト中..."
                         data-idle-fr="Continuer" data-loading-fr="Redirection..."
                         data-idle-de="Weiter" data-loading-de="Weiterleitung..."
-                        data-idle-tr="Devam Et" data-loading-tr="Yönlendiriliyor...">Continue</button>
+                        data-idle-tr="Devam Et" data-loading-tr="Yönlendiriliyor..."
+                        data-idle-ru="Продолжить" data-loading-ru="Перенаправление..."
+                        data-i18n="continue">Continue</button>
                 </div>
             </form>
             <p id="login-feedback" class="login-feedback" hidden></p>
@@ -666,6 +668,36 @@
                 document.querySelectorAll('.guide-showcase.is-active').forEach(s => s.classList.remove('is-active'));
             });
         });
+    </script>
+</body>
+</html>
+window.matchMedia('(pointer: coarse)').matches) {
+                        e.stopPropagation();
+                        if (e.target.closest(".guide-showcase")) return;
+                        showcase.classList.toggle('is-active');
+                    }
+                });
+            });
+
+            document.addEventListener('click', () => {
+                document.querySelectorAll('.guide-showcase.is-active').forEach(s => s.classList.remove('is-active'));
+            });
+        });
+    </script>
+</body>
+</html>
+html>
+
+    </script>
+</body>
+</html>
+);
+        });
+    </script>
+</body>
+</html>
+html>
+
     </script>
 </body>
 </html>

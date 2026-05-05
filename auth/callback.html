@@ -90,13 +90,14 @@
 <body>
     <main class="card" aria-live="polite">
         <div class="badge">✓</div>
-        <h1 id="callback-title">Signing In</h1>
-        <p id="callback-copy">Please wait.</p>
-        <p id="callback-status" class="status">Exchanging your secure sign-in code.</p>
-        <a id="callback-link" class="link" href="/" hidden>Return to Malkokote</a>
+        <h1 id="callback-title" data-i18n="signingIn">Signing In</h1>
+        <p id="callback-copy" data-i18n="pleaseWait">Please wait.</p>
+        <p id="callback-status" class="status" data-i18n="exchangingCode">Exchanging your secure sign-in code.</p>
+        <a id="callback-link" class="link" href="/" data-i18n="returnHome" hidden>Return to Malkokote</a>
     </main>
 
     <script src="/config/site-config.js" defer></script>
+    <script src="/language.js" defer></script>
     <script src="/auth/auth.js" defer></script>
     <script defer>
         document.addEventListener("DOMContentLoaded", async () => {
@@ -107,9 +108,10 @@
             const auth = window.PrivateGalleryAuth;
             const config = window.__PRIVATE_GALLERY_CONFIG__ || {};
             const popupType = `${config.projectSlug || "private-gallery"}:auth:popupResult`;
+            const translate = window.MalkokoteLanguage?.translate || ((k) => k);
 
             if (!auth) {
-              status.textContent = "The sign-in helper could not load.";
+              status.textContent = translate("authHelperError");
               status.classList.add("error");
               link.hidden = false;
               return;
@@ -118,7 +120,7 @@
             try {
                 const result = await auth.handleCallback();
                 if (window.opener && !window.opener.closed) {
-                    status.textContent = "Secure sign-in finished. Closing this window now.";
+                    status.textContent = translate("authFinishedClosing");
                     window.opener.postMessage({
                         type: popupType,
                         session: result.session,
@@ -131,7 +133,7 @@
                     return;
                 }
 
-                status.textContent = "Signed in. Redirecting.";
+                status.textContent = translate("signedInRedirecting");
                 const destination = auth.getGalleryDestination(result.session);
                 window.setTimeout(() => {
                     window.location.replace(destination);
@@ -142,7 +144,7 @@
                 if (window.opener && !window.opener.closed) {
                     window.opener.postMessage({
                         type: popupType,
-                        error: error.message || "Something went wrong while completing sign-in."
+                        error: error.message || translate("authFailedStatus")
                     }, window.location.origin);
                     window.setTimeout(() => {
                         window.close();
@@ -150,9 +152,9 @@
                     return;
                 }
 
-                title.textContent = "We could not finish sign-in";
-                copy.textContent = "The secure sign-in flow returned an error. You can head back and try again.";
-                status.textContent = error.message || "Something went wrong while completing sign-in.";
+                title.textContent = translate("authFailedTitle");
+                copy.textContent = translate("authFailedCopy");
+                status.textContent = error.message || translate("authFailedStatus");
                 status.classList.add("error");
                 link.hidden = false;
             }

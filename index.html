@@ -99,7 +99,7 @@
 
     <div class="site-frame">
         <header class="site-header">
-            <a class="site-mark" href="/">
+            <a class="site-mark" href="/" data-i18n-en="Malkokote" data-i18n-bg="Malkokote" data-i18n-ru="Malkokote">
                 <img src="/logo.png" alt="" class="site-logo">
                 <span>Malkokote</span>
             </a>
@@ -194,7 +194,7 @@
                 <a href="/contact.html" data-i18n="contact">Contact</a> 
             </p>
             <form id="login-form" class="login-form">
-                <input id="login-email" type="email" placeholder="Email" autocomplete="email" aria-label="Email address">
+                <input id="login-email" type="email" placeholder="Email" autocomplete="email" data-i18n="emailAddress" data-i18n-attr="placeholder, aria-label">
                 <div class="modal-actions">
                     <button id="login-submit" class="primary-button" type="submit" 
                         data-idle-en="Continue" data-loading-en="Redirecting..."
@@ -202,7 +202,9 @@
                         data-idle-ja="続行" data-loading-ja="リダイレクト中..."
                         data-idle-fr="Continuer" data-loading-fr="Redirection..."
                         data-idle-de="Weiter" data-loading-de="Weiterleitung..."
-                        data-idle-tr="Devam Et" data-loading-tr="Yönlendiriliyor...">Continue</button>
+                        data-idle-tr="Devam Et" data-loading-tr="Yönlendiriliyor..."
+                        data-idle-ru="Продолжить" data-loading-ru="Перенаправление..."
+                        data-i18n="continue">Continue</button>
                 </div>
             </form>
             <p id="login-feedback" class="login-feedback" hidden></p>
@@ -215,5 +217,8 @@
     <script src="/config/site-config.js" defer></script>
     <script src="/auth/auth.js" defer></script>
     <script src="/script.js" defer></script>
+</body>
+</html>
+ript src="/script.js" defer></script>
 </body>
 </html>
