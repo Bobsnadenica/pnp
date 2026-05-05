@@ -364,12 +364,16 @@ document.addEventListener("DOMContentLoaded", async () => {
         break;
       }
     }
-function applyDriftClasses(photos, startIndex = 0) {
-  return photos.map((photo, index) => ({
-    ...photo,
-    driftClass: DRIFT_CLASSES[(startIndex + index) % DRIFT_CLASSES.length],
-  }));
-}
+
+    return ordered;
+  }
+
+  function applyDriftClasses(photos, startIndex = 0) {
+    return photos.map((photo, index) => ({
+      ...photo,
+      driftClass: DRIFT_CLASSES[(startIndex + index) % DRIFT_CLASSES.length],
+    }));
+  }
 
 async function prepareWallPhotos(photos, options = {}) {
     const uniquePhotos = uniquePhotosByKey(photos);
