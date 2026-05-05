@@ -364,21 +364,14 @@ document.addEventListener("DOMContentLoaded", async () => {
         break;
       }
     }
+function applyDriftClasses(photos, startIndex = 0) {
+  return photos.map((photo, index) => ({
+    ...photo,
+    driftClass: DRIFT_CLASSES[(startIndex + index) % DRIFT_CLASSES.length],
+  }));
+}
 
-    return ordered.map((photo, index) => ({
-      ...photo,
-      driftClass: DRIFT_CLASSES[index % DRIFT_CLASSES.length],
-    }));
-  }
-
-  function applyDriftClasses(photos) {
-    return photos.map((photo, index) => ({
-      ...photo,
-      driftClass: DRIFT_CLASSES[index % DRIFT_CLASSES.length],
-    }));
-  }
-
-  async function prepareWallPhotos(photos, options = {}) {
+async function prepareWallPhotos(photos, options = {}) {
     const uniquePhotos = uniquePhotosByKey(photos);
     const orderedPhotos = options.shuffle === false
       ? uniquePhotos
@@ -654,13 +647,30 @@ document.addEventListener("DOMContentLoaded", async () => {
     publicGalleryLoadMore.textContent = publicGalleryLoading ? loadMoreLoadingLabel : loadMoreIdleLabel;
   }
 
-  async function renderPublicGallery() {
+  async function renderPublicGallery(photos = [], options = {}) {
     if (!grid) {
       return;
     }
 
-    const displayPhotos = buildDisplayPhotos();
-    grid.innerHTML = displayPhotos.map((photo, index) => buildCard(photo, index)).join("");
+    if (options.append) {
+      const fragment = document.createDocumentFragment();
+      const startIndex = publicGalleryState.renderedCount - photos.length;
+      
+      photos.forEach((photo, i) => {
+        const temp = document.createElement("div");
+        temp.innerHTML = buildCard(photo, startIndex + i);
+        const card = temp.firstElementChild;
+        if (card) {
+          fragment.appendChild(card);
+        }
+      });
+      
+      grid.appendChild(fragment);
+    } else {
+      const displayPhotos = buildDisplayPhotos();
+      grid.innerHTML = displayPhotos.map((photo, index) => buildCard(photo, index)).join("");
+    }
+    
     enableViewer(grid);
 
     if (status) {
@@ -694,10 +704,18 @@ document.addEventListener("DOMContentLoaded", async () => {
         return;
       }
 
-      publicGalleryState.photos = applyDriftClasses([...publicGalleryState.photos, ...preparedPhotos]);
+      const driftApplied = applyDriftClasses(preparedPhotos, start);
+      publicGalleryState.photos = [...publicGalleryState.photos, ...driftApplied];
       publicGalleryState.renderedCount = end;
       publicGalleryState.nextCursor = end < publicGalleryState.allPhotos.length ? String(end) : null;
-      await renderPublicGallery();
+      
+      // If it's the first page, we do a full render to handle ads correctly at the top
+      // Otherwise we append for smoothness
+      if (start === 0) {
+        await renderPublicGallery();
+      } else {
+        await renderPublicGallery(driftApplied, { append: true });
+      }
     } catch (error) {
       console.error(error);
       if (status) {
@@ -752,8 +770,16 @@ document.addEventListener("DOMContentLoaded", async () => {
       publicGalleryObserver.observe(publicGallerySentinel);
     }
 
-    window.addEventListener("scroll", maybeAutoloadPublicGallery, { passive: true });
-    window.addEventListener("resize", maybeAutoloadPublicGallery);
+    let scrollTimeout;
+    const debouncedAutoload = () => {
+      if (scrollTimeout) {
+        window.cancelAnimationFrame(scrollTimeout);
+      }
+      scrollTimeout = window.requestAnimationFrame(maybeAutoloadPublicGallery);
+    };
+
+    window.addEventListener("scroll", debouncedAutoload, { passive: true });
+    window.addEventListener("resize", debouncedAutoload);
   }
 
   function buildCard(photo, index) {
