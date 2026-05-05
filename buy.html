@@ -40,12 +40,16 @@
             flex-direction: column;
             padding: 3rem;
             border-radius: 2.5rem;
-            background: var(--surface);
+            background: rgba(255, 255, 255, 0.45);
             border: 1px solid var(--line);
-            backdrop-filter: blur(24px) saturate(1.2);
+            backdrop-filter: blur(40px) saturate(1.5);
             box-shadow: 0 30px 60px -20px rgba(0,0,0,0.2);
             text-align: center;
             transition: transform 0.3s ease;
+        }
+
+        body[data-gallery-theme="night"] .buy-card-new {
+            background: rgba(19, 24, 32, 0.5);
         }
 
         .buy-card-new:hover {
@@ -64,7 +68,8 @@
             font-size: 1.15rem;
             line-height: 1.7;
             margin-bottom: 2.5rem;
-            color: var(--muted);
+            color: var(--text);
+            font-weight: 600;
             flex-grow: 1;
         }
 
@@ -267,13 +272,13 @@
                 <div class="buy-card-new" data-language-panel="bg" lang="bg" hidden>
                     <h2 class="buy-card-title">Ръководство за генериране</h2>
                     <p class="buy-card-text">
-                        Научете как сами да 
+                        <strong>Какво получавате:</strong> Пълно ръководство за това как да 
                         <span class="guide-showcase-trigger">
-                            създавате всяко изображение
+                            генерирате всякакъв вид изображения
                             <span class="guide-showcase-hint">(Кликни за да видиш какво можеш да създадеш)</span>
                             <span class="guide-showcase" data-showcase></span>
-                        </span>! 
-                        От вашия телефон или компютър. Всичко, което можете да си представите.
+                        </span> 
+                        от вашия телефон или компютър (необходим е приличен компютър или приличен телефон). Ще ви покажа прост и безплатен начин как да настроите локален модел за генериране на изображения и да го използвате точно както използвате ChatGPT. Ще ви покажа как да търсите и намирате всякакви видове модели, които искате - хентай, реалистични, фърри или каквото и да е, ние не съдим.
                     </p>
                     <div class="buy-card-price">€49.99</div>
                     <a href="/supportus.html?note=guide" class="primary-button button-link">Купи ръководство</a>
@@ -469,8 +474,8 @@
                 <div class="buy-card-new" data-language-panel="bg" lang="bg" hidden>
                     <h2 class="buy-card-title">Достъп до "Малки котета"</h2>
                     <p class="buy-card-text">
-                        Ако искате да видите малките котета, платете за акаунт и се запознайте с тях. 
-                        Получете изключителен достъп до нашата частна галерия.
+                        Ако искате да видите Малките котета, платете за акаунт и се запознайте с тях. 
+                        Получете изключителен достъп до нашата частна галерия за членове.
                     </p>
                     <div class="buy-card-price">€99.99</div>
                     <a href="/supportus.html?note=access" class="primary-button button-link">Вземи достъп</a>
