@@ -524,16 +524,78 @@ body[data-gallery-theme="night"] .language-pill {
     transform: translateY(-1px);
 }
 
-.language-pill.is-active {
+.language-dropdown {
+    position: relative;
+    display: inline-flex;
+}
+
+.language-menu {
+    position: absolute;
+    top: calc(100% + 0.5rem);
+    right: 0;
+    background: var(--surface);
+    backdrop-filter: blur(24px) saturate(1.2);
+    border: 1px solid var(--line);
+    border-radius: 1.2rem;
+    padding: 0.5rem;
+    min-width: 10rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.2rem;
+    box-shadow: 0 20px 40px -12px rgba(0, 0, 0, 0.25);
+    z-index: 1000;
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(-10px);
+    transition: all 0.2s ease;
+}
+
+.language-menu.is-active {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+}
+
+.language-item {
+    appearance: none;
+    border: none;
+    background: transparent;
+    color: var(--text);
+    padding: 0.6rem 0.8rem;
+    border-radius: 0.8rem;
+    font: inherit;
+    font-size: 0.9rem;
+    font-weight: 500;
+    text-align: left;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    transition: background-color 0.16s ease;
+    white-space: nowrap;
+}
+
+.language-item:hover {
+    background: var(--line);
+}
+
+.language-item.is-active {
     background: #111111;
-    border-color: #111111;
     color: white;
 }
 
-body[data-gallery-theme="night"] .language-pill.is-active {
+body[data-gallery-theme="night"] .language-item.is-active {
     background: #f4f7fb;
-    border-color: #f4f7fb;
     color: #10141c;
+}
+
+.language-copy {
+    display: grid;
+    gap: 0.9rem;
+}
+
+.language-copy[hidden] {
+    display: none;
 }
 
 .contact-copy {

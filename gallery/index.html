@@ -19,12 +19,11 @@
     <div id="age-gate" class="age-gate" role="dialog" aria-modal="true" aria-labelledby="age-gate-title">
         <div class="age-gate-card">
             <p class="age-gate-kicker">18+</p>
-            <h1 id="age-gate-title">Adults only</h1>
-            <p class="age-gate-copy">This website contains adult modeling and photography content. Enter only if you are 18 or older.</p>
-            <p class="age-gate-copy age-gate-copy-secondary">Този сайт съдържа 18+ моделни и фотографски материали. Влезте само ако сте навършили 18 години.</p>
+            <h1 id="age-gate-title" data-i18n="adultsOnly">Adults only</h1>
+            <p class="age-gate-copy" data-i18n="ageGateCopy">This website contains adult modeling and photography content. Enter only if you are 18 or older.</p>
             <div class="age-gate-actions">
-                <button class="btn btn-primary" type="button" data-age-enter>Enter</button>
-                <button class="btn btn-secondary" type="button" data-age-leave>Leave</button>
+                <button class="btn btn-primary" type="button" data-age-enter data-i18n="enter">Enter</button>
+                <button class="btn btn-secondary" type="button" data-age-leave data-i18n="leave">Leave</button>
             </div>
         </div>
     </div>
@@ -33,13 +32,22 @@
         <header class="topbar">
             <a class="brand" href="/">Malkokote</a>
             <div class="top-actions">
-                <div class="language-switch"> 
-                    <button class="language-pill" type="button" data-language-option="bg" aria-label="Bulgarian">🇧🇬</button> 
-                    <button class="language-pill" type="button" data-language-option="en" aria-label="English">🇬🇧</button> 
+                <div class="language-dropdown">
+                    <button class="language-pill" type="button" data-language-toggle aria-label="Select Language">
+                        <span data-current-language-flag>🇬🇧</span>
+                    </button>
+                    <div class="language-menu" hidden>
+                        <button class="language-item" type="button" data-language-option="en" aria-label="English">🇬🇧 English</button>
+                        <button class="language-item" type="button" data-language-option="bg" aria-label="Bulgarian">🇧🇬 Български</button>
+                        <button class="language-item" type="button" data-language-option="ja" aria-label="Japanese">🇯🇵 日本語</button>
+                        <button class="language-item" type="button" data-language-option="fr" aria-label="French">🇫🇷 Français</button>
+                        <button class="language-item" type="button" data-language-option="de" aria-label="German">🇩🇪 Deutsch</button>
+                        <button class="language-item" type="button" data-language-option="tr" aria-label="Turkish">🇹🇷 Türkçe</button>
+                    </div>
                 </div>
-                <a href="/buy.html" class="btn btn-secondary" data-i18n-en="Buy" data-i18n-bg="Купи" style="text-decoration: none; display: inline-flex; align-items: center; justify-content: center;">Buy</a>
-                <button id="gallery-refresh" class="btn btn-secondary" data-i18n-en="Refresh" data-i18n-bg="Обнови" type="button">Refresh</button>
-                <button id="gallery-signout" class="btn btn-primary" data-i18n-en="Sign Out" data-i18n-bg="Изход" type="button">Sign Out</button>
+                <a href="/buy.html" class="btn btn-secondary" data-i18n="buy" style="text-decoration: none; display: inline-flex; align-items: center; justify-content: center;">Buy</a>
+                <button id="gallery-refresh" class="btn btn-secondary" data-i18n="refresh" type="button">Refresh</button>
+                <button id="gallery-signout" class="btn btn-primary" data-i18n="signOut" type="button">Sign Out</button>
             </div>
         </header>
 

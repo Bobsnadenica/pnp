@@ -96,13 +96,14 @@
     gate.querySelector("[data-age-human-check]")?.remove();
 
     const challenge = createChallenge();
+    const translate = window.MalkokoteLanguage?.translate || ((k) => k);
     const challengeBlock = document.createElement("div");
     challengeBlock.className = "age-gate-human-check";
     challengeBlock.dataset.ageHumanCheck = "true";
     challengeBlock.innerHTML = `
-      <label class="age-gate-human-check-label" for="age-gate-human-answer">Human check: ${challenge.prompt} = ?</label>
+      <label class="age-gate-human-check-label" for="age-gate-human-answer">${translate("humanCheck")}: ${challenge.prompt} = ?</label>
       <input id="age-gate-human-answer" class="age-gate-human-check-input" type="text" inputmode="numeric" autocomplete="off" aria-describedby="age-gate-human-feedback">
-      <p id="age-gate-human-feedback" class="age-gate-human-check-feedback" aria-live="polite">Solve the check to continue.</p>
+      <p id="age-gate-human-feedback" class="age-gate-human-check-feedback" aria-live="polite">${translate("solveToContinue")}</p>
     `;
 
     card.insertBefore(challengeBlock, actions);
@@ -120,7 +121,7 @@
         return;
       }
 
-      feedback.textContent = solved ? "Human check complete." : "Solve the check to continue.";
+      feedback.textContent = solved ? translate("checkComplete") : translate("solveToContinue");
       feedback.classList.toggle("is-valid", solved);
     }
 

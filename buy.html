@@ -168,12 +168,11 @@
     <div id="age-gate" class="age-gate" role="dialog" aria-modal="true" aria-labelledby="age-gate-title">
         <div class="age-gate-card">
             <p class="age-gate-kicker">18+</p>
-            <h1 id="age-gate-title">Adults only</h1>
-            <p class="age-gate-copy">This website contains adult modeling and photography content. Enter only if you are 18 or older.</p>
-            <p class="age-gate-copy age-gate-copy-secondary">Този сайт съдържа 18+ моделни и фотографски материали. Влезте само ако сте навършили 18 години.</p>
+            <h1 id="age-gate-title" data-i18n="adultsOnly">Adults only</h1>
+            <p class="age-gate-copy" data-i18n="ageGateCopy">This website contains adult modeling and photography content. Enter only if you are 18 or older.</p>
             <div class="age-gate-actions">
-                <button class="primary-button" type="button" data-age-enter>Enter</button>
-                <button class="ghost-button" type="button" data-age-leave>Leave</button>
+                <button class="primary-button" type="button" data-age-enter data-i18n="enter">Enter</button>
+                <button class="ghost-button" type="button" data-age-leave data-i18n="leave">Leave</button>
             </div>
         </div>
     </div>
@@ -190,17 +189,26 @@
                 <span>Malkokote</span>
             </a>
             <div class="site-actions">
-                <div class="language-switch">
-                    <button class="language-pill" type="button" data-language-option="bg" aria-label="Bulgarian">🇧🇬</button>
-                    <button class="language-pill" type="button" data-language-option="en" aria-label="English">🇬🇧</button>
+                <div class="language-dropdown">
+                    <button class="language-pill" type="button" data-language-toggle aria-label="Select Language">
+                        <span data-current-language-flag>🇬🇧</span>
+                    </button>
+                    <div class="language-menu" hidden>
+                        <button class="language-item" type="button" data-language-option="en" aria-label="English">🇬🇧 English</button>
+                        <button class="language-item" type="button" data-language-option="bg" aria-label="Bulgarian">🇧🇬 Български</button>
+                        <button class="language-item" type="button" data-language-option="ja" aria-label="Japanese">🇯🇵 日本語</button>
+                        <button class="language-item" type="button" data-language-option="fr" aria-label="French">🇫🇷 Français</button>
+                        <button class="language-item" type="button" data-language-option="de" aria-label="German">🇩🇪 Deutsch</button>
+                        <button class="language-item" type="button" data-language-option="tr" aria-label="Turkish">🇹🇷 Türkçe</button>
+                    </div>
                 </div>
-                <a class="ghost-button button-link" href="/" data-i18n-en="Gallery" data-i18n-bg="Галерия">Gallery</a>
-                <a class="ghost-button button-link" href="/contact.html" data-i18n-en="Contact" data-i18n-bg="Контакт">Contact</a>
-                <a class="ghost-button button-link" href="/buy.html" data-i18n-en="Buy" data-i18n-bg="Купи">Buy</a>
+                <a class="ghost-button button-link" href="/" data-i18n="gallery">Gallery</a>
+                <a class="ghost-button button-link" href="/contact.html" data-i18n="contact">Contact</a>
+                <a class="ghost-button button-link" href="/buy.html" data-i18n="buy">Buy</a>
                 <button class="ghost-button" type="button" data-gallery-theme-toggle aria-label="Toggle color theme">
                     <div class="theme-thinking-bubble">
-                        <span class="thinking-text thinking-text-day" data-i18n-en="Look what she does at night" data-i18n-bg="Виж какво прави през нощта">Look what she does at night</span>
-                        <span class="thinking-text thinking-text-night" data-i18n-en="She's not that type of girl" data-i18n-bg="Тя не е такова момиче">She's not that type of girl</span>
+                        <span class="thinking-text thinking-text-day" data-i18n="dayThinking">Look what she does at night</span>
+                        <span class="thinking-text thinking-text-night" data-i18n="nightThinking">She's not that type of girl</span>
                     </div>
                     <div class="theme-pulse-circle"></div>
                     <span class="theme-icon-shell">
@@ -214,9 +222,13 @@
                     </span>
                 </button>
                 <button class="ghost-button" type="button" data-profile-trigger 
-                    data-i18n-en="Login" data-i18n-bg="Вход"
-                    data-en-signed-out="Login" data-en-signed-in="Login"
-                    data-bg-signed-out="Вход" data-bg-signed-in="Вход">
+                    data-i18n="login"
+                    data-en-signed-out="Login" data-en-signed-in="Logout"
+                    data-bg-signed-out="Вход" data-bg-signed-in="Изход"
+                    data-ja-signed-out="ログイン" data-ja-signed-in="ログアウト"
+                    data-fr-signed-out="Connexion" data-fr-signed-in="Déconnexion"
+                    data-de-signed-out="Anmelden" data-de-signed-in="Abmelden"
+                    data-tr-signed-out="Giriş Yap" data-tr-signed-in="Çıkış Yap">
                     <span data-profile-label>Login</span>
                 </button>
             </div>
@@ -232,7 +244,7 @@
                         <span class="guide-showcase-trigger">
                             create any image you want
                             <span class="guide-showcase-hint">(Click to see what you can create)</span>
-                            <span class="guide-showcase" id="showcase-en"></span>
+                            <span class="guide-showcase" data-showcase></span>
                         </span> 
                         by yourself! From your phone or your PC. Anything you can imagine.
                     </p>
@@ -248,13 +260,76 @@
                         <span class="guide-showcase-trigger">
                             създавате всяко изображение
                             <span class="guide-showcase-hint">(Кликни за да видиш какво можеш да създадеш)</span>
-                            <span class="guide-showcase" id="showcase-bg"></span>
+                            <span class="guide-showcase" data-showcase></span>
                         </span>! 
                         От вашия телефон или компютър. Всичко, което можете да си представите.
                     </p>
                     <div class="buy-card-price">€49.99</div>
                     <a href="/supportus.html?note=guide" class="primary-button button-link">Купи ръководство</a>
                     <p class="buy-requirements">Изисквания: Приличен компютър или нов телефон</p>
+                </div>
+
+                <div class="buy-card-new" data-language-panel="ja" lang="ja" hidden>
+                    <h2 class="buy-card-title">ジェネレーションガイド</h2>
+                    <p class="buy-card-text">
+                        <span class="guide-showcase-trigger">
+                            想像できるあらゆる画像を自分で作成する
+                            <span class="guide-showcase-hint">(クリックして作成できる内容を確認)</span>
+                            <span class="guide-showcase" data-showcase></span>
+                        </span> 
+                        方法を学びましょう！自分の携帯電話やPCから。
+                    </p>
+                    <div class="buy-card-price">€49.99</div>
+                    <a href="/supportus.html?note=guide" class="primary-button button-link">ガイドを購入</a>
+                    <p class="buy-requirements">要件：まともなPCまたは新しいスマートフォン</p>
+                </div>
+
+                <div class="buy-card-new" data-language-panel="fr" lang="fr" hidden>
+                    <h2 class="buy-card-title">Guide de génération</h2>
+                    <p class="buy-card-text">
+                        Apprenez à 
+                        <span class="guide-showcase-trigger">
+                            créer n'importe quelle image
+                            <span class="guide-showcase-hint">(Cliquez pour voir ce que vous pouvez créer)</span>
+                            <span class="guide-showcase" data-showcase></span>
+                        </span> 
+                        par vous-même ! Depuis votre téléphone ou votre PC. Tout ce que vous pouvez imaginer.
+                    </p>
+                    <div class="buy-card-price">€49.99</div>
+                    <a href="/supportus.html?note=guide" class="primary-button button-link">Acheter le guide</a>
+                    <p class="buy-requirements">Exigences : Un PC correct ou un téléphone récent</p>
+                </div>
+
+                <div class="buy-card-new" data-language-panel="de" lang="de" hidden>
+                    <h2 class="buy-card-title">Generierungsleitfaden</h2>
+                    <p class="buy-card-text">
+                        Lernen Sie, wie Sie 
+                        <span class="guide-showcase-trigger">
+                            jedes gewünschte Bild
+                            <span class="guide-showcase-hint">(Klicken Sie, um zu sehen, was Sie erstellen können)</span>
+                            <span class="guide-showcase" data-showcase></span>
+                        </span> 
+                        selbst erstellen können! Von Ihrem Handy oder PC aus. Alles, was Sie sich vorstellen können.
+                    </p>
+                    <div class="buy-card-price">€49.99</div>
+                    <a href="/supportus.html?note=guide" class="primary-button button-link">Leitfaden kaufen</a>
+                    <p class="buy-requirements">Anforderungen: Ein anständiger PC oder ein neues Smartphone</p>
+                </div>
+
+                <div class="buy-card-new" data-language-panel="tr" lang="tr" hidden>
+                    <h2 class="buy-card-title">Oluşturma Kılavuzu</h2>
+                    <p class="buy-card-text">
+                        İstediğiniz 
+                        <span class="guide-showcase-trigger">
+                            her resmi kendi başınıza nasıl oluşturacağınızı
+                            <span class="guide-showcase-hint">(Neler oluşturabileceğinizi görmek için tıklayın)</span>
+                            <span class="guide-showcase" data-showcase></span>
+                        </span> 
+                        öğrenin! Telefonunuzdan veya bilgisayarınızdan. Hayal edebileceğiniz her şey.
+                    </p>
+                    <div class="buy-card-price">€49.99</div>
+                    <a href="/supportus.html?note=guide" class="primary-button button-link">Kılavuzu Satın Al</a>
+                    <p class="buy-requirements">Gereksinimler: Düzgün bir bilgisayar veya yeni bir telefon</p>
                 </div>
 
                 <!-- Membership Option -->
@@ -279,6 +354,50 @@
                     <a href="/supportus.html?note=access" class="primary-button button-link">Вземи достъп</a>
                     <p class="buy-requirements">Незабавен достъп след потвърждение</p>
                 </div>
+
+                <div class="buy-card-new" data-language-panel="ja" lang="ja" hidden>
+                    <h2 class="buy-card-title">リトルキティアクセス</h2>
+                    <p class="buy-card-text">
+                        リトルキティを見たい場合は、アカウントの料金を支払い、彼女たちに会いましょう。
+                        プライベートメンバーギャラリーへの限定アクセスを入手してください。
+                    </p>
+                    <div class="buy-card-price">€99.99</div>
+                    <a href="/supportus.html?note=access" class="primary-button button-link">アクセスを入手</a>
+                    <p class="buy-requirements">確認後すぐにアクセス可能</p>
+                </div>
+
+                <div class="buy-card-new" data-language-panel="fr" lang="fr" hidden>
+                    <h2 class="buy-card-title">Accès Little Kitties</h2>
+                    <p class="buy-card-text">
+                        Si vous voulez voir les Little Kitties, payez pour un compte et rencontrez-les.
+                        Obtenez un accès exclusif à notre galerie privée pour les membres.
+                    </p>
+                    <div class="buy-card-price">€99.99</div>
+                    <a href="/supportus.html?note=access" class="primary-button button-link">Obtenir l'accès</a>
+                    <p class="buy-requirements">Accès instantané après confirmation</p>
+                </div>
+
+                <div class="buy-card-new" data-language-panel="de" lang="de" hidden>
+                    <h2 class="buy-card-title">Zugang zu Little Kitties</h2>
+                    <p class="buy-card-text">
+                        Wenn Sie die Little Kitties sehen möchten, bezahlen Sie für ein Konto und lernen Sie sie kennen.
+                        Erhalten Sie exklusiven Zugang zu unserer privaten Mitgliedergalerie.
+                    </p>
+                    <div class="buy-card-price">€99.99</div>
+                    <a href="/supportus.html?note=access" class="primary-button button-link">Zugang erhalten</a>
+                    <p class="buy-requirements">Sofortiger Zugriff nach Bestätigung</p>
+                </div>
+
+                <div class="buy-card-new" data-language-panel="tr" lang="tr" hidden>
+                    <h2 class="buy-card-title">Little Kitties Erişimi</h2>
+                    <p class="buy-card-text">
+                        Little Kitties'i görmek istiyorsanız bir hesap için ödeme yapın ve onlarla tanışın.
+                        Özel üye galerimize ayrıcalıklı erişim sağlayın.
+                    </p>
+                    <div class="buy-card-price">€99.99</div>
+                    <a href="/supportus.html?note=access" class="primary-button button-link">Erişim Sağla</a>
+                    <p class="buy-requirements">Onaydan sonra anında erişim</p>
+                </div>
             </div>
         </main>
     </div>
@@ -287,12 +406,21 @@
         <div class="modal-backdrop" data-modal-close></div>
         <div class="modal-card">
             <button class="modal-close" type="button" aria-label="Close sign-in dialog" data-modal-close>&times;</button>
-            <h2 id="login-modal-title" data-i18n-en="Login" data-i18n-bg="Вход">Login</h2>
-            <p class="modal-copy"> <span data-i18n-en="If you want an account, use" data-i18n-bg="Ако искате профил, използвайте">If you want an account, use</span> <a href="/contact.html" data-i18n-en="Contact" data-i18n-bg="Контакти">Contact</a> </p>
+            <h2 id="login-modal-title" data-i18n="login">Login</h2>
+            <p class="modal-copy"> 
+                <span data-i18n="accountRequest">If you want an account, use</span> 
+                <a href="/contact.html" data-i18n="contact">Contact</a> 
+            </p>
             <form id="login-form" class="login-form">
                 <input id="login-email" type="email" placeholder="Email" autocomplete="email" aria-label="Email address">
                 <div class="modal-actions">
-                    <button id="login-submit" class="primary-button" type="submit" data-idle-text="Continue" data-loading-text="Redirecting...">Continue</button>
+                    <button id="login-submit" class="primary-button" type="submit" 
+                        data-idle-en="Continue" data-loading-en="Redirecting..."
+                        data-idle-bg="Продължи" data-loading-bg="Пренасочване..."
+                        data-idle-ja="続行" data-loading-ja="リダイレクト中..."
+                        data-idle-fr="Continuer" data-loading-fr="Redirection..."
+                        data-idle-de="Weiter" data-loading-de="Weiterleitung..."
+                        data-idle-tr="Devam Et" data-loading-tr="Yönlendiriliyor...">Continue</button>
                 </div>
             </form>
             <p id="login-feedback" class="login-feedback" hidden></p>
@@ -323,8 +451,9 @@
         function renderShowcase() {
             const images = getRandomImages(6);
             const markup = images.map(img => `<span class="showcase-item"><img src="/AI/${img}" alt=""></span>`).join('');
-            document.getElementById('showcase-en').innerHTML = markup;
-            document.getElementById('showcase-bg').innerHTML = markup;
+            document.querySelectorAll('[data-showcase]').forEach(el => {
+                el.innerHTML = markup;
+            });
         }
 
         document.addEventListener('DOMContentLoaded', () => {

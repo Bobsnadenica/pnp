@@ -1155,7 +1155,8 @@ document.addEventListener("DOMContentLoaded", async () => {
       console.error(error);
       if (status) {
         status.hidden = false;
-        status.textContent = error.message || "Unable to load gallery.";
+        const translate = window.MalkokoteLanguage?.translate || ((k) => k);
+        status.textContent = error.message || translate("unableToLoadGallery");
       }
     }
   }
@@ -1265,12 +1266,8 @@ document.addEventListener("DOMContentLoaded", async () => {
 
       if (status) {
         status.hidden = false;
-        const lang = window.MalkokoteLanguage?.getLanguage?.() || "en";
-        if (lang === "bg") {
-            status.textContent = nextTheme === "night" ? "Зареждане на нощната галерия." : "Зареждане на дневната галерия.";
-        } else {
-            status.textContent = nextTheme === "night" ? "Loading night gallery." : "Loading day gallery.";
-        }
+        const translate = window.MalkokoteLanguage?.translate || ((k) => k);
+        status.textContent = nextTheme === "night" ? translate("loadingNight") : translate("loadingDay");
       }
 
       grid.innerHTML = "";

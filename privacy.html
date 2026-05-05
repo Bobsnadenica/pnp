@@ -25,12 +25,11 @@
     <div id="age-gate" class="age-gate" role="dialog" aria-modal="true" aria-labelledby="age-gate-title">
         <div class="age-gate-card">
             <p class="age-gate-kicker">18+</p>
-            <h1 id="age-gate-title">Adults only</h1>
-            <p class="age-gate-copy">This website contains adult modeling and photography content. Enter only if you are 18 or older.</p>
-            <p class="age-gate-copy age-gate-copy-secondary">Този сайт съдържа 18+ моделни и фотографски материали. Влезте само ако сте навършили 18 години.</p>
+            <h1 id="age-gate-title" data-i18n="adultsOnly">Adults only</h1>
+            <p class="age-gate-copy" data-i18n="ageGateCopy">This website contains adult modeling and photography content. Enter only if you are 18 or older.</p>
             <div class="age-gate-actions">
-                <button class="primary-button" type="button" data-age-enter>Enter</button>
-                <button class="ghost-button" type="button" data-age-leave>Leave</button>
+                <button class="primary-button" type="button" data-age-enter data-i18n="enter">Enter</button>
+                <button class="ghost-button" type="button" data-age-leave data-i18n="leave">Leave</button>
             </div>
         </div>
     </div>
@@ -47,17 +46,26 @@
                 <span>Malkokote</span>
             </a>
             <div class="site-actions">
-                <div class="language-switch">
-                    <button class="language-pill" type="button" data-language-option="bg" aria-label="Bulgarian">🇧🇬</button>
-                    <button class="language-pill" type="button" data-language-option="en" aria-label="English">🇬🇧</button>
+                <div class="language-dropdown">
+                    <button class="language-pill" type="button" data-language-toggle aria-label="Select Language">
+                        <span data-current-language-flag>🇬🇧</span>
+                    </button>
+                    <div class="language-menu" hidden>
+                        <button class="language-item" type="button" data-language-option="en" aria-label="English">🇬🇧 English</button>
+                        <button class="language-item" type="button" data-language-option="bg" aria-label="Bulgarian">🇧🇬 Български</button>
+                        <button class="language-item" type="button" data-language-option="ja" aria-label="Japanese">🇯🇵 日本語</button>
+                        <button class="language-item" type="button" data-language-option="fr" aria-label="French">🇫🇷 Français</button>
+                        <button class="language-item" type="button" data-language-option="de" aria-label="German">🇩🇪 Deutsch</button>
+                        <button class="language-item" type="button" data-language-option="tr" aria-label="Turkish">🇹🇷 Türkçe</button>
+                    </div>
                 </div>
-                <a class="ghost-button button-link" href="/" data-i18n-en="Gallery" data-i18n-bg="Галерия">Gallery</a>
-                <a class="ghost-button button-link" href="/contact.html" data-i18n-en="Contact" data-i18n-bg="Контакт">Contact</a>
-                <a class="ghost-button button-link" href="/buy.html" data-i18n-en="Buy" data-i18n-bg="Купи">Buy</a>
+                <a class="ghost-button button-link" href="/" data-i18n="gallery">Gallery</a>
+                <a class="ghost-button button-link" href="/contact.html" data-i18n="contact">Contact</a>
+                <a class="ghost-button button-link" href="/buy.html" data-i18n="buy">Buy</a>
                 <button class="ghost-button" type="button" data-gallery-theme-toggle aria-label="Toggle color theme">
                     <div class="theme-thinking-bubble">
-                        <span class="thinking-text thinking-text-day" data-i18n-en="Look what she does at night" data-i18n-bg="Виж какво прави през нощта">Look what she does at night</span>
-                        <span class="thinking-text thinking-text-night" data-i18n-en="She's not that type of girl" data-i18n-bg="Тя не е такова момиче">She's not that type of girl</span>
+                        <span class="thinking-text thinking-text-day" data-i18n="dayThinking">Look what she does at night</span>
+                        <span class="thinking-text thinking-text-night" data-i18n="nightThinking">She's not that type of girl</span>
                     </div>
                     <div class="theme-pulse-circle"></div>
                     <span class="theme-icon-shell">
@@ -71,9 +79,13 @@
                     </span>
                 </button>
                 <button class="ghost-button" type="button" data-profile-trigger 
-                    data-i18n-en="Login" data-i18n-bg="Вход"
-                    data-en-signed-out="Login" data-en-signed-in="Login"
-                    data-bg-signed-out="Вход" data-bg-signed-in="Вход">
+                    data-i18n="login"
+                    data-en-signed-out="Login" data-en-signed-in="Logout"
+                    data-bg-signed-out="Вход" data-bg-signed-in="Изход"
+                    data-ja-signed-out="ログイン" data-ja-signed-in="ログアウト"
+                    data-fr-signed-out="Connexion" data-fr-signed-in="Déconnexion"
+                    data-de-signed-out="Anmelden" data-de-signed-in="Abmelden"
+                    data-tr-signed-out="Giriş Yap" data-tr-signed-in="Çıkış Yap">
                     <span data-profile-label>Login</span>
                 </button>
             </div>
@@ -98,6 +110,38 @@
                     <p>Access to the extra gallery is protected through an external sign-in provider. Account and authentication data are handled through that secured service.</p>
                     <p>If you have a privacy, content, or deletion request, contact <a href="mailto:contactus@malkokote.com">contactus@malkokote.com</a>.</p>
                 </div>
+                <div class="contact-copy" data-language-panel="ja" lang="ja" hidden>
+                    <h1>プライバシーポリシー</h1>
+                    <p>このウェブサイトには18歳以上の写真とモデルのコンテンツが表示されています。一部の公開メディアは、公開されているインターネットソースまたは提出されたポートフォリオからのものである場合があります。</p>
+                    <p>あなたがクリエイター、権利保持者、または写真やビデオに写っている人物であり、コンテンツの削除を希望される場合は、リンクまたは説明を <a href="mailto:contactus@malkokote.com">contactus@malkokote.com</a> までお送りください。リクエストを審査いたします。</p>
+                    <p>18歳以上の確認、ギャラリーのキャッシュ、およびサインインセッションの処理のために、ローカルストレージなどの技術的ストレージを使用します。このデータを販売することはありません。</p>
+                    <p>追加ギャラリーへのアクセスは、外部のサインインプロバイダーを通じて保護されています。アカウントおよび認証データは、その保護されたサービスを通じて処理されます。</p>
+                    <p>プライバシー、コンテンツ、または削除に関するリクエストがある場合は、<a href="mailto:contactus@malkokote.com">contactus@malkokote.com</a> までご連絡ください。</p>
+                </div>
+                <div class="contact-copy" data-language-panel="fr" lang="fr" hidden>
+                    <h1>Politique de confidentialité</h1>
+                    <p>Ce site Web affiche du contenu de photographie et de mannequinat pour adultes (18+). Certains médias publics peuvent provenir de sources Internet accessibles au public ou de portfolios soumis.</p>
+                    <p>Si vous êtes un créateur, un détenteur de droits ou une personne figurant sur une photo ou une vidéo et que vous souhaitez que le contenu soit supprimé, envoyez le lien ou la description à <a href="mailto:contactus@malkokote.com">contactus@malkokote.com</a> et nous examinerons la demande.</p>
+                    <p>Nous utilisons un stockage technique tel que le stockage local pour la confirmation 18+, la mise en cache de la galerie et la gestion de la session de connexion. Nous ne vendons pas ces données.</p>
+                    <p>L'accès à la galerie supplémentaire est protégé par un fournisseur de connexion externe. Les données de compte et d'authentification sont traitées via ce service sécurisé.</p>
+                    <p>Si vous avez une demande concernant la confidentialité, le contenu ou la suppression, contactez <a href="mailto:contactus@malkokote.com">contactus@malkokote.com</a>.</p>
+                </div>
+                <div class="contact-copy" data-language-panel="de" lang="de" hidden>
+                    <h1>Datenschutzrichtlinie</h1>
+                    <p>Diese Website zeigt 18+ Fotografie- und Modellinhalte. Einige öffentliche Medien können aus öffentlich zugänglichen Internetquellen oder eingereichten Portfolios stammen.</p>
+                    <p>Wenn Sie ein Ersteller, Rechteinhaber oder eine auf einem Foto oder Video gezeigte Person sind und die Entfernung von Inhalten wünschen, senden Sie den Link oder die Beschreibung an <a href="mailto:contactus@malkokote.com">contactus@malkokote.com</a>. Wir werden die Anfrage prüfen.</p>
+                    <p>Wir verwenden technische Speicherung wie Local Storage für die 18+-Bestätigung, das Caching der Galerie und die Handhabung der Anmeldesitzung. Wir verkaufen diese Daten nicht.</p>
+                    <p>Der Zugriff auf die zusätzliche Galerie ist durch einen externen Anmeldeanbieter geschützt. Konto- und Authentifizierungsdaten werden über diesen gesicherten Dienst verarbeitet.</p>
+                    <p>Wenn Sie eine Anfrage zu Datenschutz, Inhalten oder Löschung haben, wenden Sie sich an <a href="mailto:contactus@malkokote.com">contactus@malkokote.com</a>.</p>
+                </div>
+                <div class="contact-copy" data-language-panel="tr" lang="tr" hidden>
+                    <h1>Gizlilik Politikası</h1>
+                    <p>Bu web sitesi 18+ fotoğrafçılık ve modellik içeriği görüntülemektedir. Bazı herkese açık medyalar, kamuya açık internet kaynaklarından veya gönderilen portfolyolardan gelebilir.</p>
+                    <p>İçerik oluşturan, hak sahibi veya bir fotoğraf ya da videoda görünen biriyseniz ve içeriğin kaldırılmasını istiyorsanız, bağlantıyı veya açıklamayı <a href="mailto:contactus@malkokote.com">contactus@malkokote.com</a> adresine gönderin; talebi inceleyeceğiz.</p>
+                    <p>18+ onayı, galeri önbelleğe alma ve oturum açma işlemleri için yerel depolama gibi teknik depolama araçlarını kullanıyoruz. Bu verileri satmıyoruz.</p>
+                    <p>Ek galeriye erişim, harici bir oturum açma sağlayıcısı aracılığıyla korunmaktadır. Hesap ve kimlik doğrulama verileri bu güvenli hizmet aracılığıyla işlenir.</p>
+                    <p>Gizlilik, içerik veya silme talebiniz varsa <a href="mailto:contactus@malkokote.com">contactus@malkokote.com</a> ile iletişime geçin.</p>
+                </div>
             </section>
         </main>
     </div>
@@ -106,12 +150,21 @@
         <div class="modal-backdrop" data-modal-close></div>
         <div class="modal-card">
             <button class="modal-close" type="button" aria-label="Close sign-in dialog" data-modal-close>&times;</button>
-            <h2 id="login-modal-title" data-i18n-en="Login" data-i18n-bg="Вход">Login</h2>
-            <p class="modal-copy"> <span data-i18n-en="If you want an account, use" data-i18n-bg="Ако искате профил, използвайте">If you want an account, use</span> <a href="/contact.html" data-i18n-en="Contact" data-i18n-bg="Контакти">Contact</a> </p>
+            <h2 id="login-modal-title" data-i18n="login">Login</h2>
+            <p class="modal-copy"> 
+                <span data-i18n="accountRequest">If you want an account, use</span> 
+                <a href="/contact.html" data-i18n="contact">Contact</a> 
+            </p>
             <form id="login-form" class="login-form">
                 <input id="login-email" type="email" placeholder="Email" autocomplete="email" aria-label="Email address">
                 <div class="modal-actions">
-                    <button id="login-submit" class="primary-button" type="submit" data-idle-text="Continue" data-loading-text="Redirecting...">Continue</button>
+                    <button id="login-submit" class="primary-button" type="submit" 
+                        data-idle-en="Continue" data-loading-en="Redirecting..."
+                        data-idle-bg="Продължи" data-loading-bg="Пренасочване..."
+                        data-idle-ja="続行" data-loading-ja="リダイレクト中..."
+                        data-idle-fr="Continuer" data-loading-fr="Redirection..."
+                        data-idle-de="Weiter" data-loading-de="Weiterleitung..."
+                        data-idle-tr="Devam Et" data-loading-tr="Yönlendiriliyor...">Continue</button>
                 </div>
             </form>
             <p id="login-feedback" class="login-feedback" hidden></p>

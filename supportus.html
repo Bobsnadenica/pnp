@@ -22,12 +22,11 @@
     <div id="age-gate" class="age-gate" role="dialog" aria-modal="true" aria-labelledby="age-gate-title">
         <div class="age-gate-card">
             <p class="age-gate-kicker">18+</p>
-            <h1 id="age-gate-title">Adults only</h1>
-            <p class="age-gate-copy">This website contains adult modeling and photography content. Enter only if you are 18 or older.</p>
-            <p class="age-gate-copy age-gate-copy-secondary">Този сайт съдържа 18+ моделни и фотографски материали. Влезте само ако сте навършили 18 години.</p>
+            <h1 id="age-gate-title" data-i18n="adultsOnly">Adults only</h1>
+            <p class="age-gate-copy" data-i18n="ageGateCopy">This website contains adult modeling and photography content. Enter only if you are 18 or older.</p>
             <div class="age-gate-actions">
-                <button class="primary-button" type="button" data-age-enter>Enter</button>
-                <button class="ghost-button" type="button" data-age-leave>Leave</button>
+                <button class="primary-button" type="button" data-age-enter data-i18n="enter">Enter</button>
+                <button class="ghost-button" type="button" data-age-leave data-i18n="leave">Leave</button>
             </div>
         </div>
     </div>
@@ -44,17 +43,26 @@
                 <span>Malkokote</span>
             </a>
             <div class="site-actions">
-                <div class="language-switch">
-                    <button class="language-pill" type="button" data-language-option="bg" aria-label="Bulgarian">🇧🇬</button>
-                    <button class="language-pill" type="button" data-language-option="en" aria-label="English">🇬🇧</button>
+                <div class="language-dropdown">
+                    <button class="language-pill" type="button" data-language-toggle aria-label="Select Language">
+                        <span data-current-language-flag>🇬🇧</span>
+                    </button>
+                    <div class="language-menu" hidden>
+                        <button class="language-item" type="button" data-language-option="en" aria-label="English">🇬🇧 English</button>
+                        <button class="language-item" type="button" data-language-option="bg" aria-label="Bulgarian">🇧🇬 Български</button>
+                        <button class="language-item" type="button" data-language-option="ja" aria-label="Japanese">🇯🇵 日本語</button>
+                        <button class="language-item" type="button" data-language-option="fr" aria-label="French">🇫🇷 Français</button>
+                        <button class="language-item" type="button" data-language-option="de" aria-label="German">🇩🇪 Deutsch</button>
+                        <button class="language-item" type="button" data-language-option="tr" aria-label="Turkish">🇹🇷 Türkçe</button>
+                    </div>
                 </div>
-                <a class="ghost-button button-link" href="/" data-i18n-en="Gallery" data-i18n-bg="Галерия">Gallery</a>
-                <a class="ghost-button button-link" href="/contact.html" data-i18n-en="Contact" data-i18n-bg="Контакт">Contact</a>
-                <a class="ghost-button button-link" href="/buy.html" data-i18n-en="Buy" data-i18n-bg="Купи">Buy</a>
+                <a class="ghost-button button-link" href="/" data-i18n="gallery">Gallery</a>
+                <a class="ghost-button button-link" href="/contact.html" data-i18n="contact">Contact</a>
+                <a class="ghost-button button-link" href="/buy.html" data-i18n="buy">Buy</a>
                 <button class="ghost-button" type="button" data-gallery-theme-toggle aria-label="Toggle color theme">
                     <div class="theme-thinking-bubble">
-                        <span class="thinking-text thinking-text-day" data-i18n-en="Look what she does at night" data-i18n-bg="Виж какво прави през нощта">Look what she does at night</span>
-                        <span class="thinking-text thinking-text-night" data-i18n-en="She's not that type of girl" data-i18n-bg="Тя не е такова момиче">She's not that type of girl</span>
+                        <span class="thinking-text thinking-text-day" data-i18n="dayThinking">Look what she does at night</span>
+                        <span class="thinking-text thinking-text-night" data-i18n="nightThinking">She's not that type of girl</span>
                     </div>
                     <div class="theme-pulse-circle"></div>
                     <span class="theme-icon-shell">
@@ -68,9 +76,13 @@
                     </span>
                 </button>
                 <button class="ghost-button" type="button" data-profile-trigger 
-                    data-i18n-en="Login" data-i18n-bg="Вход"
-                    data-en-signed-out="Login" data-en-signed-in="Login"
-                    data-bg-signed-out="Вход" data-bg-signed-in="Вход">
+                    data-i18n="login"
+                    data-en-signed-out="Login" data-en-signed-in="Logout"
+                    data-bg-signed-out="Вход" data-bg-signed-in="Изход"
+                    data-ja-signed-out="ログイン" data-ja-signed-in="ログアウト"
+                    data-fr-signed-out="Connexion" data-fr-signed-in="Déconnexion"
+                    data-de-signed-out="Anmelden" data-de-signed-in="Abmelden"
+                    data-tr-signed-out="Giriş Yap" data-tr-signed-in="Çıkış Yap">
                     <span data-profile-label>Login</span>
                 </button>
             </div>
@@ -78,7 +90,13 @@
 
         <main class="buy-shell">
             <div id="guide-purchase-note" style="display: none; text-align: center; margin-bottom: 2rem; padding: 1.5rem; background: rgba(243, 156, 18, 0.1); border: 1px solid #f39c12; border-radius: 1.5rem; max-width: 42rem; margin-left: auto; margin-right: auto;"> 
-                <p style="font-size: 1.1rem; font-weight: 600; color: var(--text);" data-i18n-en="Send me the money and write me that you did and I'll send you the guide or provide account access" data-i18n-bg="Изпратете ми парите и ми пишете, че сте го направили, и аз ще ви изпратя ръководството или ще ви дам достъп до акаунта"> 
+                <p style="font-size: 1.1rem; font-weight: 600; color: var(--text);" 
+                    data-i18n-en="Send me the money and write me that you did and I'll send you the guide or provide account access" 
+                    data-i18n-bg="Изпратете ми парите и ми пишете, че сте го направили, и аз ще ви изпратя ръководството или ще ви дам достъп до акаунта"
+                    data-i18n-ja="送金後、その旨をメッセージで送ってください。ガイドを送付するか、アカウントへのアクセスを提供します。"
+                    data-i18n-fr="Envoyez-moi l'argent et écrivez-moi que vous l'avez fait, et je vous enverrai le guide ou vous donnerai l'accès au compte."
+                    data-i18n-de="Senden Sie mir das Geld und schreiben Sie mir, dass Sie dies getan haben, und ich sende Ihnen den Leitfaden oder gewähre Kontozugriff."
+                    data-i18n-tr="Parayı gönderin ve gönderdiğinizi bana yazın; size kılavuzu göndereceğim veya hesap erişimi sağlayacağım."> 
                     Send me the money and write me that you did and I'll send you the guide or provide account access 
                 </p> 
             </div>
@@ -157,7 +175,151 @@
                 </div>
             </div>
 
-            <p class="buy-copy" style="margin-top: 3rem;">Thank you for your support! / Благодарим за подкрепата!</p>
+            <div data-language-panel="ja" lang="ja" hidden>
+                <div style="text-align: center; margin-bottom: 3rem;">
+                    <h2 style="font-size: 2.4rem; margin-bottom: 1rem;">Malkokoteをサポート</h2>
+                    <p style="color: var(--muted); max-width: 32rem; margin: 0 auto; line-height: 1.6;">あなたのサポートにより、このサイトを独立させ、広告なしで、高品質なモデルコンテンツに集中し続けることができます。</p>
+                </div>
+
+                <div class="buy-grid">
+                    <article class="buy-card">
+                        <img src="/btc.png" alt="Bitcoin QR Code" class="qr-code">
+                        <h2 class="buy-card-title">Bitcoin (BTC)</h2>
+                        <p class="buy-card-description" style="word-break: break-all; font-family: monospace;">bc1q9jh0w4w8ug59qdt2e9lxw54c9sz2aw5q2njxgl</p>
+                        <div class="buy-card-footer">
+                            <button class="primary-button" type="button" onclick="copyWallet('bc1q9jh0w4w8ug59qdt2e9lxw54c9sz2aw5q2njxgl', this)">アドレスをコピー</button>
+                        </div>
+                    </article>
+
+                    <article class="buy-card">
+                        <img src="/ethereum.png" alt="Ethereum QR Code" class="qr-code">
+                        <h2 class="buy-card-title">Ethereum (ETH)</h2>
+                        <p class="buy-card-description" style="word-break: break-all; font-family: monospace;">0xF00716eDAF7Aca38Db93228D3372B3c642F03b03</p>
+                        <div class="buy-card-footer">
+                            <button class="primary-button" type="button" onclick="copyWallet('0xF00716eDAF7Aca38Db93228D3372B3c642F03b03', this)">アドレスをコピー</button>
+                        </div>
+                    </article>
+
+                    <article class="buy-card">
+                        <img src="/revolut.jpg" alt="Revolut Link" class="qr-code">
+                        <h2 class="buy-card-title">Revolut</h2>
+                        <p class="buy-card-description">Revolut.me支払いリンクを介して、直接かつ安全に私たちをサポートしてください。</p>
+                        <div class="buy-card-footer">
+                            <a href="https://revolut.me/privileged" target="_blank" rel="noopener" class="primary-button button-link">Revolutを開く</a>
+                        </div>
+                    </article>
+                </div>
+            </div>
+
+            <div data-language-panel="fr" lang="fr" hidden>
+                <div style="text-align: center; margin-bottom: 3rem;">
+                    <h2 style="font-size: 2.4rem; margin-bottom: 1rem;">Soutenir Malkokote</h2>
+                    <p style="color: var(--muted); max-width: 32rem; margin: 0 auto; line-height: 1.6;">Votre soutien nous aide à garder le site indépendant, sans publicité et concentré sur du contenu de mannequinat de haute qualité.</p>
+                </div>
+
+                <div class="buy-grid">
+                    <article class="buy-card">
+                        <img src="/btc.png" alt="Bitcoin QR Code" class="qr-code">
+                        <h2 class="buy-card-title">Bitcoin (BTC)</h2>
+                        <p class="buy-card-description" style="word-break: break-all; font-family: monospace;">bc1q9jh0w4w8ug59qdt2e9lxw54c9sz2aw5q2njxgl</p>
+                        <div class="buy-card-footer">
+                            <button class="primary-button" type="button" onclick="copyWallet('bc1q9jh0w4w8ug59qdt2e9lxw54c9sz2aw5q2njxgl', this)">Copier l'adresse</button>
+                        </div>
+                    </article>
+
+                    <article class="buy-card">
+                        <img src="/ethereum.png" alt="Ethereum QR Code" class="qr-code">
+                        <h2 class="buy-card-title">Ethereum (ETH)</h2>
+                        <p class="buy-card-description" style="word-break: break-all; font-family: monospace;">0xF00716eDAF7Aca38Db93228D3372B3c642F03b03</p>
+                        <div class="buy-card-footer">
+                            <button class="primary-button" type="button" onclick="copyWallet('0xF00716eDAF7Aca38Db93228D3372B3c642F03b03', this)">Copier l'adresse</button>
+                        </div>
+                    </article>
+
+                    <article class="buy-card">
+                        <img src="/revolut.jpg" alt="Revolut Link" class="qr-code">
+                        <h2 class="buy-card-title">Revolut</h2>
+                        <p class="buy-card-description">Soutenez-nous directement et en toute sécurité via le lien de paiement Revolut.me.</p>
+                        <div class="buy-card-footer">
+                            <a href="https://revolut.me/privileged" target="_blank" rel="noopener" class="primary-button button-link">Ouvrir Revolut</a>
+                        </div>
+                    </article>
+                </div>
+            </div>
+
+            <div data-language-panel="de" lang="de" hidden>
+                <div style="text-align: center; margin-bottom: 3rem;">
+                    <h2 style="font-size: 2.4rem; margin-bottom: 1rem;">Malkokote unterstützen</h2>
+                    <p style="color: var(--muted); max-width: 32rem; margin: 0 auto; line-height: 1.6;">Ihre Unterstützung hilft uns, die Website unabhängig, werbefrei und auf hochwertige Modellinhalte konzentriert zu halten.</p>
+                </div>
+
+                <div class="buy-grid">
+                    <article class="buy-card">
+                        <img src="/btc.png" alt="Bitcoin QR Code" class="qr-code">
+                        <h2 class="buy-card-title">Bitcoin (BTC)</h2>
+                        <p class="buy-card-description" style="word-break: break-all; font-family: monospace;">bc1q9jh0w4w8ug59qdt2e9lxw54c9sz2aw5q2njxgl</p>
+                        <div class="buy-card-footer">
+                            <button class="primary-button" type="button" onclick="copyWallet('bc1q9jh0w4w8ug59qdt2e9lxw54c9sz2aw5q2njxgl', this)">Adresse kopieren</button>
+                        </div>
+                    </article>
+
+                    <article class="buy-card">
+                        <img src="/ethereum.png" alt="Ethereum QR Code" class="qr-code">
+                        <h2 class="buy-card-title">Ethereum (ETH)</h2>
+                        <p class="buy-card-description" style="word-break: break-all; font-family: monospace;">0xF00716eDAF7Aca38Db93228D3372B3c642F03b03</p>
+                        <div class="buy-card-footer">
+                            <button class="primary-button" type="button" onclick="copyWallet('0xF00716eDAF7Aca38Db93228D3372B3c642F03b03', this)">Adresse kopieren</button>
+                        </div>
+                    </article>
+
+                    <article class="buy-card">
+                        <img src="/revolut.jpg" alt="Revolut Link" class="qr-code">
+                        <h2 class="buy-card-title">Revolut</h2>
+                        <p class="buy-card-description">Unterstützen Sie uns direkt und sicher über den Revolut.me-Zahlungslink.</p>
+                        <div class="buy-card-footer">
+                            <a href="https://revolut.me/privileged" target="_blank" rel="noopener" class="primary-button button-link">Revolut öffnen</a>
+                        </div>
+                    </article>
+                </div>
+            </div>
+
+            <div data-language-panel="tr" lang="tr" hidden>
+                <div style="text-align: center; margin-bottom: 3rem;">
+                    <h2 style="font-size: 2.4rem; margin-bottom: 1rem;">Malkokote'yi Destekle</h2>
+                    <p style="color: var(--muted); max-width: 32rem; margin: 0 auto; line-height: 1.6;">Desteğiniz, sitemizi bağımsız, reklamsız ve yüksek kaliteli modellik içeriğine odaklanmış bir şekilde tutmamıza yardımcı olur.</p>
+                </div>
+
+                <div class="buy-grid">
+                    <article class="buy-card">
+                        <img src="/btc.png" alt="Bitcoin QR Code" class="qr-code">
+                        <h2 class="buy-card-title">Bitcoin (BTC)</h2>
+                        <p class="buy-card-description" style="word-break: break-all; font-family: monospace;">bc1q9jh0w4w8ug59qdt2e9lxw54c9sz2aw5q2njxgl</p>
+                        <div class="buy-card-footer">
+                            <button class="primary-button" type="button" onclick="copyWallet('bc1q9jh0w4w8ug59qdt2e9lxw54c9sz2aw5q2njgl', this)">Adresi Kopyala</button>
+                        </div>
+                    </article>
+
+                    <article class="buy-card">
+                        <img src="/ethereum.png" alt="Ethereum QR Code" class="qr-code">
+                        <h2 class="buy-card-title">Ethereum (ETH)</h2>
+                        <p class="buy-card-description" style="word-break: break-all; font-family: monospace;">0xF00716eDAF7Aca38Db93228D3372B3c642F03b03</p>
+                        <div class="buy-card-footer">
+                            <button class="primary-button" type="button" onclick="copyWallet('0xF00716eDAF7Aca38Db93228D3372B3c642F03b03', this)">Adresi Kopyala</button>
+                        </div>
+                    </article>
+
+                    <article class="buy-card">
+                        <img src="/revolut.jpg" alt="Revolut Link" class="qr-code">
+                        <h2 class="buy-card-title">Revolut</h2>
+                        <p class="buy-card-description">Revolut.me ödeme bağlantısı aracılığıyla bizi doğrudan ve güvenli bir şekilde destekleyin.</p>
+                        <div class="buy-card-footer">
+                            <a href="https://revolut.me/privileged" target="_blank" rel="noopener" class="primary-button button-link">Revolut'u Aç</a>
+                        </div>
+                    </article>
+                </div>
+            </div>
+
+            <p class="buy-copy" style="margin-top: 3rem;" data-i18n-en="Thank you for your support!" data-i18n-bg="Благодарим за подкрепата!" data-i18n-ja="サポートありがとうございます！" data-i18n-fr="Merci pour votre soutien !" data-i18n-de="Danke für deine Unterstützung!" data-i18n-tr="Desteğiniz için teşekkürler!">Thank you for your support! / Благодарим за подкрепата!</p>
         </main>
     </div>
 
@@ -165,12 +327,21 @@
         <div class="modal-backdrop" data-modal-close></div>
         <div class="modal-card">
             <button class="modal-close" type="button" aria-label="Close sign-in dialog" data-modal-close>&times;</button>
-            <h2 id="login-modal-title" data-i18n-en="Login" data-i18n-bg="Вход">Login</h2>
-            <p class="modal-copy"> <span data-i18n-en="If you want an account, use" data-i18n-bg="Ако искате профил, използвайте">If you want an account, use</span> <a href="/contact.html" data-i18n-en="Contact" data-i18n-bg="Контакти">Contact</a> </p>
+            <h2 id="login-modal-title" data-i18n="login">Login</h2>
+            <p class="modal-copy"> 
+                <span data-i18n="accountRequest">If you want an account, use</span> 
+                <a href="/contact.html" data-i18n="contact">Contact</a> 
+            </p>
             <form id="login-form" class="login-form">
                 <input id="login-email" type="email" placeholder="Email" autocomplete="email" aria-label="Email address">
                 <div class="modal-actions">
-                    <button id="login-submit" class="primary-button" type="submit" data-idle-text="Continue" data-loading-text="Redirecting...">Continue</button>
+                    <button id="login-submit" class="primary-button" type="submit" 
+                        data-idle-en="Continue" data-loading-en="Redirecting..."
+                        data-idle-bg="Продължи" data-loading-bg="Пренасочване..."
+                        data-idle-ja="続行" data-loading-ja="リダイレクト中..."
+                        data-idle-fr="Continuer" data-loading-fr="Redirection..."
+                        data-idle-de="Weiter" data-loading-de="Weiterleitung..."
+                        data-idle-tr="Devam Et" data-loading-tr="Yönlendiriliyor...">Continue</button>
                 </div>
             </form>
             <p id="login-feedback" class="login-feedback" hidden></p>

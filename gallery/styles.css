@@ -783,46 +783,72 @@ h1 {
     }
 }
 
-/* Language Switch */
-.language-switch {
+/* Language Dropdown */
+.language-dropdown {
+    position: relative;
     display: inline-flex;
-    gap: 0.4rem;
     margin-right: 0.5rem;
 }
 
-.language-pill {
-    appearance: none;
-    border: 1px solid rgba(15, 23, 42, 0.1);
-    background: rgba(255, 255, 255, 0.8);
-    color: var(--text);
-    border-radius: 999px;
-    padding: 0.4rem 0.6rem;
-    font: inherit;
-    font-size: 0.85rem;
-    font-weight: 600;
-    cursor: pointer;
+.language-menu {
+    position: absolute;
+    top: calc(100% + 0.5rem);
+    right: 0;
+    background: var(--card-bg);
+    backdrop-filter: blur(20px) saturate(1.2);
+    border: 1px solid var(--line);
+    border-radius: 1.2rem;
+    padding: 0.5rem;
+    min-width: 10rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.2rem;
+    box-shadow: 0 20px 40px -12px rgba(0, 0, 0, 0.25);
+    z-index: 1000;
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(-10px);
     transition: all 0.2s ease;
 }
 
-.language-pill:hover {
-    transform: translateY(-1px);
-    background: white;
+.language-menu.is-active {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
 }
 
-.language-pill.is-active {
+.language-item {
+    appearance: none;
+    border: none;
+    background: transparent;
+    color: var(--text);
+    padding: 0.6rem 0.8rem;
+    border-radius: 0.8rem;
+    font: inherit;
+    font-size: 0.85rem;
+    font-weight: 600;
+    text-align: left;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    transition: background-color 0.16s ease;
+    white-space: nowrap;
+}
+
+.language-item:hover {
+    background: rgba(15, 23, 42, 0.06);
+}
+
+.language-item.is-active {
     background: var(--accent);
-    border-color: var(--accent);
     color: white;
 }
 
 @media (max-width: 720px) {
-    .language-switch {
+    .language-dropdown {
         width: 100%;
         margin-right: 0;
         margin-bottom: 0.5rem;
-    }
-    .language-pill {
-        flex: 1;
-        text-align: center;
     }
 }

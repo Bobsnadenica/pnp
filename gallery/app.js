@@ -432,21 +432,22 @@
     }
 
     button.disabled = isRefreshing;
-    const lang = window.MalkokoteLanguage?.getLanguage?.() || "en";
+    const translate = window.MalkokoteLanguage?.translate || ((k) => k);
     if (isRefreshing) {
-      button.textContent = lang === "bg" ? "Обновяване..." : "Refreshing...";
+      button.textContent = translate("loading");
     } else {
-      button.textContent = lang === "bg" ? "Обнови" : "Refresh";
+      button.textContent = translate("refresh");
     }
   }
 
   function renderGalleryState(content, status, manifest) {
     dismissViewer();
     const photos = manifest.photos || [];
+    const translate = window.MalkokoteLanguage?.translate || ((k) => k);
 
     if (!photos.length) {
       if (status) {
-        status.textContent = "No media.";
+        status.textContent = translate("noMedia") || "No media.";
       }
 
       if (content) {
@@ -472,13 +473,14 @@
     const refreshButton = document.getElementById("gallery-refresh");
     const status = document.getElementById("gallery-status");
     const content = document.getElementById("gallery-content");
+    const translate = window.MalkokoteLanguage?.translate || ((k) => k);
     let refreshToken = readRefreshToken();
 
     await window.MalkokoteAgeGate?.waitForAccess?.();
 
     if (!auth) {
       if (status) {
-        status.textContent = "Unable to load.";
+        status.textContent = translate("unableToLoad") || "Unable to load.";
       }
       return;
     }
@@ -503,7 +505,7 @@
       } catch (error) {
         console.error(error);
         if (status) {
-          status.textContent = error.message || "Unable to load.";
+          status.textContent = error.message || translate("unableToLoad") || "Unable to load.";
         }
         if (content) {
           content.className = "empty-state";
@@ -518,7 +520,7 @@
       refreshToken = createRefreshToken();
       writeRefreshToken(refreshToken);
       if (status) {
-        status.textContent = "Refreshing.";
+        status.textContent = translate("loading");
       }
       await loadManifest();
     });
