@@ -1,6 +1,6 @@
 (function () {
   const STORAGE_KEY = "malkokote:language";
-  const SUPPORTED_LANGUAGES = ["en", "bg", "ja", "fr", "de", "tr"];
+  const SUPPORTED_LANGUAGES = ["en", "bg", "ja", "fr", "de", "tr", "ru"];
 
   const FLAGS = {
     en: "🇬🇧",
@@ -8,7 +8,8 @@
     ja: "🇯🇵",
     fr: "🇫🇷",
     de: "🇩🇪",
-    tr: "🇹🇷"
+    tr: "🇹🇷",
+    ru: "🇷🇺"
   };
 
   const TRANSLATIONS = {
@@ -185,6 +186,35 @@
       humanCheck: "Doğrulama",
       solveToContinue: "Devam etmek için doğrulamayı çözün.",
       checkComplete: "Doğrulama tamamlandı."
+    },
+    ru: {
+      gallery: "Галерея",
+      contact: "Контакт",
+      buy: "Купить",
+      login: "Вход",
+      logout: "Выход",
+      adultsOnly: "Только для взрослых",
+      ageGateCopy: "Этот сайт содержит контент для взрослых. Входите только если вам есть 18 лет.",
+      enter: "Войти",
+      leave: "Выйти",
+      loadMore: "Загрузить еще",
+      loading: "Загрузка...",
+      continue: "Продолжить",
+      redirecting: "Перенаправление...",
+      accountRequest: "Если вам нужен аккаунт, используйте",
+      dayThinking: "Посмотрите, что она делает ночью",
+      nightThinking: "Она не такая девушка",
+      refresh: "Обновить",
+      signOut: "Выйти",
+      returnHome: "Вернуться на Malkokote",
+      noMedia: "Медиафайлы отсутствуют.",
+      unableToLoad: "Не удалось загрузить.",
+      loadingNight: "Загрузка ночной галереи.",
+      loadingDay: "Загрузка дневной галереи.",
+      unableToLoadGallery: "Не удалось загрузить галерею.",
+      humanCheck: "Проверка",
+      solveToContinue: "Решите задачу, чтобы продолжить.",
+      checkComplete: "Проверка пройдена."
     }
   };
 
@@ -267,12 +297,14 @@
     if (toggle && menu) {
       toggle.addEventListener("click", (e) => {
         e.stopPropagation();
-        menu.classList.toggle("is-active");
-        menu.hidden = !menu.classList.contains("is-active");
+        const isActive = menu.classList.toggle("is-active");
+        toggle.classList.toggle("is-active", isActive);
+        menu.hidden = !isActive;
       });
 
       document.addEventListener("click", () => {
         menu.classList.remove("is-active");
+        toggle.classList.remove("is-active");
         menu.hidden = true;
       });
     }
