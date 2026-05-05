@@ -6,7 +6,6 @@
     <link rel="icon" type="image/png" href="/logo.png">
     <title>Malkokote | Privacy Policy</title>
     <meta name="description" content="Privacy policy for Malkokote. Information on 18+ modeling, content removal, and data protection for models and influencers.">
-    <meta name="keywords" content="Malkokote privacy, 18+ policy, modeling removal, content removal request, Bulgaria modeling privacy">
     <meta name="robots" content="index, follow">
     <meta name="theme-color" content="#111111">
     <link rel="canonical" href="https://www.malkokote.com/privacy.html">
@@ -21,12 +20,12 @@
     </noscript>
     <link rel="stylesheet" href="/style.css">
 </head>
-<body class="age-gate-pending has-ambient-background">
-    <div id="age-gate" class="age-gate" role="dialog" aria-modal="true" aria-labelledby="age-gate-title">
+<body class="age-gate-pending has-ambient-background" data-page-id="privacy">
+    <div id="age-gate" class="age-gate" role="dialog" aria-modal="true" aria-labelledby="age-gate-title" aria-describedby="age-gate-copy">
         <div class="age-gate-card">
             <p class="age-gate-kicker">18+</p>
             <h1 id="age-gate-title" data-i18n="adultsOnly">Adults only</h1>
-            <p class="age-gate-copy" data-i18n="ageGateCopy">This website contains adult modeling and photography content. Enter only if you are 18 or older.</p>
+            <p id="age-gate-copy" class="age-gate-copy" data-i18n="ageGateCopy">This website contains adult modeling and photography content. Enter only if you are 18 or older.</p>
             <div class="age-gate-actions">
                 <button class="primary-button" type="button" data-age-enter data-i18n="enter">Enter</button>
                 <button class="ghost-button" type="button" data-age-leave data-i18n="leave">Leave</button>
@@ -176,8 +175,8 @@
         </div>
     </div>
 
-    <script src="/age-gate.js" defer></script>
     <script src="/language.js" defer></script>
+    <script src="/age-gate.js" defer></script>
     <script src="/config/site-config.js" defer></script>
     <script src="/auth/auth.js" defer></script>
     <script src="/ambient-background.js" defer></script>

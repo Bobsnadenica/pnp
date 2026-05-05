@@ -58,9 +58,9 @@
       authFailedCopy: "The secure sign-in flow returned an error. You can head back and try again.",
       authFailedStatus: "Something went wrong while completing sign-in.",
       buyTitle: "Malkokote | Buy",
-      buyDescription: "Buy page for Malkokote premium access.",
-      indexTitle: "Malkokote | Best 18+ Modeling & Photography Website Bulgaria",
-      indexDescription: "Malkokote is a premier 18+ modeling, photography, and influencer platform in Bulgaria.",
+      buyDescription: "Request Malkokote member gallery access or support the project by purchasing the image generation guide.",
+      indexTitle: "Malkokote | 18+ Modeling & Photography Gallery Bulgaria",
+      indexDescription: "Malkokote is an 18+ modeling and photography gallery in Bulgaria with public editorial imagery, private member access, and contact for collaborations or removal requests.",
       contactTitle: "Malkokote | Contact",
       contactDescription: "Contact us for any inquiries.",
       supportTitle: "Malkokote | Support Us",
@@ -117,9 +117,9 @@
       authFailedCopy: "Възникна грешка при влизането. Можете да се върнете и да опитате отново.",
       authFailedStatus: "Нещо се обърка при завършване на влизането.",
       buyTitle: "Malkokote | Купи",
-      buyDescription: "Страница за закупуване на премиум достъп до Malkokote.",
-      indexTitle: "Malkokote | Най-добрият 18+ сайт за модели и фотография в България",
-      indexDescription: "18+ сайт за модели и фотография в България с ексклузивно съдържание и галерия.",
+      buyDescription: "Заявете достъп до галерията за членове на Malkokote или подкрепете проекта чрез ръководството за генериране на изображения.",
+      indexTitle: "Malkokote | 18+ галерия за модели и фотография в България",
+      indexDescription: "Malkokote е 18+ галерия за модели и фотография в България с публични редакционни изображения, частен достъп и контакт за колаборации или премахване на съдържание.",
       contactTitle: "Malkokote | Контакт",
       contactDescription: "Свържете се с нас за всякакви въпроси.",
       supportTitle: "Malkokote | Подкрепи ни",
@@ -292,9 +292,9 @@
       authFailedCopy: "Произошла ошибка при входе. Вы можете вернуться и попробовать снова.",
       authFailedStatus: "Что-то пошло не так при завершении входа.",
       buyTitle: "Malkokote | Купить",
-      buyDescription: "Страница покупки премиум-доступа к Malkokote.",
-      indexTitle: "Malkokote | Лучший сайт 18+ моделинга и фотографии в Болгарии",
-      indexDescription: "Сайт 18+ моделинга и фотографии в Болгарии с эксклюзивным контентом и галереей.",
+      buyDescription: "Запросите доступ к галерее участников Malkokote или поддержите проект, купив руководство по генерации изображений.",
+      indexTitle: "Malkokote | 18+ галерея моделинга и фотографии в Болгарии",
+      indexDescription: "Malkokote — это 18+ галерея моделинга и фотографии в Болгарии с публичными редакционными изображениями, частным доступом и контактами для сотрудничества или удаления контента.",
       contactTitle: "Malkokote | Контакты",
       contactDescription: "Свяжитесь с нами по любым вопросам.",
       supportTitle: "Malkokote | Поддержите нас",
@@ -505,6 +505,9 @@
     const currentFlag = document.querySelector("[data-current-language-flag]");
     const panels = document.querySelectorAll("[data-language-panel]");
     const translatables = document.querySelectorAll("[data-i18n-en], [data-i18n]");
+    const visiblePanelLanguage = [...panels].some((panel) => panel.dataset.languagePanel === language)
+      ? language
+      : "en";
 
     dropdownItems.forEach((item) => {
       const isActive = item.dataset.languageOption === language;
@@ -517,7 +520,7 @@
     }
 
     panels.forEach((panel) => {
-      const isVisible = panel.dataset.languagePanel === language;
+      const isVisible = panel.dataset.languagePanel === visiblePanelLanguage;
       panel.hidden = !isVisible;
       if (panel.tagName === "SPAN" || panel.tagName === "DIV" || panel.tagName === "A" || panel.tagName === "SECTION") {
           panel.style.display = isVisible ? "" : "none";

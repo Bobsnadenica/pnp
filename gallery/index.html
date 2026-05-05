@@ -15,20 +15,20 @@
     </noscript>
     <link rel="stylesheet" href="/gallery/styles.css">
 </head>
-<body data-gallery-mode="extra" class="age-gate-pending">
-    <div id="age-gate" class="age-gate" role="dialog" aria-modal="true" aria-labelledby="age-gate-title">
+<body data-gallery-mode="extra" data-page-id="extra" class="age-gate-pending">
+    <div id="age-gate" class="age-gate" role="dialog" aria-modal="true" aria-labelledby="age-gate-title" aria-describedby="age-gate-copy">
         <div class="age-gate-card">
             <p class="age-gate-kicker">18+</p>
             <h1 id="age-gate-title" data-i18n="adultsOnly">Adults only</h1>
-            <p class="age-gate-copy" data-i18n="ageGateCopy">This website contains adult modeling and photography content. Enter only if you are 18 or older.</p>
+            <p id="age-gate-copy" class="age-gate-copy" data-i18n="ageGateCopy">This website contains adult modeling and photography content. Enter only if you are 18 or older.</p>
             <div class="age-gate-actions">
                 <button class="btn btn-primary" type="button" data-age-enter data-i18n="enter">Enter</button>
                 <button class="btn btn-secondary" type="button" data-age-leave data-i18n="leave">Leave</button>
             </div>
         </div>
     </div>
-<body data-gallery-mode="extra" class="age-gate-pending" data-page-id="extra">
-...
+
+    <div class="shell">
         <header class="topbar">
             <a class="brand" href="/">
                 <img src="/logo.png" alt="" class="site-logo">
@@ -57,23 +57,26 @@
                     </div>
                 </div>
                 <div class="top-actions">
-                    <a href="/buy.html" class="btn btn-secondary" data-i18n="buy" style="text-decoration: none; display: inline-flex; align-items: center; justify-content: center;">Buy</a>
+                    <a href="/buy.html" class="btn btn-secondary" data-i18n="buy">Buy</a>
                     <button id="gallery-refresh" class="btn btn-secondary" data-i18n="refresh" type="button">Refresh</button>
                     <button id="gallery-signout" class="btn btn-primary" data-i18n="signOut" type="button">Sign Out</button>
                 </div>
             </div>
         </header>
 
-        <section class="gallery-card">
-            <p id="gallery-status" class="gallery-status">Loading.</p>
-            <div id="gallery-content" class="loading-state"></div>
-        </section>
+        <main>
+            <h1 class="sr-only">Private member gallery</h1>
+            <section class="gallery-card" aria-live="polite">
+                <p id="gallery-status" class="gallery-status">Loading.</p>
+                <div id="gallery-content" class="loading-state"></div>
+            </section>
+        </main>
     </div>
 
+    <script src="/language.js" defer></script>
     <script src="/age-gate.js" defer></script>
     <script src="/config/site-config.js" defer></script>
     <script src="/auth/auth.js" defer></script>
     <script src="/gallery/app.js" defer></script>
-    <script src="/language.js" defer></script>
 </body>
 </html>

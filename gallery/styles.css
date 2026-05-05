@@ -139,6 +139,18 @@ body[data-gallery-mode="router"] {
     padding: 1rem 0 3rem;
 }
 
+.sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
+}
+
 .topbar {
     display: flex;
     justify-content: space-between;
@@ -200,6 +212,17 @@ body[data-gallery-mode="router"] {
 
 .btn:hover {
     transform: translateY(-1px);
+}
+
+.btn:focus-visible,
+.language-pill:focus-visible,
+.language-item:focus-visible,
+.photo-link:focus-visible,
+.viewer-close:focus-visible,
+.viewer-nav:focus-visible,
+.scroll-to-top:focus-visible {
+    outline: 3px solid rgba(138, 90, 16, 0.72);
+    outline-offset: 3px;
 }
 
 .btn:disabled {
@@ -904,4 +927,15 @@ h1 {
 .language-item.is-active {
     background: var(--accent);
     color: white;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        scroll-behavior: auto !important;
+        transition-duration: 0.01ms !important;
+    }
 }

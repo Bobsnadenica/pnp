@@ -16,12 +16,8 @@ document.addEventListener("DOMContentLoaded", async () => {
   const publicGallerySentinel = document.getElementById("public-gallery-sentinel");
   const publicGalleryActions = document.getElementById("public-gallery-actions");
   const publicGalleryLoadMore = document.getElementById("public-gallery-load-more");
-  const loginSubmitIdleLabel = loginSubmit?.dataset.idleText || loginSubmit?.textContent?.trim() || "Continue";
-  const loginSubmitLoadingLabel = loginSubmit?.dataset.loadingText || "Redirecting...";
-  const loadMoreIdleLabel = publicGalleryLoadMore?.dataset.idleText || publicGalleryLoadMore?.textContent?.trim() || "Load more";
-  const loadMoreLoadingLabel = publicGalleryLoadMore?.dataset.loadingText || "Loading...";
-  const publicGalleryPageSize = 72;
-  const publicCarouselPhotoCount = 14;
+  const publicGalleryPageSize = 36;
+  const publicCarouselPhotoCount = 12;
   const siteLabel = config.projectSlug || "malkokote-gallery";
   const publicGalleryThemeStorageKey = `${siteLabel}:gallery-theme`;
   const publicGalleryManifestCacheTtlMs = 5 * 60 * 1000;
@@ -140,6 +136,11 @@ document.addEventListener("DOMContentLoaded", async () => {
 
     loginFeedback.hidden = !message;
     loginFeedback.textContent = message || "";
+  }
+
+  function getButtonStateLabel(button, state, fallback) {
+    const key = state === "loading" ? "loadingText" : "idleText";
+    return button?.dataset?.[key] || fallback;
   }
 
   function updateProfileButtons() {
@@ -648,7 +649,13 @@ async function prepareWallPhotos(photos, options = {}) {
 
     publicGalleryActions.hidden = true;
     publicGalleryLoadMore.disabled = publicGalleryLoading;
-    publicGalleryLoadMore.textContent = publicGalleryLoading ? loadMoreLoadingLabel : loadMoreIdleLabel;
+    publicGalleryLoadMore.textContent = publicGalleryLoading
+      ? getButtonStateLabel(publicGalleryLoadMore, "loading", "Loading...")
+      : getButtonStateLabel(publicGalleryLoadMore, "idle", "Load more");
+
+    if (grid) {
+      grid.setAttribute("aria-busy", String(publicGalleryLoading));
+    }
   }
 
   async function renderPublicGallery(photos = [], options = {}) {
@@ -878,12 +885,13 @@ async function prepareWallPhotos(photos, options = {}) {
     viewer.hidden = true;
     viewer.setAttribute("role", "dialog");
     viewer.setAttribute("aria-modal", "true");
-    viewer.setAttribute("aria-label", "Gallery viewer");
+    const translate = window.MalkokoteLanguage?.translate || ((k) => k);
+    viewer.setAttribute("aria-label", translate("galleryViewer") || "Gallery viewer");
     viewer.innerHTML = `
       <div class="public-viewer-backdrop" data-viewer-close></div>
-      <button class="public-viewer-close" type="button" aria-label="Close viewer" data-viewer-close>&times;</button>
-      <button class="public-viewer-nav public-viewer-nav-prev" type="button" aria-label="Previous item" data-viewer-nav="-1">&#10094;</button>
-      <button class="public-viewer-nav public-viewer-nav-next" type="button" aria-label="Next item" data-viewer-nav="1">&#10095;</button>
+      <button class="public-viewer-close" type="button" aria-label="${escapeHtml(translate("closeViewer") || "Close viewer")}" data-viewer-close>&times;</button>
+      <button class="public-viewer-nav public-viewer-nav-prev" type="button" aria-label="${escapeHtml(translate("prevItem") || "Previous item")}" data-viewer-nav="-1">&#10094;</button>
+      <button class="public-viewer-nav public-viewer-nav-next" type="button" aria-label="${escapeHtml(translate("nextItem") || "Next item")}" data-viewer-nav="1">&#10095;</button>
       <div class="public-viewer-shell">
         <div class="public-viewer-stage" id="public-viewer-stage">
           <div class="public-viewer-media">
@@ -1215,7 +1223,7 @@ async function prepareWallPhotos(photos, options = {}) {
     loginModal.setAttribute("aria-hidden", "true");
     setFeedback("");
     loginSubmit.disabled = false;
-    loginSubmit.textContent = loginSubmitIdleLabel;
+    loginSubmit.textContent = getButtonStateLabel(loginSubmit, "idle", "Continue");
     lastFocus?.focus?.();
   }
 
@@ -1235,7 +1243,7 @@ async function prepareWallPhotos(photos, options = {}) {
 
     setFeedback("");
     loginSubmit.disabled = true;
-    loginSubmit.textContent = loginSubmitLoadingLabel;
+    loginSubmit.textContent = getButtonStateLabel(loginSubmit, "loading", "Redirecting...");
 
     try {
       const result = await auth.startLogin({
@@ -1257,7 +1265,7 @@ async function prepareWallPhotos(photos, options = {}) {
       setFeedback(error.message || "Unable to sign in.");
     } finally {
       loginSubmit.disabled = false;
-      loginSubmit.textContent = loginSubmitIdleLabel;
+      loginSubmit.textContent = getButtonStateLabel(loginSubmit, "idle", "Continue");
     }
   }
 

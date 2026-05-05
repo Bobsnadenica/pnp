@@ -18,12 +18,12 @@
     </noscript>
     <link rel="stylesheet" href="/style.css">
 </head>
-<body class="age-gate-pending has-ambient-background">
-    <div id="age-gate" class="age-gate" role="dialog" aria-modal="true" aria-labelledby="age-gate-title">
+<body class="age-gate-pending has-ambient-background" data-page-id="support">
+    <div id="age-gate" class="age-gate" role="dialog" aria-modal="true" aria-labelledby="age-gate-title" aria-describedby="age-gate-copy">
         <div class="age-gate-card">
             <p class="age-gate-kicker">18+</p>
             <h1 id="age-gate-title" data-i18n="adultsOnly">Adults only</h1>
-            <p class="age-gate-copy" data-i18n="ageGateCopy">This website contains adult modeling and photography content. Enter only if you are 18 or older.</p>
+            <p id="age-gate-copy" class="age-gate-copy" data-i18n="ageGateCopy">This website contains adult modeling and photography content. Enter only if you are 18 or older.</p>
             <div class="age-gate-actions">
                 <button class="primary-button" type="button" data-age-enter data-i18n="enter">Enter</button>
                 <button class="ghost-button" type="button" data-age-leave data-i18n="leave">Leave</button>
@@ -102,20 +102,20 @@
         <main class="buy-shell">
             <div id="guide-purchase-note" style="display: none; text-align: center; margin-bottom: 2rem; padding: 1.5rem; background: rgba(243, 156, 18, 0.1); border: 1px solid #f39c12; border-radius: 1.5rem; max-width: 42rem; margin-left: auto; margin-right: auto;"> 
                 <p style="font-size: 1.1rem; font-weight: 600; color: var(--text);" 
-                    data-i18n-en="Send me the money and write me that you did and I'll send you the guide or provide account access" 
-                    data-i18n-bg="Изпратете ми парите и ми пишете, че сте го направили, и аз ще ви изпратя ръководството или ще ви дам достъп до акаунта"
-                    data-i18n-ja="送金後、その旨をメッセージで送ってください。ガイドを送付するか、アカウントへのアクセスを提供します。"
-                    data-i18n-fr="Envoyez-moi l'argent et écrivez-moi que vous l'avez fait, et je vous enverrai le guide ou vous donnerai l'accès au compte."
-                    data-i18n-de="Senden Sie mir das Geld und schreiben Sie mir, dass Sie dies getan haben, und ich sende Ihnen den Leitfaden oder gewähre Kontozugriff."
-                    data-i18n-tr="Parayı gönderin ve gönderdiğinizi bana yazın; size kılavuzu göndereceğim veya hesap erişimi sağlayacağım."
-                    data-i18n-ru="Отправьте мне деньги и напишите, что вы это сделали, и я пришлю вам руководство или предоставлю доступ к аккаунту."
-                    data-i18n-es="Envíame el dinero y escríbeme que lo hiciste, y te enviaré la guía o te daré acceso a la cuenta."
-                    data-i18n-it="Inviami i soldi e scrivimi che l'hai fatto, ti invierò la guida o ti darò l'accesso all'account."
-                    data-i18n-pt="Envie-me o dinheiro e escreva-me dizendo que o fez, e eu lhe enviarei o guia ou darei acesso à conta."
-                    data-i18n-zh="把钱发给我并写信告诉我你已经发了，我会给你发送指南或提供账户访问权限。"
-                    data-i18n-ko="돈을 보내주시고 보냈다는 메시지를 남겨주시면 가이드를 보내드리거나 계정 액세스 권한을 제공해 드리겠습니다."
-                    data-i18n-ar="أرسل لي المال واكتب لي أنك فعلت ذلك وسأرسل لك الدليل أو أوفر لك الوصول إلى الحساب."> 
-                    Send me the money and write me that you did and I'll send you the guide or provide account access 
+                    data-i18n-en="Before sending payment, contact us to confirm availability. Guide delivery and member access are handled manually after review." 
+                    data-i18n-bg="Преди да изпратите плащане, свържете се с нас, за да потвърдим наличност. Ръководството и достъпът за членове се обработват ръчно след преглед."
+                    data-i18n-ja="送金前に、提供可否の確認のためご連絡ください。ガイドの送付とメンバーアクセスは審査後に手動で処理されます。"
+                    data-i18n-fr="Avant d'envoyer un paiement, contactez-nous pour confirmer la disponibilité. La livraison du guide et l'accès membre sont traités manuellement après examen."
+                    data-i18n-de="Kontaktieren Sie uns vor einer Zahlung, um die Verfügbarkeit zu bestätigen. Leitfadenlieferung und Mitgliederzugang werden nach Prüfung manuell bearbeitet."
+                    data-i18n-tr="Ödeme göndermeden önce uygunluğu onaylamak için bizimle iletişime geçin. Kılavuz teslimi ve üye erişimi incelemeden sonra manuel olarak işlenir."
+                    data-i18n-ru="Перед отправкой платежа свяжитесь с нами, чтобы подтвердить доступность. Доставка руководства и доступ участника обрабатываются вручную после проверки."
+                    data-i18n-es="Antes de enviar un pago, contáctanos para confirmar disponibilidad. La entrega de la guía y el acceso de miembros se gestionan manualmente tras revisión."
+                    data-i18n-it="Prima di inviare un pagamento, contattaci per confermare la disponibilità. La consegna della guida e l'accesso membri sono gestiti manualmente dopo la revisione."
+                    data-i18n-pt="Antes de enviar um pagamento, entre em contato para confirmar disponibilidade. A entrega do guia e o acesso de membros são tratados manualmente após análise."
+                    data-i18n-zh="付款前请先联系我们确认可用性。指南交付和会员访问将在审核后手动处理。"
+                    data-i18n-ko="결제 전 이용 가능 여부 확인을 위해 먼저 연락해 주세요. 가이드 전달과 회원 접근은 검토 후 수동으로 처리됩니다."
+                    data-i18n-ar="قبل إرسال أي دفعة، تواصل معنا لتأكيد التوفر. يتم تسليم الدليل ووصول الأعضاء يدوياً بعد المراجعة."> 
+                    Before sending payment, contact us to confirm availability. Guide delivery and member access are handled manually after review.
                 </p> 
             </div>
 
@@ -268,7 +268,7 @@
                         <h2 class="buy-card-title">Bitcoin (BTC)</h2>
                         <p class="buy-card-description" style="word-break: break-all; font-family: monospace;">bc1q9jh0w4w8ug59qdt2e9lxw54c9sz2aw5q2njxgl</p>
                         <div class="buy-card-footer">
-                            <button class="primary-button" type="button" onclick="copyWallet('bc1q9jh0w4w8ug59qdt2e9lxw54c9sz2aw5q2njgl', this)">Adresi Kopyala</button>
+                            <button class="primary-button" type="button" onclick="copyWallet('bc1q9jh0w4w8ug59qdt2e9lxw54c9sz2aw5q2njxgl', this)">Adresi Kopyala</button>
                         </div>
                     </article>
 
@@ -516,8 +516,8 @@
         </div>
     </div>
 
-    <script src="/age-gate.js" defer></script>
     <script src="/language.js" defer></script>
+    <script src="/age-gate.js" defer></script>
     <script src="/config/site-config.js" defer></script>
     <script src="/auth/auth.js" defer></script>
     <script src="/ambient-background.js" defer></script>
@@ -558,6 +558,4 @@
         }
     </script>
 </body>
-</html>
->
 </html>

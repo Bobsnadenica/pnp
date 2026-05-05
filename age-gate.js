@@ -96,26 +96,32 @@
     gate.querySelector("[data-age-human-check]")?.remove();
 
     const challenge = createChallenge();
-    const translate = window.MalkokoteLanguage?.translate || ((k) => k);
+    const getTranslate = () => window.MalkokoteLanguage?.translate || ((k) => k);
     const challengeBlock = document.createElement("div");
     challengeBlock.className = "age-gate-human-check";
     challengeBlock.dataset.ageHumanCheck = "true";
     challengeBlock.innerHTML = `
-      <label class="age-gate-human-check-label" for="age-gate-human-answer">${translate("humanCheck")}: ${challenge.prompt} = ?</label>
-      <input id="age-gate-human-answer" class="age-gate-human-check-input" type="text" inputmode="numeric" autocomplete="off" aria-describedby="age-gate-human-feedback">
-      <p id="age-gate-human-feedback" class="age-gate-human-check-feedback" aria-live="polite">${translate("solveToContinue")}</p>
+      <label class="age-gate-human-check-label" for="age-gate-human-answer"></label>
+      <input id="age-gate-human-answer" class="age-gate-human-check-input" type="text" inputmode="numeric" pattern="[0-9]*" autocomplete="off" aria-describedby="age-gate-human-feedback">
+      <p id="age-gate-human-feedback" class="age-gate-human-check-feedback" aria-live="polite"></p>
     `;
 
     card.insertBefore(challengeBlock, actions);
 
     const input = challengeBlock.querySelector(".age-gate-human-check-input");
+    const label = challengeBlock.querySelector(".age-gate-human-check-label");
     const feedback = challengeBlock.querySelector(".age-gate-human-check-feedback");
     enterButton.disabled = true;
 
     function updateState() {
       const solved = input?.value?.trim() === challenge.answer;
+      const translate = getTranslate();
 
       enterButton.disabled = !solved;
+
+      if (label) {
+        label.textContent = `${translate("humanCheck")}: ${challenge.prompt} = ?`;
+      }
 
       if (!feedback) {
         return;
@@ -126,7 +132,15 @@
     }
 
     input?.addEventListener("input", updateState);
+    input?.addEventListener("keydown", (event) => {
+      if (event.key === "Enter" && input.value.trim() === challenge.answer) {
+        event.preventDefault();
+        enterButton.click();
+      }
+    });
+    window.addEventListener("malkokote:languagechange", updateState);
     updateState();
+    window.setTimeout(() => input?.focus(), 30);
   }
 
   function bindGate() {

@@ -199,6 +199,20 @@ body[data-gallery-theme="night"] .primary-button {
     transform: translateY(-1px);
 }
 
+.ghost-button:focus-visible,
+.primary-button:focus-visible,
+.secondary-button:focus-visible,
+.language-pill:focus-visible,
+.language-item:focus-visible,
+.public-trigger:focus-visible,
+.modal-close:focus-visible,
+.public-viewer-close:focus-visible,
+.public-viewer-nav:focus-visible,
+.scroll-to-top:focus-visible {
+    outline: 3px solid rgba(243, 156, 18, 0.72);
+    outline-offset: 3px;
+}
+
 /* Theme Toggle Icon */
 .theme-icon-shell {
     position: relative;
@@ -967,6 +981,26 @@ body[data-gallery-theme="night"] .public-carousel-slide {
 
     to {
         transform: translate3d(-50%, 0, 0);
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        scroll-behavior: auto !important;
+        transition-duration: 0.01ms !important;
+    }
+
+    .public-carousel-track {
+        animation: none !important;
+        transform: none !important;
+    }
+
+    .theme-pulse-circle {
+        display: none;
     }
 }
 
