@@ -23,8 +23,24 @@
             font-weight: 700;
             text-decoration: underline;
             text-decoration-style: dotted;
-            cursor: help;
+            cursor: pointer;
             position: relative;
+            display: inline-block;
+        }
+
+        .guide-showcase-hint {
+            display: block;
+            font-size: 0.85rem;
+            font-weight: 500;
+            color: #f39c12;
+            margin-top: 0.4rem;
+            font-style: italic;
+            animation: hint-pulse 2s infinite ease-in-out;
+        }
+
+        @keyframes hint-pulse {
+            0%, 100% { opacity: 0.7; transform: scale(1); }
+            50% { opacity: 1; transform: scale(1.02); }
         }
 
         .guide-showcase {
@@ -32,27 +48,31 @@
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%) scale(0.9);
-            width: min(90vw, 50rem);
+            width: min(94vw, 50rem);
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(12rem, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(10rem, 1fr));
             gap: 1rem;
             padding: 1.5rem;
             background: var(--surface);
             backdrop-filter: blur(24px) saturate(1.2);
             border: 1px solid var(--line);
             border-radius: 2rem;
-            box-shadow: 0 40px 100px -30px rgba(0,0,0,0.4);
+            box-shadow: 0 40px 100px -30px rgba(0,0,0,0.5);
             opacity: 0;
             visibility: hidden;
             transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-            z-index: 1000;
-            
+            z-index: 2000;
+            pointer-events: none;
+            max-height: 80vh;
+            overflow-y: auto;
         }
 
+        .guide-showcase.is-active,
         .guide-showcase-trigger:hover .guide-showcase {
             opacity: 1;
             visibility: visible;
             transform: translate(-50%, -50%) scale(1);
+            pointer-events: auto;
         }
 
         .showcase-item {
@@ -82,6 +102,7 @@
             backdrop-filter: blur(24px) saturate(1.2);
             border: 1px solid var(--line);
             box-shadow: 0 30px 60px -20px rgba(0,0,0,0.2);
+            margin: 1rem;
         }
 
         .buy-message-text {
@@ -97,6 +118,20 @@
             margin-bottom: 2.5rem;
             padding: 1rem;
             border-top: 1px solid var(--line);
+        }
+
+        @media (max-width: 720px) {
+            .buy-message-container {
+                padding: 1.5rem;
+                border-radius: 1.8rem;
+            }
+            .buy-message-text {
+                font-size: 1.1rem;
+            }
+            .guide-showcase {
+                grid-template-columns: repeat(2, 1fr);
+                padding: 1rem;
+            }
         }
     </style>
 </head>
@@ -165,6 +200,7 @@
                     What i can sell you and teach you is how to 
                     <span class="guide-showcase-trigger">
                         create any image you want
+                        <span class="guide-showcase-hint" data-i18n-en="(Click to see what you can create)" data-i18n-bg="(Кликни за да видиш какво можеш да създадеш)">(Click to see what you can create)</span>
                         <span class="guide-showcase">
                             <span class="showcase-item"><img src="/AI/12932890_010_0da9.jpg" alt=""></span>
                             <span class="showcase-item"><img src="/AI/20145478_010_6c55.jpg" alt=""></span>
@@ -175,7 +211,7 @@
                         </span>
                     </span> 
                     by yourself! From your phone or your PC. Anything you can imagine. 
-                    Just <strong>49.99 euro</strong> and the guide is yours.
+                    Just <strong>€49.99</strong> and the guide is yours.
                 </p>
                 <div class="buy-requirements">
                     Requirements: A decent PC or a new phone
@@ -189,6 +225,7 @@
                     Това, което мога да ви продам и да ви науча, е как сами да 
                     <span class="guide-showcase-trigger">
                         създавате всяко изображение, което пожелаете
+                        <span class="guide-showcase-hint" data-i18n-en="(Click to see what you can create)" data-i18n-bg="(Кликни за да видиш какво можеш да създадеш)">(Кликни за да видиш какво можеш да създадеш)</span>
                         <span class="guide-showcase">
                             <span class="showcase-item"><img src="/AI/12932890_010_0da9.jpg" alt=""></span>
                             <span class="showcase-item"><img src="/AI/20145478_010_6c55.jpg" alt=""></span>
@@ -199,7 +236,7 @@
                         </span>
                     </span>! 
                     От вашия телефон или компютър. Всичко, което можете да си представите. 
-                    Само за <strong>49.99 евро</strong> и ръководството е ваше.
+                    Само за <strong>€49.99</strong> и ръководството е ваше.
                 </p>
                 <div class="buy-requirements">
                     Изисквания: Приличен компютър или нов телефон
@@ -231,5 +268,24 @@
     <script src="/auth/auth.js" defer></script>
     <script src="/ambient-background.js" defer></script>
     <script src="/script.js" defer></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const triggers = document.querySelectorAll('.guide-showcase-trigger');
+            
+            triggers.forEach(trigger => {
+                const showcase = trigger.querySelector('.guide-showcase');
+                if (showcase) {
+                    trigger.addEventListener('click', (e) => {
+                        e.stopPropagation();
+                        showcase.classList.toggle('is-active');
+                    });
+                }
+            });
+
+            document.addEventListener('click', () => {
+                document.querySelectorAll('.guide-showcase.is-active').forEach(s => s.classList.remove('is-active'));
+            });
+        });
+    </script>
 </body>
 </html>
