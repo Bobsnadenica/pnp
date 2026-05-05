@@ -515,6 +515,21 @@ document.addEventListener("DOMContentLoaded", async () => {
     return GIRL_NAMES[Math.floor(Math.random() * GIRL_NAMES.length)];
   }
 
+  const MOCK_DESCRIPTIONS = [
+    { en: "Looking for a daddy", bg: "Търся си татенце" },
+    { en: "Looking for a big cat", bg: "Търся си голямо коте" },
+    { en: "If you can pay - you have everything", bg: "Ако може да си платиш - имаш всичко" },
+    { en: "VIP Only", bg: "Само за VIP" },
+    { en: "Secret kitty", bg: "Тайно коте" },
+    { en: "I want to play", bg: "Искам да играя" },
+    { en: "Only for high status", bg: "Само за висок статус" },
+    { en: "Sweet and wild", bg: "Сладка и дива" }
+  ];
+
+  function getRandomMockDescription() {
+    return MOCK_DESCRIPTIONS[Math.floor(Math.random() * MOCK_DESCRIPTIONS.length)];
+  }
+
   function setPublicGalleryManifest(manifest, fetchedAt = Date.now()) {
     publicGalleryState.allPhotos = shufflePhotos(uniquePhotosByKey(manifest?.photos || []));
     publicGalleryState.photos = [];
@@ -523,7 +538,8 @@ document.addEventListener("DOMContentLoaded", async () => {
       publicGalleryState.allPhotos.filter((p) => getMediaKind(p) === "picture")
     ).slice(0, 10).map(photo => ({
       ...photo,
-      userNames: getRandomGirlName()
+      userNames: getRandomGirlName(),
+      userDesc: getRandomMockDescription()
     }));
     publicGalleryState.renderedCount = 0;
     publicGalleryState.fetchedAt = fetchedAt;
@@ -751,6 +767,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     const lang = window.MalkokoteLanguage?.getLanguage?.() || "en";
     const userAdLabel = lang === "bg" ? "Топ коте" : "Top kitty";
     const userName = isUserAd ? (photo.userNames?.[lang] || photo.userNames?.en || "") : "";
+    const userDesc = isUserAd ? (photo.userDesc?.[lang] || photo.userDesc?.en || "") : "";
     const label = isUserAd ? `${userAdLabel} ${userName}` : (photo.label || photo.key || "Gallery item");
 
     if (kind === "movie") {
@@ -768,12 +785,15 @@ document.addEventListener("DOMContentLoaded", async () => {
             aria-label="${escapeHtml(label)}"
           >
             <div class="public-media">
-              <video src="${escapeHtml(photo.url)}" muted loop autoplay playsinline preload="metadata"${isUserAd ? ' style="filter: blur(10px); opacity: 0.8;"' : ""}></video>
+              <video src="${escapeHtml(photo.url)}" muted loop autoplay playsinline preload="metadata"${isUserAd ? ' style="filter: blur(15px); opacity: 0.8;"' : ""}></video>
               ${isUserAd ? `
                 <div class="user-ad-badge" aria-hidden="true">
                   <span class="user-ad-kicker">${escapeHtml(userAdLabel)}</span>
                 </div>
-                <span class="user-ad-corner-name">${escapeHtml(userName)}</span>
+                <div class="user-ad-info-container">
+                  <span class="user-ad-corner-name">${escapeHtml(userName)}</span>
+                  <span class="user-ad-description">${escapeHtml(userDesc)}</span>
+                </div>
               ` : '<span class="media-badge" aria-hidden="true">&#9654;</span>'}
             </div>
           </a>
@@ -786,7 +806,10 @@ document.addEventListener("DOMContentLoaded", async () => {
         <div class="user-ad-badge" aria-hidden="true">
           <span class="user-ad-kicker">${escapeHtml(userAdLabel)}</span>
         </div>
-        <span class="user-ad-corner-name">${escapeHtml(userName)}</span>
+        <div class="user-ad-info-container">
+          <span class="user-ad-corner-name">${escapeHtml(userName)}</span>
+          <span class="user-ad-description">${escapeHtml(userDesc)}</span>
+        </div>
       ` 
       : (kind === "gif" ? '<span class="media-badge" aria-hidden="true">GIF</span>' : "");
 
@@ -804,7 +827,7 @@ document.addEventListener("DOMContentLoaded", async () => {
           aria-label="${escapeHtml(label)}"
         >
           <div class="public-media">
-            <img src="${escapeHtml(photo.url)}" alt="${escapeHtml(label)}" loading="${fetchPriority === "high" ? "eager" : "lazy"}" fetchpriority="${escapeHtml(fetchPriority)}" decoding="async"${isUserAd ? ' style="filter: blur(10px); opacity: 0.8;"' : ""}>
+            <img src="${escapeHtml(photo.url)}" alt="${escapeHtml(label)}" loading="${fetchPriority === "high" ? "eager" : "lazy"}" fetchpriority="${escapeHtml(fetchPriority)}" decoding="async"${isUserAd ? ' style="filter: blur(15px); opacity: 0.8;"' : ""}>
             ${badge}
           </div>
         </a>
