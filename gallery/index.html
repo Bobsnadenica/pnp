@@ -33,8 +33,13 @@
         <header class="topbar">
             <a class="brand" href="/">Malkokote</a>
             <div class="top-actions">
-                <button id="gallery-refresh" class="btn btn-secondary" type="button">Refresh</button>
-                <button id="gallery-signout" class="btn btn-primary" type="button">Sign Out</button>
+                <div class="language-switch"> 
+                    <button class="language-pill" type="button" data-language-option="bg" aria-label="Bulgarian">🇧🇬</button> 
+                    <button class="language-pill" type="button" data-language-option="en" aria-label="English">🇬🇧</button> 
+                </div>
+                <a href="/buy.html" class="btn btn-secondary" data-i18n-en="Buy" data-i18n-bg="Купи" style="text-decoration: none; display: inline-flex; align-items: center; justify-content: center;">Buy</a>
+                <button id="gallery-refresh" class="btn btn-secondary" data-i18n-en="Refresh" data-i18n-bg="Обнови" type="button">Refresh</button>
+                <button id="gallery-signout" class="btn btn-primary" data-i18n-en="Sign Out" data-i18n-bg="Изход" type="button">Sign Out</button>
             </div>
         </header>
 
@@ -48,5 +53,6 @@
     <script src="/config/site-config.js" defer></script>
     <script src="/auth/auth.js" defer></script>
     <script src="/gallery/app.js" defer></script>
+    <script src="/language.js" defer></script>
 </body>
 </html>

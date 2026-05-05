@@ -48,13 +48,13 @@
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%) scale(0.9);
-            width: min(94vw, 50rem);
+            width: min(94vw, 54rem);
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(10rem, 1fr));
-            gap: 1rem;
-            padding: 1.5rem;
+            grid-template-columns: repeat(auto-fit, minmax(11rem, 1fr));
+            gap: 0.8rem;
+            padding: 1.2rem;
             background: var(--surface);
-            backdrop-filter: blur(24px) saturate(1.2);
+            backdrop-filter: blur(32px) saturate(1.4);
             border: 1px solid var(--line);
             border-radius: 2rem;
             box-shadow: 0 40px 100px -30px rgba(0,0,0,0.5);
@@ -63,8 +63,13 @@
             transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
             z-index: 2000;
             pointer-events: none;
-            max-height: 80vh;
+            max-height: 85vh;
             overflow-y: auto;
+            scrollbar-width: none;
+        }
+
+        .guide-showcase::-webkit-scrollbar {
+            display: none;
         }
 
         .guide-showcase.is-active,
@@ -77,7 +82,7 @@
 
         .showcase-item {
             aspect-ratio: 1/1;
-            border-radius: 1.2rem;
+            border-radius: 1.1rem;
             overflow: hidden;
             background: rgba(0,0,0,0.1);
         }
@@ -94,43 +99,48 @@
         }
 
         .buy-message-container {
-            max-width: 42rem;
+            max-width: 44rem;
             text-align: center;
-            padding: 2.5rem;
-            border-radius: 2.5rem;
+            padding: 3rem;
+            border-radius: 2.8rem;
             background: var(--surface);
             backdrop-filter: blur(24px) saturate(1.2);
             border: 1px solid var(--line);
             box-shadow: 0 30px 60px -20px rgba(0,0,0,0.2);
-            margin: 1rem;
+            margin: 1.5rem auto;
         }
 
         .buy-message-text {
-            font-size: 1.25rem;
+            font-size: 1.35rem;
             line-height: 1.7;
-            margin-bottom: 2rem;
+            margin-bottom: 2.2rem;
             color: var(--text);
         }
 
         .buy-requirements {
-            font-size: 0.95rem;
+            font-size: 1rem;
             color: var(--muted);
-            margin-bottom: 2.5rem;
-            padding: 1rem;
+            margin-bottom: 2.8rem;
+            padding: 1.2rem;
             border-top: 1px solid var(--line);
         }
 
         @media (max-width: 720px) {
             .buy-message-container {
-                padding: 1.5rem;
-                border-radius: 1.8rem;
+                padding: 1.8rem;
+                border-radius: 2rem;
+                margin: 1rem;
             }
             .buy-message-text {
-                font-size: 1.1rem;
+                font-size: 1.15rem;
             }
             .guide-showcase {
                 grid-template-columns: repeat(2, 1fr);
-                padding: 1rem;
+                padding: 0.8rem;
+                gap: 0.6rem;
+            }
+            .showcase-item {
+                border-radius: 0.8rem;
             }
         }
     </style>
@@ -204,10 +214,22 @@
                         <span class="guide-showcase">
                             <span class="showcase-item"><img src="/AI/12932890_010_0da9.jpg" alt=""></span>
                             <span class="showcase-item"><img src="/AI/20145478_010_6c55.jpg" alt=""></span>
+                            <span class="showcase-item"><img src="/AI/22611078_003_ad96.jpg" alt=""></span>
+                            <span class="showcase-item"><img src="/AI/22611078_005_7c2e.jpg" alt=""></span>
+                            <span class="showcase-item"><img src="/AI/24156928_007_3959.jpg" alt=""></span>
+                            <span class="showcase-item"><img src="/AI/25149153_005_e39e.jpg" alt=""></span>
                             <span class="showcase-item"><img src="/AI/32953290_008_7887.jpg" alt=""></span>
+                            <span class="showcase-item"><img src="/AI/33359421_007_1be6.jpg" alt=""></span>
+                            <span class="showcase-item"><img src="/AI/43607048_013_c3bb.jpg" alt=""></span>
+                            <span class="showcase-item"><img src="/AI/44322116_004_094f.jpg" alt=""></span>
                             <span class="showcase-item"><img src="/AI/52217609_005_05bb.jpg" alt=""></span>
+                            <span class="showcase-item"><img src="/AI/54085104_002_665f.jpg" alt=""></span>
                             <span class="showcase-item"><img src="/AI/65443474_002_bb3b.jpg" alt=""></span>
+                            <span class="showcase-item"><img src="/AI/78484026_001_c3b6.jpg" alt=""></span>
+                            <span class="showcase-item"><img src="/AI/80691567_002_7c79.jpg" alt=""></span>
                             <span class="showcase-item"><img src="/AI/81716867_004_25aa.jpg" alt=""></span>
+                            <span class="showcase-item"><img src="/AI/94114182_009_9347.jpg" alt=""></span>
+                            <span class="showcase-item"><img src="/AI/99010649_003_8ffa.jpg" alt=""></span>
                         </span>
                     </span> 
                     by yourself! From your phone or your PC. Anything you can imagine. 
@@ -229,10 +251,22 @@
                         <span class="guide-showcase">
                             <span class="showcase-item"><img src="/AI/12932890_010_0da9.jpg" alt=""></span>
                             <span class="showcase-item"><img src="/AI/20145478_010_6c55.jpg" alt=""></span>
+                            <span class="showcase-item"><img src="/AI/22611078_003_ad96.jpg" alt=""></span>
+                            <span class="showcase-item"><img src="/AI/22611078_005_7c2e.jpg" alt=""></span>
+                            <span class="showcase-item"><img src="/AI/24156928_007_3959.jpg" alt=""></span>
+                            <span class="showcase-item"><img src="/AI/25149153_005_e39e.jpg" alt=""></span>
                             <span class="showcase-item"><img src="/AI/32953290_008_7887.jpg" alt=""></span>
+                            <span class="showcase-item"><img src="/AI/33359421_007_1be6.jpg" alt=""></span>
+                            <span class="showcase-item"><img src="/AI/43607048_013_c3bb.jpg" alt=""></span>
+                            <span class="showcase-item"><img src="/AI/44322116_004_094f.jpg" alt=""></span>
                             <span class="showcase-item"><img src="/AI/52217609_005_05bb.jpg" alt=""></span>
+                            <span class="showcase-item"><img src="/AI/54085104_002_665f.jpg" alt=""></span>
                             <span class="showcase-item"><img src="/AI/65443474_002_bb3b.jpg" alt=""></span>
+                            <span class="showcase-item"><img src="/AI/78484026_001_c3b6.jpg" alt=""></span>
+                            <span class="showcase-item"><img src="/AI/80691567_002_7c79.jpg" alt=""></span>
                             <span class="showcase-item"><img src="/AI/81716867_004_25aa.jpg" alt=""></span>
+                            <span class="showcase-item"><img src="/AI/94114182_009_9347.jpg" alt=""></span>
+                            <span class="showcase-item"><img src="/AI/99010649_003_8ffa.jpg" alt=""></span>
                         </span>
                     </span>! 
                     От вашия телефон или компютър. Всичко, което можете да си представите. 
@@ -277,6 +311,7 @@
                 if (showcase) {
                     trigger.addEventListener('click', (e) => {
                         e.stopPropagation();
+                        if (e.target.closest(".guide-showcase")) return;
                         showcase.classList.toggle('is-active');
                     });
                 }

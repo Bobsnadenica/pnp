@@ -432,7 +432,12 @@
     }
 
     button.disabled = isRefreshing;
-    button.textContent = isRefreshing ? "Refreshing..." : "Refresh";
+    const lang = window.MalkokoteLanguage?.getLanguage?.() || "en";
+    if (isRefreshing) {
+      button.textContent = lang === "bg" ? "Обновяване..." : "Refreshing...";
+    } else {
+      button.textContent = lang === "bg" ? "Обнови" : "Refresh";
+    }
   }
 
   function renderGalleryState(content, status, manifest) {
