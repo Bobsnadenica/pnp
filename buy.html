@@ -17,6 +17,88 @@
         <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap">
     </noscript>
     <link rel="stylesheet" href="/style.css">
+    <style>
+        .guide-showcase-trigger {
+            color: var(--text);
+            font-weight: 700;
+            text-decoration: underline;
+            text-decoration-style: dotted;
+            cursor: help;
+            position: relative;
+        }
+
+        .guide-showcase {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) scale(0.9);
+            width: min(90vw, 50rem);
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(12rem, 1fr));
+            gap: 1rem;
+            padding: 1.5rem;
+            background: var(--surface);
+            backdrop-filter: blur(24px) saturate(1.2);
+            border: 1px solid var(--line);
+            border-radius: 2rem;
+            box-shadow: 0 40px 100px -30px rgba(0,0,0,0.4);
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            z-index: 1000;
+            pointer-events: none;
+        }
+
+        .guide-showcase-trigger:hover .guide-showcase {
+            opacity: 1;
+            visibility: visible;
+            transform: translate(-50%, -50%) scale(1);
+        }
+
+        .showcase-item {
+            aspect-ratio: 1/1;
+            border-radius: 1.2rem;
+            overflow: hidden;
+            background: rgba(0,0,0,0.1);
+        }
+
+        .showcase-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s ease;
+        }
+
+        .showcase-item:hover img {
+            transform: scale(1.1);
+        }
+
+        .buy-message-container {
+            max-width: 42rem;
+            text-align: center;
+            padding: 2.5rem;
+            border-radius: 2.5rem;
+            background: var(--surface);
+            backdrop-filter: blur(24px) saturate(1.2);
+            border: 1px solid var(--line);
+            box-shadow: 0 30px 60px -20px rgba(0,0,0,0.2);
+        }
+
+        .buy-message-text {
+            font-size: 1.25rem;
+            line-height: 1.7;
+            margin-bottom: 2rem;
+            color: var(--text);
+        }
+
+        .buy-requirements {
+            font-size: 0.95rem;
+            color: var(--muted);
+            margin-bottom: 2.5rem;
+            padding: 1rem;
+            border-top: 1px solid var(--line);
+        }
+    </style>
 </head>
 <body class="age-gate-pending has-ambient-background">
     <div id="age-gate" class="age-gate" role="dialog" aria-modal="true" aria-labelledby="age-gate-title">
@@ -76,67 +158,53 @@
         </header>
 
         <main class="buy-shell">
-            <h1 class="sr-only">Buy premium services and support</h1>
-            
-                <div class="buy-grid" data-language-panel="en" lang="en">
-                <article class="buy-card">
-                    <h2 class="buy-card-title">The Complete Generation Guide</h2>
-                    <p class="buy-card-description">Want to learn how to create your own professional images? This comprehensive guide teaches you how to generate anything you want with elite precision.</p>
-                    <div class="buy-card-footer">
-                        <span class="buy-card-price">€99.99</span>
-                        <!-- <a href="/supportus.html" class="primary-button button-link">Buy Now</a> -->
-                    </div>
-                </article>
-
-                <article class="buy-card">
-                    <h2 class="buy-card-title">Custom Content Request</h2>
-                    <p class="buy-card-description">Want content of your choice? You choose the category or theme, and we provide you with exclusive, high-quality access tailored to your preference.</p>
-                    <div class="buy-card-footer">
-                        <span class="buy-card-price">€49.99</span>
-                        <!-- <a href="/supportus.html" class="primary-button button-link">Buy Now</a> -->
-                    </div>
-                </article>
-
-                <article class="buy-card">
-                    <h2 class="buy-card-title">Extra Content & Support</h2>
-                    <p class="buy-card-description">Get access to exclusive extra content not available in the public gallery. Your purchase directly supports the continued growth of the website.</p>
-                    <div class="buy-card-footer">
-                        <span class="buy-card-price">€9.99</span>
-                        <!-- <a href="/supportus.html" class="primary-button button-link">Buy Now</a> -->
-                    </div>
-                </article>
+            <div class="buy-message-container" data-language-panel="en" lang="en">
+                <p class="buy-message-text">
+                    I can't sell you pictures i don't own. The internet is full of those pictures, models and etc. 
+                    What i can sell you and teach you is how to 
+                    <span class="guide-showcase-trigger">
+                        create any image you want
+                        <span class="guide-showcase">
+                            <span class="showcase-item"><img src="/AI/12932890_010_0da9.jpg" alt=""></span>
+                            <span class="showcase-item"><img src="/AI/20145478_010_6c55.jpg" alt=""></span>
+                            <span class="showcase-item"><img src="/AI/32953290_008_7887.jpg" alt=""></span>
+                            <span class="showcase-item"><img src="/AI/52217609_005_05bb.jpg" alt=""></span>
+                            <span class="showcase-item"><img src="/AI/65443474_002_bb3b.jpg" alt=""></span>
+                            <span class="showcase-item"><img src="/AI/81716867_004_25aa.jpg" alt=""></span>
+                        </span>
+                    </span> 
+                    by yourself! From your phone or your PC. Anything you can imagine. 
+                    Just <strong>49.99 euro</strong> and the guide is yours.
+                </p>
+                <div class="buy-requirements">
+                    Requirements: A decent PC or a new phone
+                </div>
+                <a href="/supportus.html?note=guide" class="primary-button button-link">Buy the Guide</a>
             </div>
 
-            <div class="buy-grid" data-language-panel="bg" lang="bg" hidden>
-                <article class="buy-card">
-                    <h2 class="buy-card-title">Пълното ръководство за генериране</h2>
-                    <p class="buy-card-description">Искате ли да се научите как да създавате свои собствени професионални изображения? Това изчерпателно ръководство ще ви научи как да генерирате всичко, което искате, с елитна прецизност.</p>
-                    <div class="buy-card-footer">
-                        <span class="buy-card-price">€99.99</span>
-                        <!-- <a href="/supportus.html" class="primary-button button-link">Купи сега</a> -->
-                    </div>
-                </article>
-
-                <article class="buy-card">
-                    <h2 class="buy-card-title">Заявка за персонализирано съдържание</h2>
-                    <p class="buy-card-description">Искате ли съдържание по ваш избор? Вие избирате категорията или темата, а ние ви предоставяме ексклузивен, висококачествен достъп, съобразен с вашите предпочитания.</p>
-                    <div class="buy-card-footer">
-                        <span class="buy-card-price">€49.99</span>
-                        <!-- <a href="/supportus.html" class="primary-button button-link">Купи сега</a> -->
-                    </div>
-                </article>
-
-                <article class="buy-card">
-                    <h2 class="buy-card-title">Екстра съдържание и подкрепа</h2>
-                    <p class="buy-card-description">Получете достъп до ексклузивно допълнително съдържание, което не е достъпно в публичната галерия. Вашата покупка директно подкрепя по-нататъшния растеж на уебсайта.</p>
-                    <div class="buy-card-footer">
-                        <span class="buy-card-price">€9.99</span>
-                        <!-- <a href="/supportus.html" class="primary-button button-link">Купи сега</a> -->
-                    </div>
-                </article>
+            <div class="buy-message-container" data-language-panel="bg" lang="bg" hidden>
+                <p class="buy-message-text">
+                    Не мога да ви продавам снимки, които не притежавам. Интернет е пълен с такива снимки, модели и т.н. 
+                    Това, което мога да ви продам и да ви науча, е как сами да 
+                    <span class="guide-showcase-trigger">
+                        създавате всяко изображение, което пожелаете
+                        <span class="guide-showcase">
+                            <span class="showcase-item"><img src="/AI/12932890_010_0da9.jpg" alt=""></span>
+                            <span class="showcase-item"><img src="/AI/20145478_010_6c55.jpg" alt=""></span>
+                            <span class="showcase-item"><img src="/AI/32953290_008_7887.jpg" alt=""></span>
+                            <span class="showcase-item"><img src="/AI/52217609_005_05bb.jpg" alt=""></span>
+                            <span class="showcase-item"><img src="/AI/65443474_002_bb3b.jpg" alt=""></span>
+                            <span class="showcase-item"><img src="/AI/81716867_004_25aa.jpg" alt=""></span>
+                        </span>
+                    </span>! 
+                    От вашия телефон или компютър. Всичко, което можете да си представите. 
+                    Само за <strong>49.99 евро</strong> и ръководството е ваше.
+                </p>
+                <div class="buy-requirements">
+                    Изисквания: Приличен компютър или нов телефон
+                </div>
+                <a href="/supportus.html?note=guide" class="primary-button button-link">Купи ръководството</a>
             </div>
-
-            <p class="buy-copy" style="margin-top: 2rem;">Digital delivery / Дигитална доставка</p>
         </main>
     </div>
 

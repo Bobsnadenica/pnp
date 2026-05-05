@@ -50,7 +50,7 @@
                 </div>
                 <a class="ghost-button button-link" href="/" data-i18n-en="Gallery" data-i18n-bg="Галерия">Gallery</a>
                 <a class="ghost-button button-link" href="/contact.html" data-i18n-en="Contact" data-i18n-bg="Контакт">Contact</a>
-                <!-- <a class="ghost-button button-link" href="/buy.html" data-i18n-en="Buy" data-i18n-bg="Купи">Buy</a> -->
+                <a class="ghost-button button-link" href="/buy.html" data-i18n-en="Buy" data-i18n-bg="Купи">Buy</a>
                 <button class="ghost-button" type="button" data-gallery-theme-toggle aria-label="Toggle color theme">
                     <div class="theme-thinking-bubble">
                         <span class="thinking-text thinking-text-day" data-i18n-en="Look what she does at night" data-i18n-bg="Виж какво прави през нощта">Look what she does at night</span>
@@ -77,6 +77,12 @@
         </header>
 
         <main class="buy-shell">
+            <div id="guide-purchase-note" style="display: none; text-align: center; margin-bottom: 2rem; padding: 1.5rem; background: rgba(243, 156, 18, 0.1); border: 1px solid #f39c12; border-radius: 1.5rem; max-width: 42rem; margin-left: auto; margin-right: auto;"> 
+                <p style="font-size: 1.1rem; font-weight: 600; color: var(--text);" data-i18n-en="Send me the money and write me that you did and i'll send you the guide" data-i18n-bg="Изпратете ми парите и ми пишете, че сте го направили, и аз ще ви изпратя ръководството"> 
+                    Send me the money and write me that you did and i'll send you the guide 
+                </p> 
+            </div>
+
             <h1 class="sr-only">Support Malkokote</h1>
             
             <div data-language-panel="en" lang="en">
@@ -91,7 +97,7 @@
                         <h2 class="buy-card-title">Bitcoin (BTC)</h2>
                         <p class="buy-card-description" style="word-break: break-all; font-family: monospace;">bc1q9jh0w4w8ug59qdt2e9lxw54c9sz2aw5q2njxgl</p>
                         <div class="buy-card-footer">
-                            <!-- <button class="primary-button" type="button" onclick="copyWallet('bc1q9jh0w4w8ug59qdt2e9lxw54c9sz2aw5q2njxgl', this)">Copy Address</button> -->
+                            <button class="primary-button" type="button" onclick="copyWallet('bc1q9jh0w4w8ug59qdt2e9lxw54c9sz2aw5q2njxgl', this)">Copy Address</button>
                         </div>
                     </article>
 
@@ -100,7 +106,7 @@
                         <h2 class="buy-card-title">Ethereum (ETH)</h2>
                         <p class="buy-card-description" style="word-break: break-all; font-family: monospace;">0xF00716eDAF7Aca38Db93228D3372B3c642F03b03</p>
                         <div class="buy-card-footer">
-                            <!-- <button class="primary-button" type="button" onclick="copyWallet('0xF00716eDAF7Aca38Db93228D3372B3c642F03b03', this)">Copy Address</button> -->
+                            <button class="primary-button" type="button" onclick="copyWallet('0xF00716eDAF7Aca38Db93228D3372B3c642F03b03', this)">Copy Address</button>
                         </div>
                     </article>
 
@@ -109,7 +115,7 @@
                         <h2 class="buy-card-title">Revolut</h2>
                         <p class="buy-card-description">Support us directly and securely via Revolut.me payment link.</p>
                         <div class="buy-card-footer">
-                            <!-- <a href="https://revolut.me/privileged" target="_blank" rel="noopener" class="primary-button button-link">Open Revolut</a> -->
+                            <a href="https://revolut.me/privileged" target="_blank" rel="noopener" class="primary-button button-link">Open Revolut</a>
                         </div>
                     </article>
                 </div>
@@ -127,7 +133,7 @@
                         <h2 class="buy-card-title">Bitcoin (BTC)</h2>
                         <p class="buy-card-description" style="word-break: break-all; font-family: monospace;">bc1q9jh0w4w8ug59qdt2e9lxw54c9sz2aw5q2njxgl</p>
                         <div class="buy-card-footer">
-                            <!-- <button class="primary-button" type="button" onclick="copyWallet('bc1q9jh0w4w8ug59qdt2e9lxw54c9sz2aw5q2njxgl', this)">Копирай адрес</button> -->
+                            <button class="primary-button" type="button" onclick="copyWallet('bc1q9jh0w4w8ug59qdt2e9lxw54c9sz2aw5q2njxgl', this)">Копирай адрес</button>
                         </div>
                     </article>
 
@@ -136,7 +142,7 @@
                         <h2 class="buy-card-title">Ethereum (ETH)</h2>
                         <p class="buy-card-description" style="word-break: break-all; font-family: monospace;">0xF00716eDAF7Aca38Db93228D3372B3c642F03b03</p>
                         <div class="buy-card-footer">
-                            <!-- <button class="primary-button" type="button" onclick="copyWallet('0xF00716eDAF7Aca38Db93228D3372B3c642F03b03', this)">Копирай адрес</button> -->
+                            <button class="primary-button" type="button" onclick="copyWallet('0xF00716eDAF7Aca38Db93228D3372B3c642F03b03', this)">Копирай адрес</button>
                         </div>
                     </article>
 
@@ -145,7 +151,7 @@
                         <h2 class="buy-card-title">Revolut</h2>
                         <p class="buy-card-description">Подкрепете ни директно и сигурно чрез линк за плащане в Revolut.me.</p>
                         <div class="buy-card-footer">
-                            <!-- <a href="https://revolut.me/privileged" target="_blank" rel="noopener" class="primary-button button-link">Отвори Revolut</a> -->
+                            <a href="https://revolut.me/privileged" target="_blank" rel="noopener" class="primary-button button-link">Отвори Revolut</a>
                         </div>
                     </article>
                 </div>
@@ -189,6 +195,11 @@
                 button.classList.add("primary-button");
                 button.classList.remove("secondary-button");
             }, 2000);
+        }
+
+        if (window.location.search.includes('note=guide')) {
+            const note = document.getElementById('guide-purchase-note');
+            if (note) note.style.display = 'block';
         }
     </script>
 </body>
