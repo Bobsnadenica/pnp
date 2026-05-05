@@ -78,8 +78,8 @@
 
         <main class="buy-shell">
             <div id="guide-purchase-note" style="display: none; text-align: center; margin-bottom: 2rem; padding: 1.5rem; background: rgba(243, 156, 18, 0.1); border: 1px solid #f39c12; border-radius: 1.5rem; max-width: 42rem; margin-left: auto; margin-right: auto;"> 
-                <p style="font-size: 1.1rem; font-weight: 600; color: var(--text);" data-i18n-en="Send me the money and write me that you did and i'll send you the guide" data-i18n-bg="Изпратете ми парите и ми пишете, че сте го направили, и аз ще ви изпратя ръководството"> 
-                    Send me the money and write me that you did and i'll send you the guide 
+                <p style="font-size: 1.1rem; font-weight: 600; color: var(--text);" data-i18n-en="Send me the money and write me that you did and I'll send you the guide or provide account access" data-i18n-bg="Изпратете ми парите и ми пишете, че сте го направили, и аз ще ви изпратя ръководството или ще ви дам достъп до акаунта"> 
+                    Send me the money and write me that you did and I'll send you the guide or provide account access 
                 </p> 
             </div>
 
@@ -197,7 +197,7 @@
             }, 2000);
         }
 
-        if (window.location.search.includes('note=guide')) {
+        if (window.location.search.includes('note=guide') || window.location.search.includes('note=access')) {
             const note = document.getElementById('guide-purchase-note');
             if (note) note.style.display = 'block';
         }

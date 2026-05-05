@@ -18,6 +18,63 @@
     </noscript>
     <link rel="stylesheet" href="/style.css">
     <style>
+        .buy-shell {
+            min-height: calc(100vh - 8rem);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 2rem 1rem;
+        }
+
+        .buy-grid-new {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(20rem, 1fr));
+            gap: 2rem;
+            width: 100%;
+            max-width: 54rem;
+        }
+
+        .buy-card-new {
+            display: flex;
+            flex-direction: column;
+            padding: 2.5rem;
+            border-radius: 2.5rem;
+            background: var(--surface);
+            border: 1px solid var(--line);
+            backdrop-filter: blur(24px) saturate(1.2);
+            box-shadow: 0 30px 60px -20px rgba(0,0,0,0.2);
+            text-align: center;
+            transition: transform 0.3s ease;
+        }
+
+        .buy-card-new:hover {
+            transform: translateY(-5px);
+        }
+
+        .buy-card-title {
+            font-size: 1.6rem;
+            font-weight: 800;
+            margin-bottom: 1.2rem;
+            color: var(--text);
+            letter-spacing: -0.02em;
+        }
+
+        .buy-card-text {
+            font-size: 1.1rem;
+            line-height: 1.6;
+            margin-bottom: 2rem;
+            color: var(--muted);
+            flex-grow: 1;
+        }
+
+        .buy-card-price {
+            font-size: 2.2rem;
+            font-weight: 800;
+            margin-bottom: 2rem;
+            color: var(--text);
+        }
+
         .guide-showcase-trigger {
             color: var(--text);
             font-weight: 700;
@@ -25,11 +82,10 @@
             text-decoration-style: dotted;
             cursor: pointer;
             position: relative;
-            display: inline-block;
         }
 
         .guide-showcase-hint {
-            display: block;
+            display: none;
             font-size: 0.85rem;
             font-weight: 500;
             color: #f39c12;
@@ -38,9 +94,15 @@
             animation: hint-pulse 2s infinite ease-in-out;
         }
 
+        @media (pointer: coarse) {
+            .guide-showcase-hint {
+                display: block;
+            }
+        }
+
         @keyframes hint-pulse {
-            0%, 100% { opacity: 0.7; transform: scale(1); }
-            50% { opacity: 1; transform: scale(1.02); }
+            0%, 100% { opacity: 0.7; }
+            50% { opacity: 1; }
         }
 
         .guide-showcase {
@@ -48,11 +110,11 @@
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%) scale(0.9);
-            width: min(94vw, 54rem);
+            width: min(94vw, 50rem);
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(11rem, 1fr));
-            gap: 0.8rem;
-            padding: 1.2rem;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1rem;
+            padding: 1.5rem;
             background: var(--surface);
             backdrop-filter: blur(32px) saturate(1.4);
             border: 1px solid var(--line);
@@ -63,13 +125,6 @@
             transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
             z-index: 2000;
             pointer-events: none;
-            max-height: 85vh;
-            overflow-y: auto;
-            scrollbar-width: none;
-        }
-
-        .guide-showcase::-webkit-scrollbar {
-            display: none;
         }
 
         .guide-showcase.is-active,
@@ -82,7 +137,7 @@
 
         .showcase-item {
             aspect-ratio: 1/1;
-            border-radius: 1.1rem;
+            border-radius: 1.2rem;
             overflow: hidden;
             background: rgba(0,0,0,0.1);
         }
@@ -91,56 +146,20 @@
             width: 100%;
             height: 100%;
             object-fit: cover;
-            transition: transform 0.5s ease;
-        }
-
-        .showcase-item:hover img {
-            transform: scale(1.1);
-        }
-
-        .buy-message-container {
-            max-width: 44rem;
-            text-align: center;
-            padding: 3rem;
-            border-radius: 2.8rem;
-            background: var(--surface);
-            backdrop-filter: blur(24px) saturate(1.2);
-            border: 1px solid var(--line);
-            box-shadow: 0 30px 60px -20px rgba(0,0,0,0.2);
-            margin: 1.5rem auto;
-        }
-
-        .buy-message-text {
-            font-size: 1.35rem;
-            line-height: 1.7;
-            margin-bottom: 2.2rem;
-            color: var(--text);
         }
 
         .buy-requirements {
-            font-size: 1rem;
+            font-size: 0.85rem;
             color: var(--muted);
-            margin-bottom: 2.8rem;
-            padding: 1.2rem;
-            border-top: 1px solid var(--line);
+            margin-top: 1rem;
         }
 
         @media (max-width: 720px) {
-            .buy-message-container {
-                padding: 1.8rem;
-                border-radius: 2rem;
-                margin: 1rem;
-            }
-            .buy-message-text {
-                font-size: 1.15rem;
+            .buy-grid-new {
+                grid-template-columns: 1fr;
             }
             .guide-showcase {
                 grid-template-columns: repeat(2, 1fr);
-                padding: 0.8rem;
-                gap: 0.6rem;
-            }
-            .showcase-item {
-                border-radius: 0.8rem;
             }
         }
     </style>
@@ -204,78 +223,62 @@
         </header>
 
         <main class="buy-shell">
-            <div class="buy-message-container" data-language-panel="en" lang="en">
-                <p class="buy-message-text">
-                    I can't sell you pictures i don't own. The internet is full of those pictures, models and etc. 
-                    What i can sell you and teach you is how to 
-                    <span class="guide-showcase-trigger">
-                        create any image you want
-                        <span class="guide-showcase-hint" data-i18n-en="(Click to see what you can create)" data-i18n-bg="(Кликни за да видиш какво можеш да създадеш)">(Click to see what you can create)</span>
-                        <span class="guide-showcase">
-                            <span class="showcase-item"><img src="/AI/12932890_010_0da9.jpg" alt=""></span>
-                            <span class="showcase-item"><img src="/AI/20145478_010_6c55.jpg" alt=""></span>
-                            <span class="showcase-item"><img src="/AI/22611078_003_ad96.jpg" alt=""></span>
-                            <span class="showcase-item"><img src="/AI/22611078_005_7c2e.jpg" alt=""></span>
-                            <span class="showcase-item"><img src="/AI/24156928_007_3959.jpg" alt=""></span>
-                            <span class="showcase-item"><img src="/AI/25149153_005_e39e.jpg" alt=""></span>
-                            <span class="showcase-item"><img src="/AI/32953290_008_7887.jpg" alt=""></span>
-                            <span class="showcase-item"><img src="/AI/33359421_007_1be6.jpg" alt=""></span>
-                            <span class="showcase-item"><img src="/AI/43607048_013_c3bb.jpg" alt=""></span>
-                            <span class="showcase-item"><img src="/AI/44322116_004_094f.jpg" alt=""></span>
-                            <span class="showcase-item"><img src="/AI/52217609_005_05bb.jpg" alt=""></span>
-                            <span class="showcase-item"><img src="/AI/54085104_002_665f.jpg" alt=""></span>
-                            <span class="showcase-item"><img src="/AI/65443474_002_bb3b.jpg" alt=""></span>
-                            <span class="showcase-item"><img src="/AI/78484026_001_c3b6.jpg" alt=""></span>
-                            <span class="showcase-item"><img src="/AI/80691567_002_7c79.jpg" alt=""></span>
-                            <span class="showcase-item"><img src="/AI/81716867_004_25aa.jpg" alt=""></span>
-                            <span class="showcase-item"><img src="/AI/94114182_009_9347.jpg" alt=""></span>
-                            <span class="showcase-item"><img src="/AI/99010649_003_8ffa.jpg" alt=""></span>
-                        </span>
-                    </span> 
-                    by yourself! From your phone or your PC. Anything you can imagine. 
-                    Just <strong>€49.99</strong> and the guide is yours.
-                </p>
-                <div class="buy-requirements">
-                    Requirements: A decent PC or a new phone
-                </div>
-                <a href="/supportus.html?note=guide" class="primary-button button-link">Buy the Guide</a>
-            </div>
+            <div class="buy-grid-new">
+                <!-- Guide Option -->
+                <article class="buy-card-new" data-language-panel="en" lang="en">
+                    <h2 class="buy-card-title">Generation Guide</h2>
+                    <p class="buy-card-text">
+                        Learn how to 
+                        <span class="guide-showcase-trigger">
+                            create any image you want
+                            <span class="guide-showcase-hint">(Click to see what you can create)</span>
+                            <span class="guide-showcase" id="showcase-en"></span>
+                        </span> 
+                        by yourself! From your phone or your PC. Anything you can imagine.
+                    </p>
+                    <div class="buy-card-price">€49.99</div>
+                    <a href="/supportus.html?note=guide" class="primary-button button-link">Buy Guide</a>
+                    <p class="buy-requirements">Requirements: A decent PC or a new phone</p>
+                </article>
 
-            <div class="buy-message-container" data-language-panel="bg" lang="bg" hidden>
-                <p class="buy-message-text">
-                    Не мога да ви продавам снимки, които не притежавам. Интернет е пълен с такива снимки, модели и т.н. 
-                    Това, което мога да ви продам и да ви науча, е как сами да 
-                    <span class="guide-showcase-trigger">
-                        създавате всяко изображение, което пожелаете
-                        <span class="guide-showcase-hint" data-i18n-en="(Click to see what you can create)" data-i18n-bg="(Кликни за да видиш какво можеш да създадеш)">(Кликни за да видиш какво можеш да създадеш)</span>
-                        <span class="guide-showcase">
-                            <span class="showcase-item"><img src="/AI/12932890_010_0da9.jpg" alt=""></span>
-                            <span class="showcase-item"><img src="/AI/20145478_010_6c55.jpg" alt=""></span>
-                            <span class="showcase-item"><img src="/AI/22611078_003_ad96.jpg" alt=""></span>
-                            <span class="showcase-item"><img src="/AI/22611078_005_7c2e.jpg" alt=""></span>
-                            <span class="showcase-item"><img src="/AI/24156928_007_3959.jpg" alt=""></span>
-                            <span class="showcase-item"><img src="/AI/25149153_005_e39e.jpg" alt=""></span>
-                            <span class="showcase-item"><img src="/AI/32953290_008_7887.jpg" alt=""></span>
-                            <span class="showcase-item"><img src="/AI/33359421_007_1be6.jpg" alt=""></span>
-                            <span class="showcase-item"><img src="/AI/43607048_013_c3bb.jpg" alt=""></span>
-                            <span class="showcase-item"><img src="/AI/44322116_004_094f.jpg" alt=""></span>
-                            <span class="showcase-item"><img src="/AI/52217609_005_05bb.jpg" alt=""></span>
-                            <span class="showcase-item"><img src="/AI/54085104_002_665f.jpg" alt=""></span>
-                            <span class="showcase-item"><img src="/AI/65443474_002_bb3b.jpg" alt=""></span>
-                            <span class="showcase-item"><img src="/AI/78484026_001_c3b6.jpg" alt=""></span>
-                            <span class="showcase-item"><img src="/AI/80691567_002_7c79.jpg" alt=""></span>
-                            <span class="showcase-item"><img src="/AI/81716867_004_25aa.jpg" alt=""></span>
-                            <span class="showcase-item"><img src="/AI/94114182_009_9347.jpg" alt=""></span>
-                            <span class="showcase-item"><img src="/AI/99010649_003_8ffa.jpg" alt=""></span>
-                        </span>
-                    </span>! 
-                    От вашия телефон или компютър. Всичко, което можете да си представите. 
-                    Само за <strong>€49.99</strong> и ръководството е ваше.
-                </p>
-                <div class="buy-requirements">
-                    Изисквания: Приличен компютър или нов телефон
-                </div>
-                <a href="/supportus.html?note=guide" class="primary-button button-link">Купи ръководството</a>
+                <article class="buy-card-new" data-language-panel="bg" lang="bg" hidden>
+                    <h2 class="buy-card-title">Ръководство за генериране</h2>
+                    <p class="buy-card-text">
+                        Научете как сами да 
+                        <span class="guide-showcase-trigger">
+                            създавате всяко изображение
+                            <span class="guide-showcase-hint">(Кликни за да видиш какво можеш да създадеш)</span>
+                            <span class="guide-showcase" id="showcase-bg"></span>
+                        </span>! 
+                        От вашия телефон или компютър. Всичко, което можете да си представите.
+                    </p>
+                    <div class="buy-card-price">€49.99</div>
+                    <a href="/supportus.html?note=guide" class="primary-button button-link">Купи ръководство</a>
+                    <p class="buy-requirements">Изисквания: Приличен компютър или нов телефон</p>
+                </article>
+
+                <!-- Membership Option -->
+                <article class="buy-card-new" data-language-panel="en" lang="en">
+                    <h2 class="buy-card-title">Little Kitties Access</h2>
+                    <p class="buy-card-text">
+                        If you want to see the Little Kitties, pay for an account and meet them. 
+                        Get exclusive access to our private member gallery.
+                    </p>
+                    <div class="buy-card-price">€99.99</div>
+                    <a href="/supportus.html?note=access" class="primary-button button-link">Get Access</a>
+                    <p class="buy-requirements">Instant access after confirmation</p>
+                </article>
+
+                <article class="buy-card-new" data-language-panel="bg" lang="bg" hidden>
+                    <h2 class="buy-card-title">Достъп до "Малки котета"</h2>
+                    <p class="buy-card-text">
+                        Ако искате да видите малките котета, платете за акаунт и се запознайте с тях. 
+                        Получете изключителен достъп до нашата частна галерия.
+                    </p>
+                    <div class="buy-card-price">€99.99</div>
+                    <a href="/supportus.html?note=access" class="primary-button button-link">Вземи достъп</a>
+                    <p class="buy-requirements">Незабавен достъп след потвърждение</p>
+                </article>
             </div>
         </main>
     </div>
@@ -303,18 +306,40 @@
     <script src="/ambient-background.js" defer></script>
     <script src="/script.js" defer></script>
     <script>
+        const AI_IMAGES = [
+            '12932890_010_0da9.jpg', '20145478_010_6c55.jpg', '22611078_003_ad96.jpg',
+            '22611078_005_7c2e.jpg', '24156928_007_3959.jpg', '25149153_005_e39e.jpg',
+            '32953290_008_7887.jpg', '33359421_007_1be6.jpg', '43607048_013_c3bb.jpg',
+            '44322116_004_094f.jpg', '54085104_002_665f.jpg', '65443474_002_bb3b.jpg',
+            '78484026_001_c3b6.jpg', '80691567_002_7c79.jpg', '81716867_004_25aa.jpg',
+            '94114182_009_9347.jpg', '99010649_003_8ffa.jpg', '52217609_005_05bb.jpg'
+        ];
+
+        function getRandomImages(count) {
+            const shuffled = [...AI_IMAGES].sort(() => 0.5 - Math.random());
+            return shuffled.slice(0, count);
+        }
+
+        function renderShowcase() {
+            const images = getRandomImages(6);
+            const markup = images.map(img => `<span class="showcase-item"><img src="/AI/${img}" alt=""></span>`).join('');
+            document.getElementById('showcase-en').innerHTML = markup;
+            document.getElementById('showcase-bg').innerHTML = markup;
+        }
+
         document.addEventListener('DOMContentLoaded', () => {
+            renderShowcase();
+
             const triggers = document.querySelectorAll('.guide-showcase-trigger');
-            
             triggers.forEach(trigger => {
                 const showcase = trigger.querySelector('.guide-showcase');
-                if (showcase) {
-                    trigger.addEventListener('click', (e) => {
+                trigger.addEventListener('click', (e) => {
+                    if (window.matchMedia('(pointer: coarse)').matches) {
                         e.stopPropagation();
                         if (e.target.closest(".guide-showcase")) return;
                         showcase.classList.toggle('is-active');
-                    });
-                }
+                    }
+                });
             });
 
             document.addEventListener('click', () => {
