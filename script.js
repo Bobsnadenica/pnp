@@ -27,6 +27,7 @@ document.addEventListener("DOMContentLoaded", async () => {
 
   let currentSession = null;
   let lastFocus = null;
+  let themeInviteTimer = null;
   let publicGalleryLoading = false;
   let publicGalleryObserver = null;
   const publicGalleryState = {
@@ -112,7 +113,63 @@ document.addEventListener("DOMContentLoaded", async () => {
     });
   }
 
+  function getThemeInviteElement() {
+    let hint = document.getElementById("theme-open-hint");
+
+    if (!hint) {
+      hint = document.createElement("div");
+      hint.id = "theme-open-hint";
+      hint.className = "theme-open-hint";
+      hint.setAttribute("aria-hidden", "true");
+      document.body.appendChild(hint);
+    }
+
+    hint.textContent = themeInviteText;
+    return hint;
+  }
+
+  function getVisibleThemeButton() {
+    return galleryThemeButtons.find((button) => {
+      const rect = button.getBoundingClientRect();
+      return rect.width > 0 && rect.height > 0;
+    }) || galleryThemeButtons[0] || null;
+  }
+
+  function positionThemeInvite() {
+    const hint = document.getElementById("theme-open-hint");
+    const button = getVisibleThemeButton();
+
+    if (!hint || !button) {
+      return;
+    }
+
+    const buttonRect = button.getBoundingClientRect();
+    const viewportWidth = document.documentElement.clientWidth || window.innerWidth;
+    const margin = 12;
+    const gap = viewportWidth <= 720 ? 10 : 14;
+    const buttonCenter = buttonRect.left + (buttonRect.width / 2);
+    const hintWidth = Math.min(hint.offsetWidth || 272, Math.max(0, viewportWidth - (margin * 2)));
+    const minLeft = margin + (hintWidth / 2);
+    const maxLeft = viewportWidth - margin - (hintWidth / 2);
+    const hintLeft = Math.min(Math.max(buttonCenter, minLeft), maxLeft);
+    const arrowLeft = Math.min(
+      Math.max(buttonCenter - (hintLeft - (hintWidth / 2)), 18),
+      Math.max(18, hintWidth - 18)
+    );
+
+    hint.style.setProperty("--theme-invite-left", `${hintLeft}px`);
+    hint.style.setProperty("--theme-invite-top", `${buttonRect.bottom + gap}px`);
+    hint.style.setProperty("--theme-invite-arrow-left", `${arrowLeft}px`);
+  }
+
   function dismissThemeInvite() {
+    if (themeInviteTimer) {
+      window.clearTimeout(themeInviteTimer);
+      themeInviteTimer = null;
+    }
+
+    document.body.classList.remove("theme-invite-active");
+
     galleryThemeButtons.forEach((button) => {
       button.classList.remove("theme-invite-visible");
     });
@@ -122,6 +179,10 @@ document.addEventListener("DOMContentLoaded", async () => {
     if (publicGalleryState.theme === "night" || !galleryThemeButtons.length) {
       return;
     }
+
+    getThemeInviteElement();
+    positionThemeInvite();
+    document.body.classList.add("theme-invite-active");
 
     galleryThemeButtons.forEach((button) => {
       const dayText = button.querySelector(".thinking-text-day");
@@ -133,7 +194,7 @@ document.addEventListener("DOMContentLoaded", async () => {
       button.classList.add("theme-invite-visible");
     });
 
-    window.setTimeout(dismissThemeInvite, themeInviteVisibleMs);
+    themeInviteTimer = window.setTimeout(dismissThemeInvite, themeInviteVisibleMs);
   }
 
   function applyPublicTheme(theme, options = {}) {
@@ -1376,6 +1437,8 @@ async function prepareWallPhotos(photos, options = {}) {
       scrollToTopBtn.classList.remove("is-visible");
     }
   }, { passive: true });
+
+  window.addEventListener("resize", positionThemeInvite, { passive: true });
 
   scrollToTopBtn.addEventListener("click", () => {
     window.scrollTo({ top: 0, behavior: "smooth" });
