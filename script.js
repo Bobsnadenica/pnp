@@ -22,6 +22,8 @@ document.addEventListener("DOMContentLoaded", async () => {
   const publicGalleryThemeStorageKey = `${siteLabel}:gallery-theme`;
   const publicGalleryManifestCacheTtlMs = 5 * 60 * 1000;
   const publicGalleryAutoloadMarginPx = 1200;
+  const themeInviteText = "Виж какво прави през нощта";
+  const themeInviteVisibleMs = 9000;
 
   let currentSession = null;
   let lastFocus = null;
@@ -108,6 +110,30 @@ document.addEventListener("DOMContentLoaded", async () => {
       button.dataset.targetTheme = nextTheme;
       button.setAttribute("aria-pressed", String(publicGalleryState.theme === "night"));
     });
+  }
+
+  function dismissThemeInvite() {
+    galleryThemeButtons.forEach((button) => {
+      button.classList.remove("theme-invite-visible");
+    });
+  }
+
+  function showThemeInvite() {
+    if (publicGalleryState.theme === "night" || !galleryThemeButtons.length) {
+      return;
+    }
+
+    galleryThemeButtons.forEach((button) => {
+      const dayText = button.querySelector(".thinking-text-day");
+
+      if (dayText) {
+        dayText.textContent = themeInviteText;
+      }
+
+      button.classList.add("theme-invite-visible");
+    });
+
+    window.setTimeout(dismissThemeInvite, themeInviteVisibleMs);
   }
 
   function applyPublicTheme(theme, options = {}) {
@@ -1285,6 +1311,8 @@ async function prepareWallPhotos(photos, options = {}) {
 
   galleryThemeButtons.forEach((button) => {
     button.addEventListener("click", async () => {
+      dismissThemeInvite();
+
       const nextTheme = normalizePublicTheme(
         button.dataset.targetTheme || getOppositePublicTheme(publicGalleryState.theme)
       );
@@ -1332,7 +1360,7 @@ async function prepareWallPhotos(photos, options = {}) {
     await beginLogin();
   });
 
-  applyPublicTheme(readStoredPublicTheme(), { persist: false });
+  applyPublicTheme("day", { persist: false });
   
   // Scroll To Top Button logic
   const scrollToTopBtn = document.createElement("button");
@@ -1354,6 +1382,7 @@ async function prepareWallPhotos(photos, options = {}) {
   });
 
   await window.MalkokoteAgeGate?.waitForAccess?.();
+  showThemeInvite();
   bindPublicGalleryAutoload();
   await Promise.all([refreshSession(), loadPublicGallery()]);
 });

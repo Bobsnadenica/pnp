@@ -29,11 +29,7 @@ document.addEventListener("DOMContentLoaded", async () => {
   }
 
   function getCurrentTheme() {
-    try {
-      return normalizePublicTheme(localStorage.getItem(publicGalleryThemeStorageKey));
-    } catch {
-      return "day";
-    }
+    return "day";
   }
 
   function getMediaKind(photo) {
