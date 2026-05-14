@@ -22,7 +22,7 @@ document.addEventListener("DOMContentLoaded", async () => {
   const publicGalleryThemeStorageKey = `${siteLabel}:gallery-theme`;
   const publicGalleryManifestCacheTtlMs = 5 * 60 * 1000;
   const publicGalleryAutoloadMarginPx = 1200;
-  const themeInviteText = "Виж какво прави през нощта";
+  const themeInviteText = "Look what she does at night";
   const themeInviteVisibleMs = 9000;
 
   let currentSession = null;
