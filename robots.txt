@@ -1,0 +1,6 @@
+User-agent: *
+Allow: /
+Disallow: /auth/
+Disallow: /gallery/
+
+Sitemap: https://www.malkokote.com/sitemap.xml
