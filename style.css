@@ -1028,49 +1028,6 @@ body[data-gallery-theme="night"] .age-gate-human-check-input {
     transform: none;
 }
 
-.gallery-intro {
-    display: grid;
-    grid-template-columns: minmax(0, 1.2fr) auto;
-    align-items: end;
-    gap: 1.2rem;
-    margin: 0.1rem 0 0.9rem;
-    padding: clamp(1rem, 2vw, 1.35rem);
-    border: 1px solid rgba(17, 24, 39, 0.08);
-    border-radius: 8px;
-    background: rgba(255, 255, 255, 0.58);
-    backdrop-filter: blur(26px) saturate(1.25);
-    box-shadow: 0 24px 50px -42px rgba(17, 24, 39, 0.42);
-}
-
-body[data-gallery-theme="night"] .gallery-intro {
-    border-color: rgba(255, 255, 255, 0.12);
-    background: rgba(16, 20, 29, 0.48);
-    box-shadow: 0 28px 56px -44px rgba(0, 0, 0, 0.72);
-}
-
-.gallery-intro-copy h1 {
-    margin: 0;
-    font-size: clamp(2.6rem, 7vw, 6.6rem);
-    line-height: 0.9;
-    letter-spacing: 0;
-}
-
-.gallery-intro-copy p {
-    max-width: 42rem;
-    margin: 0.8rem 0 0;
-    color: var(--muted);
-    font-size: clamp(1rem, 1.6vw, 1.35rem);
-    line-height: 1.45;
-}
-
-.gallery-intro-actions {
-    display: flex;
-    align-items: center;
-    justify-content: flex-end;
-    flex-wrap: wrap;
-    gap: 0.55rem;
-}
-
 .public-gallery-shell {
     min-height: calc(100vh - 4rem);
 }
@@ -1692,15 +1649,6 @@ body[data-gallery-theme="night"] .gallery-empty-state {
 }
 
 @media (max-width: 900px) {
-    .gallery-intro {
-        grid-template-columns: 1fr;
-        align-items: start;
-    }
-
-    .gallery-intro-actions {
-        justify-content: flex-start;
-    }
-
     .public-gallery-grid {
         column-count: 3;
     }
@@ -1806,25 +1754,6 @@ body[data-gallery-theme="night"] .gallery-empty-state {
 
     .site-actions::-webkit-scrollbar {
         display: none;
-    }
-
-    .gallery-intro {
-        margin-bottom: 0.7rem;
-        padding: 0.95rem;
-    }
-
-    .gallery-intro-copy h1 {
-        font-size: clamp(2.35rem, 15vw, 4rem);
-    }
-
-    .gallery-intro-copy p {
-        font-size: 0.98rem;
-    }
-
-    .gallery-intro-actions {
-        display: grid;
-        grid-template-columns: 1fr;
-        width: 100%;
     }
 
     .gallery-toolbar {
