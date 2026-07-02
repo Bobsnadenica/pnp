@@ -908,6 +908,28 @@ body[data-gallery-theme="night"] .age-gate-card {
     color: var(--muted);
 }
 
+.age-gate-language {
+    justify-content: center;
+    margin: -0.35rem 0 0.85rem;
+}
+
+.age-gate-language .language-pill {
+    margin: 0 auto;
+}
+
+.age-gate-language .language-menu {
+    right: auto;
+    left: 50%;
+    max-height: min(18rem, calc(100vh - 10rem));
+    overflow: auto;
+    transform: translate(-50%, 8px) scale(0.96);
+    transform-origin: top center;
+}
+
+.age-gate-language .language-menu.is-active {
+    transform: translate(-50%, 0) scale(1);
+}
+
 .age-gate-card h1 {
     margin: 0;
     font-size: clamp(1.9rem, 5vw, 2.6rem);
@@ -1047,47 +1069,6 @@ body[data-gallery-theme="night"] .gallery-intro {
     justify-content: flex-end;
     flex-wrap: wrap;
     gap: 0.55rem;
-}
-
-.gallery-intro-proof {
-    grid-column: 1 / -1;
-    display: grid;
-    grid-template-columns: repeat(3, minmax(0, 1fr));
-    gap: 1px;
-    margin: 0;
-    overflow: hidden;
-    border: 1px solid rgba(17, 24, 39, 0.08);
-    border-radius: 8px;
-    background: rgba(17, 24, 39, 0.08);
-}
-
-body[data-gallery-theme="night"] .gallery-intro-proof {
-    border-color: rgba(255, 255, 255, 0.1);
-    background: rgba(255, 255, 255, 0.1);
-}
-
-.gallery-intro-proof div {
-    padding: 0.85rem 0.95rem;
-    background: rgba(255, 255, 255, 0.58);
-}
-
-body[data-gallery-theme="night"] .gallery-intro-proof div {
-    background: rgba(18, 23, 32, 0.62);
-}
-
-.gallery-intro-proof dt {
-    margin: 0;
-    color: var(--text);
-    font-size: 0.9rem;
-    font-weight: 800;
-    letter-spacing: 0;
-}
-
-.gallery-intro-proof dd {
-    margin: 0.18rem 0 0;
-    color: var(--muted);
-    font-size: 0.78rem;
-    line-height: 1.35;
 }
 
 .public-gallery-shell {
@@ -1802,6 +1783,22 @@ body[data-gallery-theme="night"] .gallery-empty-state {
         transform: translateY(0) scale(1);
     }
 
+    .age-gate-language .language-menu {
+        position: absolute;
+        top: calc(100% + 0.6rem);
+        bottom: auto;
+        left: 50%;
+        right: auto;
+        width: min(13rem, calc(100vw - 2rem));
+        max-height: min(18rem, calc(100vh - 13rem));
+        transform: translate(-50%, 8px) scale(0.96);
+        transform-origin: top center;
+    }
+
+    .age-gate-language .language-menu.is-active {
+        transform: translate(-50%, 0) scale(1);
+    }
+
     .language-item {
         padding: 0.8rem 1rem;
         font-size: 0.95rem;
@@ -1828,10 +1825,6 @@ body[data-gallery-theme="night"] .gallery-empty-state {
         display: grid;
         grid-template-columns: 1fr;
         width: 100%;
-    }
-
-    .gallery-intro-proof {
-        grid-template-columns: 1fr;
     }
 
     .gallery-toolbar {

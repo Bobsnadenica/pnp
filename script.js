@@ -18,7 +18,6 @@ document.addEventListener("DOMContentLoaded", async () => {
   const publicGalleryLoadMore = document.getElementById("public-gallery-load-more");
   const galleryFilterButtons = [...document.querySelectorAll("[data-gallery-filter]")];
   const galleryToolbarSummary = document.getElementById("gallery-toolbar-summary");
-  const galleryProofCount = document.getElementById("gallery-proof-count");
   const publicGalleryPageSize = 36;
   const publicCarouselPhotoCount = 12;
   const siteLabel = config.projectSlug || "malkokote-gallery";
@@ -232,6 +231,10 @@ document.addEventListener("DOMContentLoaded", async () => {
     loginFeedback.textContent = message || "";
   }
 
+  function translateText(key, fallback = "") {
+    return window.MalkokoteLanguage?.translate?.(key, fallback) || fallback || key;
+  }
+
   function getButtonStateLabel(button, state, fallback) {
     const key = state === "loading" ? "loadingText" : "idleText";
     return button?.dataset?.[key] || fallback;
@@ -304,10 +307,6 @@ document.addEventListener("DOMContentLoaded", async () => {
       return photos.filter((photo) => isFavoritePhoto(photo));
     }
 
-    if (activeFilter === "picture" || activeFilter === "gif" || activeFilter === "movie") {
-      return photos.filter((photo) => getMediaKind(photo) === activeFilter);
-    }
-
     return photos;
   }
 
@@ -321,32 +320,23 @@ document.addEventListener("DOMContentLoaded", async () => {
 
   function getFilterLabel(filter) {
     const labels = {
-      all: "All",
-      picture: "Photos",
-      gif: "GIFs",
-      movie: "Videos",
-      favorites: "Favorites",
+      all: ["galleryFilterAll", "All"],
+      favorites: ["galleryFilterFavorites", "Favorites"],
     };
+    const [key, fallback] = labels[filter] || labels.all;
 
-    return labels[filter] || labels.all;
+    return translateText(key, fallback);
   }
 
   function updateGalleryOverview(visibleCount = null) {
-    const total = publicGalleryState.allPhotos.length;
     const favorites = publicGalleryState.favoriteKeys.size;
-    const filterLabel = getFilterLabel(publicGalleryState.filter);
-
-    if (galleryProofCount) {
-      galleryProofCount.textContent = total ? `${total}+` : "Curated";
-    }
 
     if (galleryToolbarSummary) {
-      const countCopy = Number.isFinite(visibleCount)
-        ? `${visibleCount} shown`
-        : total
-          ? `${total} available`
-          : "New media appears here as it is curated";
-      galleryToolbarSummary.textContent = `${filterLabel}: ${countCopy}${favorites ? ` · ${favorites} saved` : ""}.`;
+      galleryToolbarSummary.textContent = publicGalleryState.filter === "favorites"
+        ? favorites
+          ? translateText("galleryEmptyFavoritesCopy", "Use the heart button on a preview to save it here.")
+          : translateText("galleryEmptyFavoritesTitle", "No favorites yet.")
+        : translateText("galleryToolbarSummaryNew", "New media appears here as it is curated.");
     }
   }
 
@@ -693,10 +683,10 @@ async function prepareWallPhotos(photos, options = {}) {
   const MOCK_DESCRIPTIONS = [
     { en: "Private member preview", bg: "Преглед за членове" },
     { en: "Editorial set available", bg: "Редакционна серия" },
-    { en: "Manual access review", bg: "Ръчен преглед на достъп" },
+    { en: "Private gallery sample", bg: "Пример от частната галерия" },
     { en: "Curated feature", bg: "Подбрана селекция" },
     { en: "Studio collection", bg: "Студийна колекция" },
-    { en: "New public preview", bg: "Нов публичен преглед" },
+    { en: "New gallery preview", bg: "Нов преглед от галерията" },
     { en: "Member gallery sample", bg: "Пример от галерията" },
     { en: "Featured collaboration", bg: "Избрана колаборация" }
   ];
@@ -837,14 +827,17 @@ async function prepareWallPhotos(photos, options = {}) {
   }
 
   function buildGalleryEmptyState() {
-    const filterLabel = getFilterLabel(publicGalleryState.filter).toLowerCase();
-    const copy = publicGalleryState.filter === "favorites"
-      ? "Use the heart button on a preview to save it here."
-      : "More media may appear as the public preview loads.";
+    const isFavorites = publicGalleryState.filter === "favorites";
+    const title = isFavorites
+      ? translateText("galleryEmptyFavoritesTitle", "No favorites yet.")
+      : translateText("galleryEmptyDefaultTitle", "Nothing here yet.");
+    const copy = isFavorites
+      ? translateText("galleryEmptyFavoritesCopy", "Use the heart button on a preview to save it here.")
+      : translateText("galleryEmptyDefaultCopy", "More media may appear as the gallery preview loads.");
 
     return `
       <div class="gallery-empty-state">
-        <p><strong>No ${escapeHtml(filterLabel)} yet.</strong>${escapeHtml(copy)}</p>
+        <p><strong>${escapeHtml(title)}</strong>${escapeHtml(copy)}</p>
       </div>
     `;
   }
@@ -998,14 +991,14 @@ async function prepareWallPhotos(photos, options = {}) {
     const isUserAd = !!photo.isUserAd;
     const isHeroAd = !!photo.isHeroAd;
     const lang = window.MalkokoteLanguage?.getLanguage?.() || "en";
-    const userAdLabel = lang === "bg" ? "Топ коте" : "Top kitty";
+    const userAdLabel = translateText("topKitty", "Top kitty");
     const userName = isUserAd ? (photo.userNames?.[lang] || photo.userNames?.en || "") : "";
     const userDesc = isUserAd ? (photo.userDesc?.[lang] || photo.userDesc?.en || "") : "";
-    const label = isUserAd ? `${userAdLabel} ${userName}` : (photo.label || photo.key || "Gallery item");
+    const label = isUserAd ? `${userAdLabel} ${userName}` : (photo.label || photo.key || translateText("galleryItem", "Gallery item"));
     const favoriteKey = getPhotoIdentity(photo);
     const favoriteMarkup = (!isUserAd && favoriteKey)
       ? `
-        <button class="favorite-toggle" type="button" data-favorite-toggle data-favorite-key="${escapeHtml(favoriteKey)}" aria-label="Save ${escapeHtml(label)}" aria-pressed="${String(publicGalleryState.favoriteKeys.has(favoriteKey))}">
+        <button class="favorite-toggle" type="button" data-favorite-toggle data-favorite-key="${escapeHtml(favoriteKey)}" aria-label="${escapeHtml(`${translateText("saveItem", "Save")} ${label}`)}" aria-pressed="${String(publicGalleryState.favoriteKeys.has(favoriteKey))}">
           <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 21s-6.7-4.2-9.4-8.2C.5 9.8 1.2 5.6 4.5 4.2 7 3.1 9.4 4.1 12 6.8c2.6-2.7 5-3.7 7.5-2.6 3.3 1.4 4 5.6 1.9 8.6C18.7 16.8 12 21 12 21z"/></svg>
         </button>
       `
@@ -1603,9 +1596,19 @@ async function prepareWallPhotos(photos, options = {}) {
   // Scroll To Top Button logic
   const scrollToTopBtn = document.createElement("button");
   scrollToTopBtn.className = "scroll-to-top";
-  scrollToTopBtn.setAttribute("aria-label", "Scroll to top");
+  scrollToTopBtn.setAttribute("aria-label", translateText("scrollToTop", "Scroll to top"));
   scrollToTopBtn.innerHTML = '<svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M18 15l-6-6-6 6"/></svg>';
   document.body.appendChild(scrollToTopBtn);
+
+  window.addEventListener("malkokote:languagechange", () => {
+    scrollToTopBtn.setAttribute("aria-label", translateText("scrollToTop", "Scroll to top"));
+    updateProfileButtons();
+    updateGalleryOverview(grid?.querySelectorAll(".public-card").length ?? null);
+
+    if (grid?.querySelector(".public-card")) {
+      void renderPublicGallery();
+    }
+  });
 
   window.addEventListener("scroll", () => {
     if (window.scrollY > 450) {

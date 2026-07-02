@@ -78,7 +78,27 @@
       galleryViewer: "Gallery viewer",
       closeViewer: "Close viewer",
       prevItem: "Previous item",
-      nextItem: "Next item"
+      nextItem: "Next item",
+      galleryIntroCopy: "Adult modeling gallery with curated previews, private member access, and clear privacy/removal support.",
+      requestAccess: "Request access",
+      modelCollaboration: "Model collaboration",
+      galleryActions: "Gallery actions",
+      featuredGalleryPreview: "Featured gallery preview",
+      browseGallery: "Browse gallery",
+      galleryToolbarTitle: "Browse the gallery preview",
+      galleryToolbarSummaryNew: "New media appears here as it is curated.",
+      galleryFilters: "Gallery filters",
+      galleryFilterAll: "All",
+      galleryFilterFavorites: "Favorites",
+      galleryEmptyDefaultTitle: "Nothing here yet.",
+      galleryEmptyFavoritesTitle: "No favorites yet.",
+      galleryEmptyDefaultCopy: "More media may appear as the gallery preview loads.",
+      galleryEmptyFavoritesCopy: "Use the heart button on a preview to save it here.",
+      modelApplications: "Model applications",
+      memberAccess: "Member access",
+      saveItem: "Save",
+      scrollToTop: "Scroll to top",
+      galleryItem: "Gallery item"
     },
     bg: {
       gallery: "Галерия",
@@ -139,7 +159,27 @@
       galleryViewer: "Преглед на галерията",
       closeViewer: "Затвори",
       prevItem: "Предишен",
-      nextItem: "Следващ"
+      nextItem: "Следващ",
+      galleryIntroCopy: "Галерия за възрастни модели с подбрани прегледи, частен достъп и ясна поддръжка за поверителност и премахване.",
+      requestAccess: "Заяви достъп",
+      modelCollaboration: "Колаборация с модел",
+      galleryActions: "Действия за галерията",
+      featuredGalleryPreview: "Избран преглед на галерията",
+      browseGallery: "Разгледай галерията",
+      galleryToolbarTitle: "Разгледай прегледа на галерията",
+      galleryToolbarSummaryNew: "Новите медии се появяват тук след подбор.",
+      galleryFilters: "Филтри на галерията",
+      galleryFilterAll: "Всички",
+      galleryFilterFavorites: "Любими",
+      galleryEmptyDefaultTitle: "Тук още няма нищо.",
+      galleryEmptyFavoritesTitle: "Още няма любими.",
+      galleryEmptyDefaultCopy: "Още медии може да се появят, докато прегледът на галерията се зарежда.",
+      galleryEmptyFavoritesCopy: "Използвайте бутона със сърце върху преглед, за да го запазите тук.",
+      modelApplications: "Кандидатури за модели",
+      memberAccess: "Достъп за членове",
+      saveItem: "Запази",
+      scrollToTop: "Към началото",
+      galleryItem: "Елемент от галерията"
     },
     ja: {
       gallery: "ギャラリー",
@@ -168,7 +208,59 @@
       unableToLoadGallery: "ギャラリーを読み込めません。",
       humanCheck: "本人確認",
       solveToContinue: "続行するにはチェックを解いてください。",
-      checkComplete: "本人確認が完了しました。"
+      checkComplete: "本人確認が完了しました。",
+      ageGateTrustNote: "18歳以上向けの確認済みモデルコンテンツ、同意を重視した公開、手動の削除リクエスト確認。",
+      privacyAndRemoval: "プライバシーと削除",
+      topKitty: "トップモデル",
+      signingIn: "サインイン中",
+      pleaseWait: "お待ちください。",
+      exchangingCode: "安全なサインインコードを交換しています。",
+      authHelperError: "サインインヘルパーを読み込めませんでした。",
+      authFinishedClosing: "安全なサインインが完了しました。このウィンドウを閉じます。",
+      signedInRedirecting: "サインインしました。リダイレクト中です。",
+      authFailedTitle: "サインインを完了できませんでした",
+      authFailedCopy: "安全なサインインフローでエラーが返されました。戻ってもう一度お試しください。",
+      authFailedStatus: "サインインの完了中に問題が発生しました。",
+      buyTitle: "Malkokote | 購入",
+      buyDescription: "Malkokoteメンバーギャラリーへのアクセスを申請するか、画像生成ガイドの購入でプロジェクトを支援してください。",
+      indexTitle: "Malkokote | ブルガリアの18+モデル・写真ギャラリー",
+      indexDescription: "Malkokoteは、ブルガリアの18+モデル・写真ギャラリーです。公開エディトリアル画像、プライベートメンバーアクセス、コラボレーションや削除依頼の連絡窓口があります。",
+      contactTitle: "Malkokote | お問い合わせ",
+      contactDescription: "ご質問はお問い合わせください。",
+      supportTitle: "Malkokote | サポート",
+      supportDescription: "Malkokoteを支援してアクセスを入手してください。",
+      privacyTitle: "Malkokote | プライバシーポリシー",
+      privacyDescription: "当サイトのプライバシーポリシーとデータ保護について。",
+      extraTitle: "Malkokote | エクストラ",
+      extraDescription: "プライベートメンバーギャラリーへのアクセス。",
+      selectLanguage: "言語を選択",
+      toggleTheme: "カラーテーマを切り替え",
+      closeDialog: "サインインダイアログを閉じる",
+      emailAddress: "メールアドレス",
+      galleryViewer: "ギャラリービューア",
+      closeViewer: "ビューアを閉じる",
+      prevItem: "前のアイテム",
+      nextItem: "次のアイテム",
+      galleryIntroCopy: "厳選プレビュー、プライベートメンバーアクセス、明確なプライバシー・削除サポートを備えた成人向けモデルギャラリー。",
+      requestAccess: "アクセスを申請",
+      modelCollaboration: "モデルコラボレーション",
+      galleryActions: "ギャラリー操作",
+      featuredGalleryPreview: "注目ギャラリープレビュー",
+      browseGallery: "ギャラリーを見る",
+      galleryToolbarTitle: "ギャラリープレビューを見る",
+      galleryToolbarSummaryNew: "厳選された新しいメディアがここに表示されます。",
+      galleryFilters: "ギャラリーフィルター",
+      galleryFilterAll: "すべて",
+      galleryFilterFavorites: "お気に入り",
+      galleryEmptyDefaultTitle: "まだ何もありません。",
+      galleryEmptyFavoritesTitle: "お気に入りはまだありません。",
+      galleryEmptyDefaultCopy: "ギャラリープレビューの読み込みに合わせて、さらにメディアが表示される場合があります。",
+      galleryEmptyFavoritesCopy: "プレビューのハートボタンを使ってここに保存できます。",
+      modelApplications: "モデル応募",
+      memberAccess: "メンバーアクセス",
+      saveItem: "保存",
+      scrollToTop: "トップへ戻る",
+      galleryItem: "ギャラリーアイテム"
     },
     fr: {
       gallery: "Galerie",
@@ -197,7 +289,59 @@
       unableToLoadGallery: "Impossible de charger la galerie.",
       humanCheck: "Vérification humaine",
       solveToContinue: "Résolvez le test pour continuer.",
-      checkComplete: "Vérification humaine terminée."
+      checkComplete: "Vérification humaine terminée.",
+      ageGateTrustNote: "Contenu de mannequinat vérifié 18+, publication fondée sur le consentement et examen manuel des demandes de retrait.",
+      privacyAndRemoval: "Confidentialité et retrait",
+      topKitty: "Modèle en vedette",
+      signingIn: "Connexion en cours",
+      pleaseWait: "Veuillez patienter.",
+      exchangingCode: "Échange de votre code de connexion sécurisé.",
+      authHelperError: "L'assistant de connexion n'a pas pu se charger.",
+      authFinishedClosing: "Connexion sécurisée terminée. Fermeture de cette fenêtre.",
+      signedInRedirecting: "Connecté. Redirection.",
+      authFailedTitle: "Impossible de terminer la connexion",
+      authFailedCopy: "Le flux de connexion sécurisé a renvoyé une erreur. Vous pouvez revenir et réessayer.",
+      authFailedStatus: "Un problème est survenu lors de la connexion.",
+      buyTitle: "Malkokote | Acheter",
+      buyDescription: "Demandez l'accès à la galerie membre Malkokote ou soutenez le projet en achetant le guide de génération d'images.",
+      indexTitle: "Malkokote | Galerie 18+ de mannequinat et photographie en Bulgarie",
+      indexDescription: "Malkokote est une galerie 18+ de mannequinat et photographie en Bulgarie avec images éditoriales publiques, accès membre privé et contact pour collaborations ou demandes de retrait.",
+      contactTitle: "Malkokote | Contact",
+      contactDescription: "Contactez-nous pour toute question.",
+      supportTitle: "Malkokote | Nous soutenir",
+      supportDescription: "Soutenez Malkokote et obtenez un accès.",
+      privacyTitle: "Malkokote | Politique de confidentialité",
+      privacyDescription: "Notre politique de confidentialité et de protection des données.",
+      extraTitle: "Malkokote | Extra",
+      extraDescription: "Accès privé à la galerie membre.",
+      selectLanguage: "Choisir la langue",
+      toggleTheme: "Changer le thème de couleur",
+      closeDialog: "Fermer la fenêtre de connexion",
+      emailAddress: "Adresse e-mail",
+      galleryViewer: "Visionneuse de galerie",
+      closeViewer: "Fermer la visionneuse",
+      prevItem: "Élément précédent",
+      nextItem: "Élément suivant",
+      galleryIntroCopy: "Galerie de mannequinat adulte avec aperçus sélectionnés, accès membre privé et aide claire pour la confidentialité et le retrait.",
+      requestAccess: "Demander l'accès",
+      modelCollaboration: "Collaboration modèle",
+      galleryActions: "Actions de galerie",
+      featuredGalleryPreview: "Aperçu de galerie en vedette",
+      browseGallery: "Parcourir la galerie",
+      galleryToolbarTitle: "Parcourir l'aperçu de la galerie",
+      galleryToolbarSummaryNew: "Les nouveaux médias apparaissent ici après sélection.",
+      galleryFilters: "Filtres de galerie",
+      galleryFilterAll: "Tout",
+      galleryFilterFavorites: "Favoris",
+      galleryEmptyDefaultTitle: "Rien ici pour le moment.",
+      galleryEmptyFavoritesTitle: "Aucun favori pour le moment.",
+      galleryEmptyDefaultCopy: "D'autres médias peuvent apparaître pendant le chargement de l'aperçu.",
+      galleryEmptyFavoritesCopy: "Utilisez le bouton cœur sur un aperçu pour l'enregistrer ici.",
+      modelApplications: "Candidatures modèles",
+      memberAccess: "Accès membre",
+      saveItem: "Enregistrer",
+      scrollToTop: "Retour en haut",
+      galleryItem: "Élément de galerie"
     },
     de: {
       gallery: "Galerie",
@@ -226,7 +370,59 @@
       unableToLoadGallery: "Galerie kann nicht geladen werden.",
       humanCheck: "Menschliche Überprüfung",
       solveToContinue: "Lösen Sie die Aufgabe, um fortzufahren.",
-      checkComplete: "Überprüfung abgeschlossen."
+      checkComplete: "Überprüfung abgeschlossen.",
+      ageGateTrustNote: "18+ geprüfte Model-Inhalte, einwilligungsorientierte Veröffentlichung und manuelle Prüfung von Löschanfragen.",
+      privacyAndRemoval: "Datenschutz und Entfernung",
+      topKitty: "Top-Model",
+      signingIn: "Anmeldung",
+      pleaseWait: "Bitte warten.",
+      exchangingCode: "Sicherer Anmeldecode wird ausgetauscht.",
+      authHelperError: "Die Anmeldehilfe konnte nicht geladen werden.",
+      authFinishedClosing: "Sichere Anmeldung abgeschlossen. Dieses Fenster wird geschlossen.",
+      signedInRedirecting: "Angemeldet. Weiterleitung.",
+      authFailedTitle: "Anmeldung konnte nicht abgeschlossen werden",
+      authFailedCopy: "Der sichere Anmeldevorgang hat einen Fehler zurückgegeben. Sie können zurückgehen und es erneut versuchen.",
+      authFailedStatus: "Beim Abschließen der Anmeldung ist ein Problem aufgetreten.",
+      buyTitle: "Malkokote | Kaufen",
+      buyDescription: "Fordern Sie Zugang zur Malkokote-Mitgliedergalerie an oder unterstützen Sie das Projekt durch den Kauf des Leitfadens zur Bildgenerierung.",
+      indexTitle: "Malkokote | 18+ Model- und Fotografiegalerie Bulgarien",
+      indexDescription: "Malkokote ist eine 18+ Model- und Fotografiegalerie in Bulgarien mit öffentlichen Editorial-Bildern, privatem Mitgliederzugang und Kontakt für Kooperationen oder Löschanfragen.",
+      contactTitle: "Malkokote | Kontakt",
+      contactDescription: "Kontaktieren Sie uns bei Fragen.",
+      supportTitle: "Malkokote | Unterstützen",
+      supportDescription: "Unterstützen Sie Malkokote und erhalten Sie Zugang.",
+      privacyTitle: "Malkokote | Datenschutzrichtlinie",
+      privacyDescription: "Unsere Datenschutzrichtlinie und der Schutz Ihrer Daten.",
+      extraTitle: "Malkokote | Extra",
+      extraDescription: "Privater Zugang zur Mitgliedergalerie.",
+      selectLanguage: "Sprache auswählen",
+      toggleTheme: "Farbthema wechseln",
+      closeDialog: "Anmeldedialog schließen",
+      emailAddress: "E-Mail-Adresse",
+      galleryViewer: "Galerieansicht",
+      closeViewer: "Ansicht schließen",
+      prevItem: "Vorheriges Element",
+      nextItem: "Nächstes Element",
+      galleryIntroCopy: "Erwachsene Modelgalerie mit kuratierten Vorschauen, privatem Mitgliederzugang und klarer Unterstützung für Datenschutz und Entfernung.",
+      requestAccess: "Zugang anfragen",
+      modelCollaboration: "Model-Kooperation",
+      galleryActions: "Galerieaktionen",
+      featuredGalleryPreview: "Ausgewählte Galerievorschau",
+      browseGallery: "Galerie durchsuchen",
+      galleryToolbarTitle: "Galerievorschau durchsuchen",
+      galleryToolbarSummaryNew: "Neue Medien erscheinen hier nach der Kuratierung.",
+      galleryFilters: "Galeriefilter",
+      galleryFilterAll: "Alle",
+      galleryFilterFavorites: "Favoriten",
+      galleryEmptyDefaultTitle: "Hier ist noch nichts.",
+      galleryEmptyFavoritesTitle: "Noch keine Favoriten.",
+      galleryEmptyDefaultCopy: "Weitere Medien können erscheinen, während die Galerievorschau lädt.",
+      galleryEmptyFavoritesCopy: "Nutzen Sie das Herz auf einer Vorschau, um sie hier zu speichern.",
+      modelApplications: "Model-Bewerbungen",
+      memberAccess: "Mitgliederzugang",
+      saveItem: "Speichern",
+      scrollToTop: "Nach oben",
+      galleryItem: "Galerieelement"
     },
     tr: {
       gallery: "Galeri",
@@ -255,7 +451,59 @@
       unableToLoadGallery: "Galeri yüklenemiyor.",
       humanCheck: "Doğrulama",
       solveToContinue: "Devam etmek için doğrulamayı çözün.",
-      checkComplete: "Doğrulama tamamlandı."
+      checkComplete: "Doğrulama tamamlandı.",
+      ageGateTrustNote: "18+ doğrulanmış model içeriği, rıza odaklı yayın ve kaldırma talepleri için manuel inceleme.",
+      privacyAndRemoval: "Gizlilik ve kaldırma",
+      topKitty: "Öne çıkan model",
+      signingIn: "Giriş yapılıyor",
+      pleaseWait: "Lütfen bekleyin.",
+      exchangingCode: "Güvenli giriş kodunuz değiştiriliyor.",
+      authHelperError: "Giriş yardımcısı yüklenemedi.",
+      authFinishedClosing: "Güvenli giriş tamamlandı. Bu pencere kapanıyor.",
+      signedInRedirecting: "Giriş yapıldı. Yönlendiriliyor.",
+      authFailedTitle: "Giriş tamamlanamadı",
+      authFailedCopy: "Güvenli giriş akışı bir hata döndürdü. Geri dönüp tekrar deneyebilirsiniz.",
+      authFailedStatus: "Giriş tamamlanırken bir sorun oluştu.",
+      buyTitle: "Malkokote | Satın Al",
+      buyDescription: "Malkokote üye galerisi erişimi isteyin veya görüntü oluşturma rehberini satın alarak projeyi destekleyin.",
+      indexTitle: "Malkokote | Bulgaristan 18+ Modellik ve Fotoğraf Galerisi",
+      indexDescription: "Malkokote, Bulgaristan'da halka açık editoryal görseller, özel üye erişimi ve işbirliği veya kaldırma talepleri için iletişim sunan 18+ modellik ve fotoğraf galerisidir.",
+      contactTitle: "Malkokote | İletişim",
+      contactDescription: "Her türlü soru için bize ulaşın.",
+      supportTitle: "Malkokote | Destek Ol",
+      supportDescription: "Malkokote'yi destekleyin ve erişim alın.",
+      privacyTitle: "Malkokote | Gizlilik Politikası",
+      privacyDescription: "Gizlilik politikamız ve veri korumamız.",
+      extraTitle: "Malkokote | Ekstra",
+      extraDescription: "Özel üye galerisi erişimi.",
+      selectLanguage: "Dil seç",
+      toggleTheme: "Renk temasını değiştir",
+      closeDialog: "Giriş penceresini kapat",
+      emailAddress: "E-posta adresi",
+      galleryViewer: "Galeri görüntüleyici",
+      closeViewer: "Görüntüleyiciyi kapat",
+      prevItem: "Önceki öğe",
+      nextItem: "Sonraki öğe",
+      galleryIntroCopy: "Seçilmiş önizlemeler, özel üye erişimi ve net gizlilik/kaldırma desteği sunan yetişkin model galerisi.",
+      requestAccess: "Erişim iste",
+      modelCollaboration: "Model işbirliği",
+      galleryActions: "Galeri işlemleri",
+      featuredGalleryPreview: "Öne çıkan galeri önizlemesi",
+      browseGallery: "Galeriyi incele",
+      galleryToolbarTitle: "Galeri önizlemesini incele",
+      galleryToolbarSummaryNew: "Seçilen yeni medya burada görünür.",
+      galleryFilters: "Galeri filtreleri",
+      galleryFilterAll: "Tümü",
+      galleryFilterFavorites: "Favoriler",
+      galleryEmptyDefaultTitle: "Burada henüz bir şey yok.",
+      galleryEmptyFavoritesTitle: "Henüz favori yok.",
+      galleryEmptyDefaultCopy: "Galeri önizlemesi yüklenirken daha fazla medya görünebilir.",
+      galleryEmptyFavoritesCopy: "Buraya kaydetmek için bir önizlemedeki kalp düğmesini kullanın.",
+      modelApplications: "Model başvuruları",
+      memberAccess: "Üye erişimi",
+      saveItem: "Kaydet",
+      scrollToTop: "Başa dön",
+      galleryItem: "Galeri öğesi"
     },
     ru: {
       gallery: "Галерея",
@@ -285,6 +533,8 @@
       humanCheck: "Проверка",
       solveToContinue: "Решите задачу, чтобы продолжить.",
       checkComplete: "Проверка пройдена.",
+      ageGateTrustNote: "18+ проверенное модельное содержимое, публикация с учетом согласия и ручная проверка запросов на удаление.",
+      privacyAndRemoval: "Конфиденциальность и удаление",
       topKitty: "Топ кошечка",
       signingIn: "Вход в систему",
       pleaseWait: "Пожалуйста, подождите.",
@@ -314,7 +564,27 @@
       galleryViewer: "Просмотр галереи",
       closeViewer: "Закрыть просмотр",
       prevItem: "Предыдущий элемент",
-      nextItem: "Следующий элемент"
+      nextItem: "Следующий элемент",
+      galleryIntroCopy: "Галерея взрослых моделей с отобранными превью, частным доступом для участников и понятной поддержкой по конфиденциальности и удалению.",
+      requestAccess: "Запросить доступ",
+      modelCollaboration: "Сотрудничество с моделью",
+      galleryActions: "Действия галереи",
+      featuredGalleryPreview: "Избранное превью галереи",
+      browseGallery: "Просмотреть галерею",
+      galleryToolbarTitle: "Просмотреть превью галереи",
+      galleryToolbarSummaryNew: "Новые медиа появляются здесь после отбора.",
+      galleryFilters: "Фильтры галереи",
+      galleryFilterAll: "Все",
+      galleryFilterFavorites: "Избранное",
+      galleryEmptyDefaultTitle: "Здесь пока ничего нет.",
+      galleryEmptyFavoritesTitle: "Избранного пока нет.",
+      galleryEmptyDefaultCopy: "Дополнительные медиа могут появиться по мере загрузки превью галереи.",
+      galleryEmptyFavoritesCopy: "Используйте кнопку с сердцем на превью, чтобы сохранить его здесь.",
+      modelApplications: "Заявки моделей",
+      memberAccess: "Доступ участников",
+      saveItem: "Сохранить",
+      scrollToTop: "Наверх",
+      galleryItem: "Элемент галереи"
     },
     es: {
       gallery: "Galería",
@@ -343,7 +613,59 @@
       unableToLoadGallery: "No se puede cargar la galería.",
       humanCheck: "Verificación humana",
       solveToContinue: "Resuelve la verificación para continuar.",
-      checkComplete: "Verificación humana completada."
+      checkComplete: "Verificación humana completada.",
+      ageGateTrustNote: "Contenido de modelaje verificado 18+, publicación basada en consentimiento y revisión manual de solicitudes de eliminación.",
+      privacyAndRemoval: "Privacidad y eliminación",
+      topKitty: "Modelo destacado",
+      signingIn: "Iniciando sesión",
+      pleaseWait: "Espera un momento.",
+      exchangingCode: "Intercambiando tu código seguro de inicio de sesión.",
+      authHelperError: "No se pudo cargar el asistente de inicio de sesión.",
+      authFinishedClosing: "Inicio de sesión seguro completado. Cerrando esta ventana.",
+      signedInRedirecting: "Sesión iniciada. Redirigiendo.",
+      authFailedTitle: "No pudimos completar el inicio de sesión",
+      authFailedCopy: "El flujo de inicio de sesión seguro devolvió un error. Puedes volver e intentarlo de nuevo.",
+      authFailedStatus: "Algo salió mal al completar el inicio de sesión.",
+      buyTitle: "Malkokote | Comprar",
+      buyDescription: "Solicita acceso a la galería de miembros de Malkokote o apoya el proyecto comprando la guía de generación de imágenes.",
+      indexTitle: "Malkokote | Galería 18+ de modelaje y fotografía en Bulgaria",
+      indexDescription: "Malkokote es una galería 18+ de modelaje y fotografía en Bulgaria con imágenes editoriales públicas, acceso privado para miembros y contacto para colaboraciones o solicitudes de eliminación.",
+      contactTitle: "Malkokote | Contacto",
+      contactDescription: "Contáctanos para cualquier consulta.",
+      supportTitle: "Malkokote | Apóyanos",
+      supportDescription: "Apoya Malkokote y obtén acceso.",
+      privacyTitle: "Malkokote | Política de privacidad",
+      privacyDescription: "Nuestra política de privacidad y protección de datos.",
+      extraTitle: "Malkokote | Extra",
+      extraDescription: "Acceso privado a la galería de miembros.",
+      selectLanguage: "Seleccionar idioma",
+      toggleTheme: "Cambiar tema de color",
+      closeDialog: "Cerrar diálogo de inicio de sesión",
+      emailAddress: "Correo electrónico",
+      galleryViewer: "Visor de galería",
+      closeViewer: "Cerrar visor",
+      prevItem: "Elemento anterior",
+      nextItem: "Elemento siguiente",
+      galleryIntroCopy: "Galería de modelaje adulto con vistas seleccionadas, acceso privado para miembros y soporte claro de privacidad/eliminación.",
+      requestAccess: "Solicitar acceso",
+      modelCollaboration: "Colaboración con modelo",
+      galleryActions: "Acciones de galería",
+      featuredGalleryPreview: "Vista destacada de la galería",
+      browseGallery: "Explorar galería",
+      galleryToolbarTitle: "Explorar vista de la galería",
+      galleryToolbarSummaryNew: "Los nuevos medios aparecen aquí tras la curación.",
+      galleryFilters: "Filtros de galería",
+      galleryFilterAll: "Todo",
+      galleryFilterFavorites: "Favoritos",
+      galleryEmptyDefaultTitle: "Todavía no hay nada aquí.",
+      galleryEmptyFavoritesTitle: "Aún no hay favoritos.",
+      galleryEmptyDefaultCopy: "Puede aparecer más contenido mientras carga la vista de la galería.",
+      galleryEmptyFavoritesCopy: "Usa el botón de corazón en una vista para guardarla aquí.",
+      modelApplications: "Solicitudes de modelos",
+      memberAccess: "Acceso de miembros",
+      saveItem: "Guardar",
+      scrollToTop: "Volver arriba",
+      galleryItem: "Elemento de galería"
     },
     it: {
       gallery: "Galleria",
@@ -372,7 +694,59 @@
       unableToLoadGallery: "Impossibile caricare la galleria.",
       humanCheck: "Controllo umano",
       solveToContinue: "Risolvi il controllo per continuare.",
-      checkComplete: "Controllo umano completato."
+      checkComplete: "Controllo umano completato.",
+      ageGateTrustNote: "Contenuti di modeling verificati 18+, pubblicazione basata sul consenso e revisione manuale delle richieste di rimozione.",
+      privacyAndRemoval: "Privacy e rimozione",
+      topKitty: "Modella in evidenza",
+      signingIn: "Accesso in corso",
+      pleaseWait: "Attendi.",
+      exchangingCode: "Scambio del codice di accesso sicuro.",
+      authHelperError: "Impossibile caricare l'assistente di accesso.",
+      authFinishedClosing: "Accesso sicuro completato. Chiusura della finestra.",
+      signedInRedirecting: "Accesso effettuato. Reindirizzamento.",
+      authFailedTitle: "Non siamo riusciti a completare l'accesso",
+      authFailedCopy: "Il flusso di accesso sicuro ha restituito un errore. Puoi tornare indietro e riprovare.",
+      authFailedStatus: "Qualcosa è andato storto durante il completamento dell'accesso.",
+      buyTitle: "Malkokote | Acquista",
+      buyDescription: "Richiedi l'accesso alla galleria membri di Malkokote o supporta il progetto acquistando la guida alla generazione di immagini.",
+      indexTitle: "Malkokote | Galleria 18+ di modeling e fotografia in Bulgaria",
+      indexDescription: "Malkokote è una galleria 18+ di modeling e fotografia in Bulgaria con immagini editoriali pubbliche, accesso privato membri e contatto per collaborazioni o richieste di rimozione.",
+      contactTitle: "Malkokote | Contatti",
+      contactDescription: "Contattaci per qualsiasi domanda.",
+      supportTitle: "Malkokote | Supportaci",
+      supportDescription: "Supporta Malkokote e ottieni accesso.",
+      privacyTitle: "Malkokote | Informativa privacy",
+      privacyDescription: "La nostra informativa privacy e protezione dati.",
+      extraTitle: "Malkokote | Extra",
+      extraDescription: "Accesso privato alla galleria membri.",
+      selectLanguage: "Seleziona lingua",
+      toggleTheme: "Cambia tema colore",
+      closeDialog: "Chiudi finestra di accesso",
+      emailAddress: "Indirizzo email",
+      galleryViewer: "Visualizzatore galleria",
+      closeViewer: "Chiudi visualizzatore",
+      prevItem: "Elemento precedente",
+      nextItem: "Elemento successivo",
+      galleryIntroCopy: "Galleria di modeling adulto con anteprime curate, accesso privato membri e supporto chiaro per privacy/rimozione.",
+      requestAccess: "Richiedi accesso",
+      modelCollaboration: "Collaborazione modella",
+      galleryActions: "Azioni galleria",
+      featuredGalleryPreview: "Anteprima galleria in evidenza",
+      browseGallery: "Sfoglia galleria",
+      galleryToolbarTitle: "Sfoglia l'anteprima della galleria",
+      galleryToolbarSummaryNew: "I nuovi media appaiono qui dopo la curazione.",
+      galleryFilters: "Filtri galleria",
+      galleryFilterAll: "Tutto",
+      galleryFilterFavorites: "Preferiti",
+      galleryEmptyDefaultTitle: "Ancora niente qui.",
+      galleryEmptyFavoritesTitle: "Ancora nessun preferito.",
+      galleryEmptyDefaultCopy: "Altri media potrebbero apparire mentre l'anteprima della galleria si carica.",
+      galleryEmptyFavoritesCopy: "Usa il pulsante cuore su un'anteprima per salvarla qui.",
+      modelApplications: "Candidature modelle",
+      memberAccess: "Accesso membri",
+      saveItem: "Salva",
+      scrollToTop: "Torna su",
+      galleryItem: "Elemento galleria"
     },
     pt: {
       gallery: "Galeria",
@@ -401,7 +775,59 @@
       unableToLoadGallery: "Incapaz de carregar a galeria.",
       humanCheck: "Verificação humana",
       solveToContinue: "Resolva a verificação para continuar.",
-      checkComplete: "Verificação humana concluída."
+      checkComplete: "Verificação humana concluída.",
+      ageGateTrustNote: "Conteúdo de modelagem verificado 18+, publicação baseada em consentimento e revisão manual de pedidos de remoção.",
+      privacyAndRemoval: "Privacidade e remoção",
+      topKitty: "Modelo em destaque",
+      signingIn: "Entrando",
+      pleaseWait: "Aguarde.",
+      exchangingCode: "Trocando seu código seguro de login.",
+      authHelperError: "O assistente de login não pôde carregar.",
+      authFinishedClosing: "Login seguro concluído. Fechando esta janela.",
+      signedInRedirecting: "Login concluído. Redirecionando.",
+      authFailedTitle: "Não foi possível concluir o login",
+      authFailedCopy: "O fluxo de login seguro retornou um erro. Você pode voltar e tentar novamente.",
+      authFailedStatus: "Algo deu errado ao concluir o login.",
+      buyTitle: "Malkokote | Comprar",
+      buyDescription: "Solicite acesso à galeria de membros Malkokote ou apoie o projeto comprando o guia de geração de imagens.",
+      indexTitle: "Malkokote | Galeria 18+ de modelagem e fotografia na Bulgária",
+      indexDescription: "Malkokote é uma galeria 18+ de modelagem e fotografia na Bulgária com imagens editoriais públicas, acesso privado para membros e contato para colaborações ou pedidos de remoção.",
+      contactTitle: "Malkokote | Contato",
+      contactDescription: "Entre em contato para qualquer pergunta.",
+      supportTitle: "Malkokote | Apoie-nos",
+      supportDescription: "Apoie o Malkokote e obtenha acesso.",
+      privacyTitle: "Malkokote | Política de privacidade",
+      privacyDescription: "Nossa política de privacidade e proteção de dados.",
+      extraTitle: "Malkokote | Extra",
+      extraDescription: "Acesso privado à galeria de membros.",
+      selectLanguage: "Selecionar idioma",
+      toggleTheme: "Alternar tema de cor",
+      closeDialog: "Fechar diálogo de login",
+      emailAddress: "Endereço de email",
+      galleryViewer: "Visualizador da galeria",
+      closeViewer: "Fechar visualizador",
+      prevItem: "Item anterior",
+      nextItem: "Próximo item",
+      galleryIntroCopy: "Galeria de modelagem adulta com prévias selecionadas, acesso privado para membros e suporte claro de privacidade/remoção.",
+      requestAccess: "Solicitar acesso",
+      modelCollaboration: "Colaboração com modelo",
+      galleryActions: "Ações da galeria",
+      featuredGalleryPreview: "Prévia em destaque da galeria",
+      browseGallery: "Explorar galeria",
+      galleryToolbarTitle: "Explorar prévia da galeria",
+      galleryToolbarSummaryNew: "Novas mídias aparecem aqui após a curadoria.",
+      galleryFilters: "Filtros da galeria",
+      galleryFilterAll: "Tudo",
+      galleryFilterFavorites: "Favoritos",
+      galleryEmptyDefaultTitle: "Ainda não há nada aqui.",
+      galleryEmptyFavoritesTitle: "Ainda não há favoritos.",
+      galleryEmptyDefaultCopy: "Mais mídias podem aparecer enquanto a prévia da galeria carrega.",
+      galleryEmptyFavoritesCopy: "Use o botão de coração em uma prévia para salvá-la aqui.",
+      modelApplications: "Inscrições de modelos",
+      memberAccess: "Acesso de membros",
+      saveItem: "Salvar",
+      scrollToTop: "Voltar ao topo",
+      galleryItem: "Item da galeria"
     },
     zh: {
       gallery: "画廊",
@@ -430,7 +856,59 @@
       unableToLoadGallery: "无法加载画廊。",
       humanCheck: "真人验证",
       solveToContinue: "完成验证以继续。",
-      checkComplete: "真人验证完成。"
+      checkComplete: "真人验证完成。",
+      ageGateTrustNote: "18+ 已验证模特内容，基于同意的发布，以及人工审核移除请求。",
+      privacyAndRemoval: "隐私与移除",
+      topKitty: "精选模特",
+      signingIn: "正在登录",
+      pleaseWait: "请稍候。",
+      exchangingCode: "正在交换您的安全登录代码。",
+      authHelperError: "无法加载登录助手。",
+      authFinishedClosing: "安全登录已完成。正在关闭此窗口。",
+      signedInRedirecting: "已登录。正在重定向。",
+      authFailedTitle: "无法完成登录",
+      authFailedCopy: "安全登录流程返回错误。您可以返回后重试。",
+      authFailedStatus: "完成登录时出现问题。",
+      buyTitle: "Malkokote | 购买",
+      buyDescription: "申请 Malkokote 会员图库访问权限，或通过购买图像生成指南支持项目。",
+      indexTitle: "Malkokote | 保加利亚 18+ 模特与摄影图库",
+      indexDescription: "Malkokote 是保加利亚的 18+ 模特与摄影图库，包含公开编辑图片、私人会员访问，以及合作或移除请求联系方式。",
+      contactTitle: "Malkokote | 联系",
+      contactDescription: "如有任何问题，请联系我们。",
+      supportTitle: "Malkokote | 支持我们",
+      supportDescription: "支持 Malkokote 并获取访问权限。",
+      privacyTitle: "Malkokote | 隐私政策",
+      privacyDescription: "我们的隐私政策和数据保护。",
+      extraTitle: "Malkokote | 额外内容",
+      extraDescription: "私人会员图库访问。",
+      selectLanguage: "选择语言",
+      toggleTheme: "切换颜色主题",
+      closeDialog: "关闭登录对话框",
+      emailAddress: "电子邮件地址",
+      galleryViewer: "图库查看器",
+      closeViewer: "关闭查看器",
+      prevItem: "上一项",
+      nextItem: "下一项",
+      galleryIntroCopy: "成人模特图库，提供精选预览、私人会员访问以及清晰的隐私/移除支持。",
+      requestAccess: "申请访问",
+      modelCollaboration: "模特合作",
+      galleryActions: "图库操作",
+      featuredGalleryPreview: "精选图库预览",
+      browseGallery: "浏览图库",
+      galleryToolbarTitle: "浏览图库预览",
+      galleryToolbarSummaryNew: "精选后的新媒体会显示在这里。",
+      galleryFilters: "图库筛选",
+      galleryFilterAll: "全部",
+      galleryFilterFavorites: "收藏",
+      galleryEmptyDefaultTitle: "这里还没有内容。",
+      galleryEmptyFavoritesTitle: "还没有收藏。",
+      galleryEmptyDefaultCopy: "图库预览加载时可能会显示更多媒体。",
+      galleryEmptyFavoritesCopy: "使用预览上的心形按钮将其保存到这里。",
+      modelApplications: "模特申请",
+      memberAccess: "会员访问",
+      saveItem: "保存",
+      scrollToTop: "返回顶部",
+      galleryItem: "图库项目"
     },
     ko: {
       gallery: "갤러리",
@@ -459,7 +937,59 @@
       unableToLoadGallery: "갤러리를 로드할 수 없습니다.",
       humanCheck: "사람 확인",
       solveToContinue: "계속하려면 확인을 해결하세요.",
-      checkComplete: "사람 확인 완료."
+      checkComplete: "사람 확인 완료.",
+      ageGateTrustNote: "18+ 검증된 모델 콘텐츠, 동의 기반 게시, 삭제 요청 수동 검토.",
+      privacyAndRemoval: "개인정보 및 삭제",
+      topKitty: "추천 모델",
+      signingIn: "로그인 중",
+      pleaseWait: "잠시 기다려 주세요.",
+      exchangingCode: "보안 로그인 코드를 교환하는 중입니다.",
+      authHelperError: "로그인 도우미를 로드할 수 없습니다.",
+      authFinishedClosing: "보안 로그인이 완료되었습니다. 이 창을 닫습니다.",
+      signedInRedirecting: "로그인되었습니다. 리디렉션 중입니다.",
+      authFailedTitle: "로그인을 완료할 수 없습니다",
+      authFailedCopy: "보안 로그인 흐름에서 오류가 반환되었습니다. 돌아가서 다시 시도할 수 있습니다.",
+      authFailedStatus: "로그인을 완료하는 동안 문제가 발생했습니다.",
+      buyTitle: "Malkokote | 구매",
+      buyDescription: "Malkokote 회원 갤러리 접근을 요청하거나 이미지 생성 가이드를 구매해 프로젝트를 지원하세요.",
+      indexTitle: "Malkokote | 불가리아 18+ 모델 및 사진 갤러리",
+      indexDescription: "Malkokote는 공개 에디토리얼 이미지, 비공개 회원 접근, 협업 또는 삭제 요청 연락처를 제공하는 불가리아의 18+ 모델 및 사진 갤러리입니다.",
+      contactTitle: "Malkokote | 문의",
+      contactDescription: "문의 사항은 연락해 주세요.",
+      supportTitle: "Malkokote | 지원하기",
+      supportDescription: "Malkokote를 지원하고 접근 권한을 받으세요.",
+      privacyTitle: "Malkokote | 개인정보 처리방침",
+      privacyDescription: "개인정보 처리방침 및 데이터 보호 안내.",
+      extraTitle: "Malkokote | 추가",
+      extraDescription: "비공개 회원 갤러리 접근.",
+      selectLanguage: "언어 선택",
+      toggleTheme: "색상 테마 전환",
+      closeDialog: "로그인 창 닫기",
+      emailAddress: "이메일 주소",
+      galleryViewer: "갤러리 뷰어",
+      closeViewer: "뷰어 닫기",
+      prevItem: "이전 항목",
+      nextItem: "다음 항목",
+      galleryIntroCopy: "엄선된 미리보기, 비공개 회원 접근, 명확한 개인정보/삭제 지원을 제공하는 성인 모델 갤러리.",
+      requestAccess: "접근 요청",
+      modelCollaboration: "모델 협업",
+      galleryActions: "갤러리 작업",
+      featuredGalleryPreview: "추천 갤러리 미리보기",
+      browseGallery: "갤러리 보기",
+      galleryToolbarTitle: "갤러리 미리보기 보기",
+      galleryToolbarSummaryNew: "엄선된 새 미디어가 여기에 표시됩니다.",
+      galleryFilters: "갤러리 필터",
+      galleryFilterAll: "전체",
+      galleryFilterFavorites: "즐겨찾기",
+      galleryEmptyDefaultTitle: "아직 표시할 항목이 없습니다.",
+      galleryEmptyFavoritesTitle: "아직 즐겨찾기가 없습니다.",
+      galleryEmptyDefaultCopy: "갤러리 미리보기가 로드되면서 더 많은 미디어가 표시될 수 있습니다.",
+      galleryEmptyFavoritesCopy: "미리보기의 하트 버튼을 사용해 여기에 저장하세요.",
+      modelApplications: "모델 지원",
+      memberAccess: "회원 접근",
+      saveItem: "저장",
+      scrollToTop: "맨 위로",
+      galleryItem: "갤러리 항목"
     },
     ar: {
       gallery: "معرض الصور",
@@ -486,9 +1016,61 @@
       loadingNight: "جاري تحميل معرض الليل.",
       loadingDay: "جاري تحميل معرض النهار.",
       unableToLoadGallery: "تعذر تحميل المعرض.",
-      humanCheck: "التحقق البشри",
+      humanCheck: "التحقق البشري",
       solveToContinue: "حل التحقق للاستمرار.",
-      checkComplete: "اكتمل التحقق البشري."
+      checkComplete: "اكتمل التحقق البشري.",
+      ageGateTrustNote: "محتوى عارضات موثق لعمر 18+، ونشر قائم على الموافقة، ومراجعة يدوية لطلبات الإزالة.",
+      privacyAndRemoval: "الخصوصية والإزالة",
+      topKitty: "عارضة مميزة",
+      signingIn: "جار تسجيل الدخول",
+      pleaseWait: "يرجى الانتظار.",
+      exchangingCode: "جار تبادل رمز تسجيل الدخول الآمن.",
+      authHelperError: "تعذر تحميل مساعد تسجيل الدخول.",
+      authFinishedClosing: "اكتمل تسجيل الدخول الآمن. سيتم إغلاق هذه النافذة الآن.",
+      signedInRedirecting: "تم تسجيل الدخول. جار إعادة التوجيه.",
+      authFailedTitle: "تعذر إكمال تسجيل الدخول",
+      authFailedCopy: "أرجع مسار تسجيل الدخول الآمن خطأ. يمكنك العودة والمحاولة مرة أخرى.",
+      authFailedStatus: "حدث خطأ أثناء إكمال تسجيل الدخول.",
+      buyTitle: "Malkokote | شراء",
+      buyDescription: "اطلب الوصول إلى معرض أعضاء Malkokote أو ادعم المشروع بشراء دليل إنشاء الصور.",
+      indexTitle: "Malkokote | معرض عارضات وتصوير 18+ في بلغاريا",
+      indexDescription: "Malkokote معرض عارضات وتصوير 18+ في بلغاريا مع صور تحريرية عامة ووصول خاص للأعضاء ووسيلة اتصال للتعاون أو طلبات الإزالة.",
+      contactTitle: "Malkokote | اتصال",
+      contactDescription: "تواصل معنا لأي استفسار.",
+      supportTitle: "Malkokote | ادعمنا",
+      supportDescription: "ادعم Malkokote واحصل على الوصول.",
+      privacyTitle: "Malkokote | سياسة الخصوصية",
+      privacyDescription: "سياسة الخصوصية وحماية البيانات الخاصة بنا.",
+      extraTitle: "Malkokote | إضافي",
+      extraDescription: "وصول خاص إلى معرض الأعضاء.",
+      selectLanguage: "اختر اللغة",
+      toggleTheme: "تبديل سمة الألوان",
+      closeDialog: "إغلاق نافذة تسجيل الدخول",
+      emailAddress: "عنوان البريد الإلكتروني",
+      galleryViewer: "عارض المعرض",
+      closeViewer: "إغلاق العارض",
+      prevItem: "العنصر السابق",
+      nextItem: "العنصر التالي",
+      galleryIntroCopy: "معرض عارضات للبالغين مع معاينات منسقة ووصول خاص للأعضاء ودعم واضح للخصوصية والإزالة.",
+      requestAccess: "طلب الوصول",
+      modelCollaboration: "تعاون مع عارضة",
+      galleryActions: "إجراءات المعرض",
+      featuredGalleryPreview: "معاينة معرض مميزة",
+      browseGallery: "تصفح المعرض",
+      galleryToolbarTitle: "تصفح معاينة المعرض",
+      galleryToolbarSummaryNew: "تظهر الوسائط الجديدة هنا بعد تنسيقها.",
+      galleryFilters: "مرشحات المعرض",
+      galleryFilterAll: "الكل",
+      galleryFilterFavorites: "المفضلة",
+      galleryEmptyDefaultTitle: "لا يوجد شيء هنا بعد.",
+      galleryEmptyFavoritesTitle: "لا توجد مفضلات بعد.",
+      galleryEmptyDefaultCopy: "قد تظهر وسائط إضافية أثناء تحميل معاينة المعرض.",
+      galleryEmptyFavoritesCopy: "استخدم زر القلب على المعاينة لحفظها هنا.",
+      modelApplications: "طلبات العارضات",
+      memberAccess: "وصول الأعضاء",
+      saveItem: "حفظ",
+      scrollToTop: "العودة إلى الأعلى",
+      galleryItem: "عنصر من المعرض"
     }
   };
 
@@ -504,9 +1086,13 @@
     return SUPPORTED_LANGUAGES.includes(browserLang) ? browserLang : "en";
   }
 
+  function getTranslation(language, key, fallback = "") {
+    return TRANSLATIONS[language]?.[key] || TRANSLATIONS.en?.[key] || fallback || key;
+  }
+
   function applyLanguage(language) {
     const dropdownItems = document.querySelectorAll("[data-language-option]");
-    const currentFlag = document.querySelector("[data-current-language-flag]");
+    const currentFlags = document.querySelectorAll("[data-current-language-flag]");
     const panels = document.querySelectorAll("[data-language-panel]");
     const translatables = document.querySelectorAll("[data-i18n-en], [data-i18n]");
     const visiblePanelLanguage = [...panels].some((panel) => panel.dataset.languagePanel === language)
@@ -519,9 +1105,9 @@
       item.setAttribute("aria-pressed", String(isActive));
     });
 
-    if (currentFlag) {
+    currentFlags.forEach((currentFlag) => {
       currentFlag.textContent = FLAGS[language] || "🇬🇧";
-    }
+    });
 
     panels.forEach((panel) => {
       const isVisible = panel.dataset.languagePanel === visiblePanelLanguage;
@@ -533,14 +1119,18 @@
 
     translatables.forEach((el) => {
       const key = el.dataset.i18n;
-      let text = key ? TRANSLATIONS[language]?.[key] : el.getAttribute(`data-i18n-${language}`);
+      let text = key
+        ? getTranslation(language, key)
+        : el.getAttribute(`data-i18n-${language}`) || el.getAttribute("data-i18n-en");
       
       if (text) {
-        if (el.dataset.profileLabel !== undefined || el.querySelector("[data-profile-label]")) {
-           const label = el.querySelector("[data-profile-label]") || el;
-           label.textContent = text;
-        } else {
-           el.textContent = text;
+        if (!el.hasAttribute("data-i18n-attr-only")) {
+          if (el.dataset.profileLabel !== undefined || el.querySelector("[data-profile-label]")) {
+            const label = el.querySelector("[data-profile-label]") || el;
+            label.textContent = text;
+          } else {
+            el.textContent = text;
+          }
         }
 
         // Apply to attributes if requested
@@ -553,14 +1143,17 @@
       }
       
       // Update data attributes for script.js to pick up
-      const signedOut = el.getAttribute(`data-${language}-signed-out`);
-      const signedIn = el.getAttribute(`data-${language}-signed-in`);
+      const signedOut = el.getAttribute(`data-${language}-signed-out`) || (key === "login" ? getTranslation(language, "login") : "");
+      const signedIn = el.getAttribute(`data-${language}-signed-in`) || (key === "login" ? getTranslation(language, "logout") : "");
       if (signedOut) el.dataset.signedOutText = signedOut;
       if (signedIn) el.dataset.signedInText = signedIn;
 
       // Update placeholders
-      const idleText = el.getAttribute(`data-idle-${language}`) || el.getAttribute(`data-idle-text`);
-      const loadingText = el.getAttribute(`data-loading-${language}`) || el.getAttribute(`data-loading-text`);
+      const idleText = el.getAttribute(`data-idle-${language}`) || (key ? getTranslation(language, key) : el.getAttribute("data-idle-text"));
+      const loadingText = el.getAttribute(`data-loading-${language}`)
+        || (key === "continue" ? getTranslation(language, "redirecting") : "")
+        || (key === "loadMore" ? getTranslation(language, "loading") : "")
+        || el.getAttribute("data-loading-text");
       if (idleText) el.dataset.idleText = idleText;
       if (loadingText) el.dataset.loadingText = loadingText;
     });
@@ -589,29 +1182,51 @@
   }
 
   function init() {
-    const toggle = document.querySelector("[data-language-toggle]");
-    const menu = document.querySelector(".language-menu");
-    const options = document.querySelectorAll("[data-language-option]");
-    
-    if (toggle && menu) {
-      toggle.addEventListener("click", (e) => {
-        e.stopPropagation();
-        const isActive = menu.classList.toggle("is-active");
-        toggle.classList.toggle("is-active", isActive);
-        menu.hidden = !isActive;
-      });
+    function closeLanguageMenus(exceptMenu = null) {
+      document.querySelectorAll(".language-dropdown").forEach((dropdown) => {
+        const toggle = dropdown.querySelector("[data-language-toggle]");
+        const menu = dropdown.querySelector(".language-menu");
 
-      document.addEventListener("click", () => {
+        if (!menu || menu === exceptMenu) {
+          return;
+        }
+
         menu.classList.remove("is-active");
-        toggle.classList.remove("is-active");
+        toggle?.classList.remove("is-active");
         menu.hidden = true;
       });
     }
 
-    options.forEach((option) => {
-      option.addEventListener("click", () => {
+    document.addEventListener("click", (event) => {
+      const option = event.target.closest("[data-language-option]");
+
+      if (option) {
         applyLanguage(option.dataset.languageOption || "en");
-      });
+        closeLanguageMenus();
+        return;
+      }
+
+      const toggle = event.target.closest("[data-language-toggle]");
+
+      if (toggle) {
+        event.stopPropagation();
+
+        const dropdown = toggle.closest(".language-dropdown");
+        const menu = dropdown?.querySelector(".language-menu");
+
+        if (!menu) {
+          return;
+        }
+
+        const isActive = !menu.classList.contains("is-active");
+        closeLanguageMenus(menu);
+        menu.classList.toggle("is-active", isActive);
+        toggle.classList.toggle("is-active", isActive);
+        menu.hidden = !isActive;
+        return;
+      }
+
+      closeLanguageMenus();
     });
 
     applyLanguage(getInitialLanguage());
@@ -626,6 +1241,6 @@
   window.MalkokoteLanguage = {
     getLanguage: () => getInitialLanguage(),
     applyLanguage,
-    translate: (key) => TRANSLATIONS[getInitialLanguage()]?.[key] || key
+    translate: (key, fallback = "") => getTranslation(getInitialLanguage(), key, fallback)
   };
 })();

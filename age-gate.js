@@ -2,6 +2,21 @@
   const STORAGE_KEY = "malkokote.age-gate.acceptedAt";
   const LEAVE_URL = "https://www.google.com";
   const ACCEPTANCE_TTL_MS = 12 * 60 * 60 * 1000;
+  const LANGUAGE_OPTIONS = [
+    ["en", "🇬🇧 English"],
+    ["bg", "🇧🇬 Български"],
+    ["ja", "🇯🇵 日本語"],
+    ["fr", "🇫🇷 Français"],
+    ["de", "🇩🇪 Deutsch"],
+    ["tr", "🇹🇷 Türkçe"],
+    ["ru", "🇷🇺 Русский"],
+    ["es", "🇪🇸 Español"],
+    ["it", "🇮🇹 Italiano"],
+    ["pt", "🇵🇹 Português"],
+    ["zh", "🇨🇳 中文"],
+    ["ko", "🇰🇷 한국어"],
+    ["ar", "🇸🇦 العربية"],
+  ];
 
   let resolver = null;
   let accessPromise = null;
@@ -76,8 +91,31 @@
   }
 
   function translate(key, fallback) {
-    const value = window.MalkokoteLanguage?.translate?.(key);
+    const value = window.MalkokoteLanguage?.translate?.(key, fallback);
     return value && value !== key ? value : fallback;
+  }
+
+  function setupLanguagePicker(gate) {
+    const card = gate.querySelector(".age-gate-card");
+
+    if (!card || gate.querySelector("[data-age-language]")) {
+      return;
+    }
+
+    const picker = document.createElement("div");
+    picker.className = "age-gate-language language-dropdown";
+    picker.dataset.ageLanguage = "true";
+    picker.innerHTML = `
+      <button class="language-pill" type="button" data-language-toggle aria-label="${translate("selectLanguage", "Select Language")}" data-i18n="selectLanguage" data-i18n-attr="aria-label" data-i18n-attr-only>
+        <span data-current-language-flag>🇬🇧</span>
+        <span class="pill-chevron">⌄</span>
+      </button>
+      <div class="language-menu" hidden>
+        ${LANGUAGE_OPTIONS.map(([code, label]) => `<button class="language-item" type="button" data-language-option="${code}" aria-label="${label.replace(/^\S+\s/, "")}">${label}</button>`).join("")}
+      </div>
+    `;
+
+    card.insertBefore(picker, card.firstElementChild);
   }
 
   function setupTrustLinks(gate) {
@@ -91,10 +129,10 @@
     trust.className = "age-gate-trust";
     trust.dataset.ageTrust = "true";
     trust.innerHTML = `
-      <p class="age-gate-trust-note">${translate("ageGateTrustNote", "18+ verified modeling, consent-led publishing, and manual content removal review.")}</p>
+      <p class="age-gate-trust-note" data-i18n="ageGateTrustNote">${translate("ageGateTrustNote", "18+ verified modeling, consent-led publishing, and manual content removal review.")}</p>
       <div class="age-gate-trust-links">
-        <a href="/privacy.html">${translate("privacyAndRemoval", "Privacy & removal")}</a>
-        <a href="/contact.html">${translate("contact", "Contact")}</a>
+        <a href="/privacy.html" data-i18n="privacyAndRemoval">${translate("privacyAndRemoval", "Privacy & removal")}</a>
+        <a href="/contact.html" data-i18n="contact">${translate("contact", "Contact")}</a>
       </div>
     `;
 
@@ -187,7 +225,9 @@
 
     gate.hidden = false;
     gate.removeAttribute("aria-hidden");
+    setupLanguagePicker(gate);
     setupTrustLinks(gate);
+    window.MalkokoteLanguage?.applyLanguage?.(window.MalkokoteLanguage.getLanguage?.() || "en");
     setupHumanCheck(gate, enterButton);
 
     enterButton?.addEventListener("click", () => {
