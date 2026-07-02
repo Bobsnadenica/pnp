@@ -75,6 +75,32 @@
     window.location.replace(LEAVE_URL);
   }
 
+  function translate(key, fallback) {
+    const value = window.MalkokoteLanguage?.translate?.(key);
+    return value && value !== key ? value : fallback;
+  }
+
+  function setupTrustLinks(gate) {
+    const copy = gate.querySelector(".age-gate-copy");
+
+    if (!copy || gate.querySelector("[data-age-trust]")) {
+      return;
+    }
+
+    const trust = document.createElement("div");
+    trust.className = "age-gate-trust";
+    trust.dataset.ageTrust = "true";
+    trust.innerHTML = `
+      <p class="age-gate-trust-note">${translate("ageGateTrustNote", "18+ verified modeling, consent-led publishing, and manual content removal review.")}</p>
+      <div class="age-gate-trust-links">
+        <a href="/privacy.html">${translate("privacyAndRemoval", "Privacy & removal")}</a>
+        <a href="/contact.html">${translate("contact", "Contact")}</a>
+      </div>
+    `;
+
+    copy.insertAdjacentElement("afterend", trust);
+  }
+
   function createChallenge() {
     const left = Math.floor(Math.random() * 7) + 2;
     const right = Math.floor(Math.random() * 7) + 2;
@@ -161,6 +187,7 @@
 
     gate.hidden = false;
     gate.removeAttribute("aria-hidden");
+    setupTrustLinks(gate);
     setupHumanCheck(gate, enterButton);
 
     enterButton?.addEventListener("click", () => {

@@ -221,8 +221,8 @@
                     <a class="ghost-button button-link" href="/buy.html" data-i18n="buy">Buy</a>
                     <button class="ghost-button" type="button" data-gallery-theme-toggle aria-label="Toggle color theme">
                         <div class="theme-thinking-bubble">
-                            <span class="thinking-text thinking-text-day" data-i18n="dayThinking">Look what she does at night</span>
-                            <span class="thinking-text thinking-text-night" data-i18n="nightThinking">She's not that type of girl</span>
+                            <span class="thinking-text thinking-text-day" data-i18n="dayThinking">Open night gallery</span>
+                            <span class="thinking-text thinking-text-night" data-i18n="nightThinking">Return to day gallery</span>
                         </div>
                         <div class="theme-pulse-circle"></div>
                         <span class="theme-icon-shell">
@@ -262,7 +262,7 @@
                             <span class="guide-showcase-hint">(Click to see what you can create)</span>
                             <span class="guide-showcase" data-showcase></span>
                         </span> 
-                        from your phone or pc (needs to be a decent PC or a decent phone). I'll show you a simple free way how to set up a local image generation model and use it as you use chatgpt. I'll show you how to search and find for any kind of models you want - hentai, realistic, furry whatever we don't judge.
+                        from your phone or PC. The guide walks through local setup, model sourcing, prompting, privacy basics, and responsible 18+ content boundaries.
                     </p>
                     <div class="buy-card-price">€49.99</div>
                     <a href="/supportus.html?note=guide" class="primary-button button-link">Buy Guide</a>
@@ -278,7 +278,7 @@
                             <span class="guide-showcase-hint">(Кликни за да видиш какво можеш да създадеш)</span>
                             <span class="guide-showcase" data-showcase></span>
                         </span> 
-                        от вашия телефон или компютър (необходим е приличен компютър или приличен телефон). Ще ви покажа прост и безплатен начин как да настроите локален модел за генериране на изображения и да го използвате точно както използвате ChatGPT. Ще ви покажа как да търсите и намирате всякакви видове модели, които искате - хентай, реалистични, фърри или каквото и да е, ние не съдим.
+                        от вашия телефон или компютър. Ръководството показва локална настройка, търсене на модели, писане на промптове, основи на поверителността и отговорни граници за 18+ съдържание.
                     </p>
                     <div class="buy-card-price">€49.99</div>
                     <a href="/supportus.html?note=guide" class="primary-button button-link">Купи ръководство</a>
@@ -357,7 +357,7 @@
                             <span class="guide-showcase-hint">(Нажмите, чтобы увидеть, что можно создать)</span>
                             <span class="guide-showcase" data-showcase></span>
                         </span> 
-                        на вашем телефоне или компьютере (требуется достаточно мощный ПК или современный телефон). Я покажу вам простой и бесплатный способ настройки локальной модели генерации изображений, которой можно пользоваться так же, как ChatGPT. Я научу вас искать и находить любые нужные вам модели — хентай, реалистичные, фурри и всё остальное, мы никого не осуждаем.
+                        на вашем телефоне или компьютере. Руководство объясняет локальную настройку, поиск моделей, написание промптов, основы приватности и ответственные границы для 18+ контента.
                     </p>
                     <div class="buy-card-price">€49.99</div>
                     <a href="/supportus.html?note=guide" class="primary-button button-link">Купить руководство</a>
@@ -649,9 +649,7 @@
             });
         }
 
-        document.addEventListener('DOMContentLoaded', () => {
-            renderShowcase();
-
+        document.addEventListener('DOMContentLoaded', async () => {
             const triggers = document.querySelectorAll('.guide-showcase-trigger');
             triggers.forEach(trigger => {
                 const showcase = trigger.querySelector('.guide-showcase');
@@ -667,6 +665,9 @@
             document.addEventListener('click', () => {
                 document.querySelectorAll('.guide-showcase.is-active').forEach(s => s.classList.remove('is-active'));
             });
+
+            await window.MalkokoteAgeGate?.waitForAccess?.();
+            renderShowcase();
         });
     </script>
 </body>

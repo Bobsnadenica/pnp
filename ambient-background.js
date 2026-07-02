@@ -164,6 +164,7 @@ document.addEventListener("DOMContentLoaded", async () => {
   }
 
   try {
+    await window.MalkokoteAgeGate?.waitForAccess?.();
     await loadAmbientBackground(getCurrentTheme());
   } catch (error) {
     console.error(error);

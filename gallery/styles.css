@@ -93,6 +93,34 @@ body[data-gallery-mode="router"] {
     color: var(--muted);
 }
 
+.age-gate-trust {
+    margin-top: 0.95rem;
+    display: grid;
+    gap: 0.55rem;
+}
+
+.age-gate-trust-note {
+    margin: 0;
+    color: var(--muted);
+    font-size: 0.88rem;
+    line-height: 1.5;
+}
+
+.age-gate-trust-links {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 0.55rem 0.9rem;
+    font-size: 0.84rem;
+    font-weight: 700;
+}
+
+.age-gate-trust-links a {
+    color: var(--text);
+    text-decoration: none;
+    border-bottom: 1px solid currentColor;
+}
+
 .age-gate-human-check {
     display: grid;
     gap: 0.7rem;
