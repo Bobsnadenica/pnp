@@ -16,13 +16,16 @@ document.addEventListener("DOMContentLoaded", async () => {
   const publicGallerySentinel = document.getElementById("public-gallery-sentinel");
   const publicGalleryActions = document.getElementById("public-gallery-actions");
   const publicGalleryLoadMore = document.getElementById("public-gallery-load-more");
+  const galleryFilterButtons = [...document.querySelectorAll("[data-gallery-filter]")];
+  const galleryToolbarSummary = document.getElementById("gallery-toolbar-summary");
+  const galleryProofCount = document.getElementById("gallery-proof-count");
   const publicGalleryPageSize = 36;
   const publicCarouselPhotoCount = 12;
   const siteLabel = config.projectSlug || "malkokote-gallery";
   const publicGalleryThemeStorageKey = `${siteLabel}:gallery-theme`;
+  const publicGalleryFavoritesStorageKey = `${siteLabel}:public-gallery-favorites`;
   const publicGalleryManifestCacheTtlMs = 5 * 60 * 1000;
   const publicGalleryAutoloadMarginPx = 1200;
-  const themeInviteText = "Look what she does at night";
   const themeInviteVisibleMs = 9000;
 
   let currentSession = null;
@@ -39,6 +42,8 @@ document.addEventListener("DOMContentLoaded", async () => {
     renderedCount: 0,
     fetchedAt: 0,
     nextCursor: null,
+    filter: "all",
+    favoriteKeys: new Set(),
   };
   const publicAspectRatioCache = new Map();
 
@@ -124,7 +129,8 @@ document.addEventListener("DOMContentLoaded", async () => {
       document.body.appendChild(hint);
     }
 
-    hint.textContent = themeInviteText;
+    const translate = window.MalkokoteLanguage?.translate || ((k) => k);
+    hint.textContent = translate("dayThinking") || "Open night gallery";
     return hint;
   }
 
@@ -186,9 +192,10 @@ document.addEventListener("DOMContentLoaded", async () => {
 
     galleryThemeButtons.forEach((button) => {
       const dayText = button.querySelector(".thinking-text-day");
+      const translate = window.MalkokoteLanguage?.translate || ((k) => k);
 
       if (dayText) {
-        dayText.textContent = themeInviteText;
+        dayText.textContent = translate("dayThinking") || "Open night gallery";
       }
 
       button.classList.add("theme-invite-visible");
@@ -258,6 +265,89 @@ document.addEventListener("DOMContentLoaded", async () => {
     }
 
     return "picture";
+  }
+
+  function getPhotoIdentity(photo) {
+    return String(photo?.key || photo?.url || "").trim();
+  }
+
+  function readFavoriteKeys() {
+    try {
+      const parsed = JSON.parse(localStorage.getItem(publicGalleryFavoritesStorageKey) || "[]");
+      return new Set(Array.isArray(parsed) ? parsed.filter(Boolean).map(String) : []);
+    } catch (error) {
+      console.warn("Unable to read gallery favorites.", error);
+      return new Set();
+    }
+  }
+
+  function saveFavoriteKeys() {
+    try {
+      localStorage.setItem(
+        publicGalleryFavoritesStorageKey,
+        JSON.stringify([...publicGalleryState.favoriteKeys])
+      );
+    } catch (error) {
+      console.warn("Unable to persist gallery favorites.", error);
+    }
+  }
+
+  function isFavoritePhoto(photo) {
+    const identity = getPhotoIdentity(photo);
+    return Boolean(identity && publicGalleryState.favoriteKeys.has(identity));
+  }
+
+  function filterPhotosForCurrentView(photos) {
+    const activeFilter = publicGalleryState.filter;
+
+    if (activeFilter === "favorites") {
+      return photos.filter((photo) => isFavoritePhoto(photo));
+    }
+
+    if (activeFilter === "picture" || activeFilter === "gif" || activeFilter === "movie") {
+      return photos.filter((photo) => getMediaKind(photo) === activeFilter);
+    }
+
+    return photos;
+  }
+
+  function updateGalleryFilterButtons() {
+    galleryFilterButtons.forEach((button) => {
+      const isActive = button.dataset.galleryFilter === publicGalleryState.filter;
+      button.classList.toggle("is-active", isActive);
+      button.setAttribute("aria-pressed", String(isActive));
+    });
+  }
+
+  function getFilterLabel(filter) {
+    const labels = {
+      all: "All",
+      picture: "Photos",
+      gif: "GIFs",
+      movie: "Videos",
+      favorites: "Favorites",
+    };
+
+    return labels[filter] || labels.all;
+  }
+
+  function updateGalleryOverview(visibleCount = null) {
+    const total = publicGalleryState.allPhotos.length;
+    const favorites = publicGalleryState.favoriteKeys.size;
+    const filterLabel = getFilterLabel(publicGalleryState.filter);
+
+    if (galleryProofCount) {
+      galleryProofCount.textContent = total ? `${total}+` : "Curated";
+    }
+
+    if (galleryToolbarSummary) {
+      const countCopy = Number.isFinite(visibleCount)
+        ? `${visibleCount} shown`
+        : total
+          ? `${total} available`
+          : "New media appears here as it is curated";
+      galleryToolbarSummary.textContent = `${filterLabel}: ${countCopy}${favorites ? ` · ${favorites} saved` : ""}.`;
+    }
   }
 
   function shufflePhotos(photos) {
@@ -601,14 +691,14 @@ async function prepareWallPhotos(photos, options = {}) {
   }
 
   const MOCK_DESCRIPTIONS = [
-    { en: "Looking for a daddy", bg: "Търся си татенце" },
-    { en: "Looking for a big cat", bg: "Търся си голямо коте" },
-    { en: "If you can pay - you have everything", bg: "Ако може да си платиш - имаш всичко" },
-    { en: "VIP Only", bg: "Само за VIP" },
-    { en: "Secret kitty", bg: "Тайно коте" },
-    { en: "I want to play", bg: "Искам да играя" },
-    { en: "Only for high status", bg: "Само за висок статус" },
-    { en: "Sweet and wild", bg: "Сладка и дива" }
+    { en: "Private member preview", bg: "Преглед за членове" },
+    { en: "Editorial set available", bg: "Редакционна серия" },
+    { en: "Manual access review", bg: "Ръчен преглед на достъп" },
+    { en: "Curated feature", bg: "Подбрана селекция" },
+    { en: "Studio collection", bg: "Студийна колекция" },
+    { en: "New public preview", bg: "Нов публичен преглед" },
+    { en: "Member gallery sample", bg: "Пример от галерията" },
+    { en: "Featured collaboration", bg: "Избрана колаборация" }
   ];
 
   function getRandomMockDescription() {
@@ -629,6 +719,7 @@ async function prepareWallPhotos(photos, options = {}) {
     publicGalleryState.renderedCount = 0;
     publicGalleryState.fetchedAt = fetchedAt;
     publicGalleryState.nextCursor = publicGalleryState.allPhotos.length ? "0" : null;
+    updateGalleryOverview();
   }
 
   function buildDisplayPhotos() {
@@ -745,6 +836,19 @@ async function prepareWallPhotos(photos, options = {}) {
     }
   }
 
+  function buildGalleryEmptyState() {
+    const filterLabel = getFilterLabel(publicGalleryState.filter).toLowerCase();
+    const copy = publicGalleryState.filter === "favorites"
+      ? "Use the heart button on a preview to save it here."
+      : "More media may appear as the public preview loads.";
+
+    return `
+      <div class="gallery-empty-state">
+        <p><strong>No ${escapeHtml(filterLabel)} yet.</strong>${escapeHtml(copy)}</p>
+      </div>
+    `;
+  }
+
   async function renderPublicGallery(photos = [], options = {}) {
     if (!grid) {
       return;
@@ -753,8 +857,9 @@ async function prepareWallPhotos(photos, options = {}) {
     if (options.append) {
       const fragment = document.createDocumentFragment();
       const startIndex = publicGalleryState.renderedCount - photos.length;
-      
-      photos.forEach((photo, i) => {
+
+      const visiblePhotos = filterPhotosForCurrentView(photos);
+      visiblePhotos.forEach((photo, i) => {
         const temp = document.createElement("div");
         temp.innerHTML = buildCard(photo, startIndex + i);
         const card = temp.firstElementChild;
@@ -764,9 +869,13 @@ async function prepareWallPhotos(photos, options = {}) {
       });
       
       grid.appendChild(fragment);
+      updateGalleryOverview(grid.querySelectorAll(".public-card").length);
     } else {
-      const displayPhotos = buildDisplayPhotos();
-      grid.innerHTML = displayPhotos.map((photo, index) => buildCard(photo, index)).join("");
+      const displayPhotos = filterPhotosForCurrentView(buildDisplayPhotos());
+      grid.innerHTML = displayPhotos.length
+        ? displayPhotos.map((photo, index) => buildCard(photo, index)).join("")
+        : buildGalleryEmptyState();
+      updateGalleryOverview(displayPhotos.length);
     }
     
     enableViewer(grid);
@@ -809,7 +918,7 @@ async function prepareWallPhotos(photos, options = {}) {
       
       // If it's the first page, we do a full render to handle ads correctly at the top
       // Otherwise we append for smoothness
-      if (start === 0) {
+      if (start === 0 || publicGalleryState.filter !== "all") {
         await renderPublicGallery();
       } else {
         await renderPublicGallery(driftApplied, { append: true });
@@ -893,6 +1002,14 @@ async function prepareWallPhotos(photos, options = {}) {
     const userName = isUserAd ? (photo.userNames?.[lang] || photo.userNames?.en || "") : "";
     const userDesc = isUserAd ? (photo.userDesc?.[lang] || photo.userDesc?.en || "") : "";
     const label = isUserAd ? `${userAdLabel} ${userName}` : (photo.label || photo.key || "Gallery item");
+    const favoriteKey = getPhotoIdentity(photo);
+    const favoriteMarkup = (!isUserAd && favoriteKey)
+      ? `
+        <button class="favorite-toggle" type="button" data-favorite-toggle data-favorite-key="${escapeHtml(favoriteKey)}" aria-label="Save ${escapeHtml(label)}" aria-pressed="${String(publicGalleryState.favoriteKeys.has(favoriteKey))}">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 21s-6.7-4.2-9.4-8.2C.5 9.8 1.2 5.6 4.5 4.2 7 3.1 9.4 4.1 12 6.8c2.6-2.7 5-3.7 7.5-2.6 3.3 1.4 4 5.6 1.9 8.6C18.7 16.8 12 21 12 21z"/></svg>
+        </button>
+      `
+      : "";
 
     if (kind === "movie") {
       return `
@@ -921,6 +1038,7 @@ async function prepareWallPhotos(photos, options = {}) {
               ` : '<span class="media-badge" aria-hidden="true">&#9654;</span>'}
             </div>
           </a>
+          ${favoriteMarkup}
         </article>
       `;
     }
@@ -955,6 +1073,7 @@ async function prepareWallPhotos(photos, options = {}) {
             ${badge}
           </div>
         </a>
+        ${favoriteMarkup}
       </article>
     `;
   }
@@ -1410,6 +1529,61 @@ async function prepareWallPhotos(photos, options = {}) {
     void loadNextPublicGalleryPage();
   });
 
+  galleryFilterButtons.forEach((button) => {
+    button.addEventListener("click", async () => {
+      const nextFilter = button.dataset.galleryFilter || "all";
+
+      if (nextFilter === publicGalleryState.filter) {
+        return;
+      }
+
+      publicGalleryState.filter = nextFilter;
+      updateGalleryFilterButtons();
+      await renderPublicGallery();
+
+      if (!grid?.querySelector(".public-card") && canAutoloadPublicGallery() && nextFilter !== "favorites") {
+        await loadNextPublicGalleryPage();
+      }
+    });
+  });
+
+  grid?.addEventListener("click", async (event) => {
+    const button = event.target.closest("[data-favorite-toggle]");
+
+    if (!button) {
+      return;
+    }
+
+    event.preventDefault();
+    event.stopPropagation();
+
+    const favoriteKey = String(button.dataset.favoriteKey || "").trim();
+
+    if (!favoriteKey) {
+      return;
+    }
+
+    if (publicGalleryState.favoriteKeys.has(favoriteKey)) {
+      publicGalleryState.favoriteKeys.delete(favoriteKey);
+    } else {
+      publicGalleryState.favoriteKeys.add(favoriteKey);
+    }
+
+    saveFavoriteKeys();
+
+    grid.querySelectorAll("[data-favorite-key]").forEach((toggle) => {
+      if (toggle.dataset.favoriteKey === favoriteKey) {
+        toggle.setAttribute("aria-pressed", String(publicGalleryState.favoriteKeys.has(favoriteKey)));
+      }
+    });
+
+    if (publicGalleryState.filter === "favorites") {
+      await renderPublicGallery();
+    } else {
+      updateGalleryOverview(grid.querySelectorAll(".public-card").length);
+    }
+  });
+
   document.addEventListener("keydown", (event) => {
     if (loginModal?.getAttribute("aria-hidden") === "false" && event.key === "Escape") {
       closeModal();
@@ -1422,6 +1596,9 @@ async function prepareWallPhotos(photos, options = {}) {
   });
 
   applyPublicTheme("day", { persist: false });
+  publicGalleryState.favoriteKeys = readFavoriteKeys();
+  updateGalleryFilterButtons();
+  updateGalleryOverview();
   
   // Scroll To Top Button logic
   const scrollToTopBtn = document.createElement("button");
